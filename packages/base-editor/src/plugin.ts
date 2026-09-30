@@ -5,6 +5,7 @@ import SpeedTooltip from './components/SpeedTooltip.vue'
 import { ensureSpeedComponents } from 'speed-components-ui/components'
 import type { ResponseType } from 'speed-components-ui'
 import { editorConfig, type IUploadConfig } from '@speed-tiptap-editor/shared'
+import { warnSpeedComponentsPeerSetup } from './warnPeerSetup'
 
 const components: Component[] = [SpeedEditor]
 
@@ -47,6 +48,7 @@ export const install = (app: App, config?: Partial<GlobalConfig>) => {
   app.component(SpeedTooltip.name as string, SpeedTooltip)
   app.provide('speedUseTiptapConfig', currentConfig)
   ensureSpeedComponents(app, { iconfontUrl: [editorConfig.iconfontUrl] })
+  warnSpeedComponentsPeerSetup()
 }
 
 const plugin = {

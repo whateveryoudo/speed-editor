@@ -9,7 +9,7 @@ export const knowledgeLayout: EditorLayoutConfig = {
     '|',
     'undo', 'redo', 'format-painter', 'clearNodeAndMarks',
     '|',
-    'heading', 'fontSize',
+    'heading', 'fontFamily', 'fontSize',
     '|',
     'bold', 'italic', 'underline', 'strike', 'moreText',
     '|',

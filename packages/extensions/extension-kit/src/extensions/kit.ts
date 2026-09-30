@@ -22,6 +22,7 @@ import { StarterKit } from "@tiptap/starter-kit";
 import { Link } from "./link";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { FontSize } from "./fontSize";
+import { FontFamily } from "./fontFamily";
 import { Color } from "@tiptap/extension-color";
 import { BackgroundColor } from "./backgroundColor";
 import FileHandler from "./fileHandler";
@@ -32,7 +33,7 @@ import { QuickInsert } from "./quickInsert";
 import { HorizontalRule } from "@tiptap/extension-horizontal-rule";
 import { Blockquote } from "./blockquote";
 import { Emoji } from "@tiptap/extension-emoji";
-import { TextAlign } from "@tiptap/extension-text-align";
+import { TextAlign } from "./textAlign";
 import { Tag } from "./tag";
 import { Mind } from "./mind";
 import { Mention } from "./mention";
@@ -124,6 +125,7 @@ export const getDefaultKit = (props: any) => [
     priority: 1000,
   }),
   FontSize,
+  FontFamily,
   Color,
   BackgroundColor,
   Mind,
@@ -175,12 +177,12 @@ export const getDefaultKit = (props: any) => [
   Tag,
 ];
 
-/** 简易富文本扩展集：不含脑图、流程图、格式刷、查找替换等重型能力 */
+/** 简易富文本扩展集：不含脑图、流程图、查找替换、标签等重型能力 */
 export const getLiteKit = (props: any) =>
   getDefaultKit(props).filter(
     (ext) =>
       ext &&
-      !['mind', 'formatPainter', 'searchAndReplace', 'tag'].includes(
+      !['mind', 'searchAndReplace', 'tag'].includes(
         ext.name as string,
       ),
   );

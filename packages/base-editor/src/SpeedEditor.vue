@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, ref, inject, type Ref, computed, type VNode, onUnmounted, type Component } from 'vue'
+import { watch, ref, inject, type Ref, computed, onUnmounted, type Component } from 'vue'
 import { MenuBarShell, BubbleMenuBarShell } from '@speed-tiptap-editor/ui'
 import {
   mergePluginRegistries,
@@ -8,6 +8,7 @@ import {
   type EditorLayoutConfig,
   type SpeedEditorPlugin,
   type BubbleMenuKey,
+  type SpeedEditorShellProps,
 } from '@speed-tiptap-editor/shared'
 import { legacyToolbarButtons, legacyBubbleMenus } from './legacyRegistry'
 import { EditorContent, useEditor } from '@tiptap/vue-3'
@@ -71,6 +72,8 @@ const props = withDefaults(defineProps<{
   editorStyle?: CSSProperties
   headerStyle?: CSSProperties
   mainStyle?: CSSProperties
+  /** 页面式内容宽度（居中留白）；仅样式，与 preset 无关 */
+  pageLayout?: boolean
   hideBorder?: boolean
   content?: string
   json?: string | null | Record<string, any>
@@ -91,24 +94,12 @@ const props = withDefaults(defineProps<{
     default?: string
     options?: { value: string; label: string }[]
   }
-  textBubbleMenu?: {
-    enabled?: boolean
-    items?: (
-      | { icon: string | VNode; title: string; action?: (editor: Editor) => void }
-      | string
-    )[]
+  fontFamily?: {
+    default?: string
+    options?: { value: string; label: string }[]
   }
-  ai?: {
-    doubao?: {
-      url: string
-      header?: Record<string, any>
-      bodyParams?: (
-        action: string,
-        content: string,
-        customPrompt: string,
-      ) => Record<string, any>
-    }
-  }
+  textBubbleMenu?: SpeedEditorShellProps['textBubbleMenu']
+  ai?: SpeedEditorShellProps['ai']
   mentionUserFetch?: (query: string) => Promise<UserInfo[]>
   documentSuggestConfig?: { rules?: any[] }
   sdComponentsConfig?: {
@@ -124,6 +115,7 @@ const props = withDefaults(defineProps<{
   editorStyle: () => ({}),
   headerStyle: () => ({}),
   mainStyle: () => ({}),
+  pageLayout: false,
   hideComment: true,
   placeholder: '输入 / 唤起更多',
   theme: 'light',
@@ -364,13 +356,25 @@ onUnmounted(() => {
 
 <template>
   <ConfigProvider :theme="cptTheme">
-    <div :class="['wrap speed-tiptap-editor', activeLayout.name, hideBorder ? 'hide-border' : '']" :style="editorStyle">
+    <div
+      :class="[
+        'wrap speed-tiptap-editor',
+        activeLayout.name,
+        hideBorder ? 'hide-border' : '',
+        pageLayout ? 'page-layout' : '',
+      ]"
+      :style="editorStyle"
+    >
       <MenuBarShell :style="headerStyle" :toolbar-keys="resolvedToolbarKeys" v-if="menubar && editor" class="header"
         :editor="editor" :buttons="resolvedToolbarButtons" :insert-items="resolvedInsertItems" />
       <BubbleMenuBarShell v-if="editor" :editor="editor" :bubble-menus="resolvedBubbleMenus"
-        :registry="resolvedBubbleRegistry" :text-bubble-menu-enabled="textBubbleMenu?.enabled !== false" />
+        :registry="resolvedBubbleRegistry" :text-bubble-menu="textBubbleMenu" />
       <main :style="mainStyle"
-        :class="['editor-content-wrap', activeLayout.name === 'knowledge' ? 'knowledge-content-wrap' : '']">
+        :class="[
+          'editor-content-wrap',
+          activeLayout.name === 'knowledge' || pageLayout ? 'page-content-wrap' : '',
+          activeLayout.name === 'knowledge' ? 'knowledge-content-wrap' : '',
+        ]">
         <editor-content :editor="editor"
           :class="['h-full', (editor && editor?.storage?.formatPainter?.isFormatPainterActive) ? 'format-painter-active' : '']" />
         <template v-for="(Overlay, index) in resolvedOverlays" :key="index">
@@ -390,6 +394,17 @@ onUnmounted(() => {
   flex-direction: column;
   position: relative;
 
+  &.lite {
+    &>header {
+      justify-content: flex-start;
+
+      :deep(.ste-menu-bar),
+      :deep(.ste-menu-bar__items) {
+        justify-content: flex-start;
+      }
+    }
+  }
+
   &.knowledge {
     &>header {
       justify-content: center;
@@ -398,12 +413,29 @@ onUnmounted(() => {
     }
 
     &>main {
-      &.knowledge-content-wrap {
-        max-width: 1000px;
-        margin: 0 auto;
-      }
-
       border: none;
+    }
+  }
+
+  /* knowledge：正文区自身限宽（与历史一致） */
+  &.knowledge > main.page-content-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /*
+   * lite + pageLayout（word）：main 通栏，滚动条贴容器最右；
+   * 正文内容再居中留白。
+   */
+  &.page-layout:not(.knowledge) > main.page-content-wrap {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+
+    :deep(.editor-content) {
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
     }
   }
 

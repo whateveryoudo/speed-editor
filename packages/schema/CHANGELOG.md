@@ -1,5 +1,23 @@
 # @speed-tiptap-editor/schema
 
+## 2.0.5
+
+### Patch Changes
+
+- 调整编辑器一些样式配置,字体支持
+
+## 2.0.4
+
+### Patch Changes
+
+- 更新一些功能
+
+## 2.0.3
+
+### Patch Changes
+
+- 首次发布到研发云
+
 ## 2.0.2
 
 ### Patch Changes

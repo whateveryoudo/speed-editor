@@ -10,7 +10,8 @@ declare module '@tiptap/core' {
 }
 
 /**
- * textStyle 字号属性（无 Vue）。
+ * textStyle 字号属性。
+ * Word 粘贴多为 pt（如 12pt=小四），与菜单 value 对齐，不做 px 强转。
  */
 export const FontSize = Extension.create({
   name: 'FontSize',
@@ -24,8 +25,10 @@ export const FontSize = Extension.create({
         attributes: {
           fontSize: {
             default: null,
-            parseHTML: (element: HTMLElement) =>
-              element.style.fontSize.replace(/['"]+/g, ''),
+            parseHTML: (element: HTMLElement) => {
+              const raw = (element.style.fontSize || '').replace(/['"]+/g, '').trim()
+              return raw || null
+            },
             renderHTML: (attributes: { fontSize?: string | null }) => {
               if (!attributes.fontSize) {
                 return {}

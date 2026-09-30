@@ -38,7 +38,10 @@ export default defineComponent({
       default: () => [],
     },
     textBubbleMenu: {
-      type: Object as PropType<{ enabled?: boolean }>,
+      type: Object as PropType<{
+        enabled?: boolean
+        items?: Array<string | { icon: string; title: string; action?: (editor: unknown) => void }>
+      }>,
       default: () => ({ enabled: true }),
     },
   },
@@ -57,7 +60,11 @@ export default defineComponent({
         {activeBubbleMenus.value.flatMap((key) => {
           const items = bubbleMenuComponents[key] || []
           return items.map(({ name, component: Component }) => (
-            <Component key={name} editor={props.editor} />
+            <Component
+              key={name}
+              editor={props.editor}
+              {...(key === 'text' ? { textBubbleMenu: props.textBubbleMenu } : {})}
+            />
           ))
         })}
       </>

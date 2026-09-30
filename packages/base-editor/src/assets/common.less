@@ -93,6 +93,15 @@
   border-radius: 6px;
   transition: background-color 0.2s;
 
+  // 覆盖 antd CSS-in-JS：
+  // `.ant-select-arrow .anticon:not(.ant-select-suffix) { pointer-events: auto }`
+  // 会让点箭头落在图标上，下拉无法展开。
+  .ant-select-arrow,
+  .ant-select-arrow .anticon,
+  .ant-select-arrow .anticon:not(.ant-select-suffix) {
+    pointer-events: none !important;
+  }
+
   &:hover {
     background-color: var(--ant-color-fill-secondary);
   }

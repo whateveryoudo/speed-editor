@@ -14,6 +14,7 @@ import { Loading } from './nodes/loading'
 import { DocumentKnowledge } from './nodes/document'
 import { BackgroundColor } from './marks/backgroundColor'
 import { FontSize } from './marks/fontSize'
+import { FontFamily } from './marks/fontFamily'
 import { Indent } from './marks/indent'
 
 /**
@@ -31,12 +32,13 @@ const knowledgeStarterKit = StarterKit.configure({
   document: false,
 })
 
-/** 文本样式相关（字号/前景/背景 + textStyle mark） */
+/** 文本样式相关（字号/字体/前景/背景 + textStyle mark） */
 const textStyleExtensions = [
   TextStyle,
   Color,
   BackgroundColor,
   FontSize,
+  FontFamily,
 ]
 
 /** 带 NodeView 的自定义块/行内节点（无 UI 契约版） */

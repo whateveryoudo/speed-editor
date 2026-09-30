@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Component } from 'vue'
-import type { BubbleMenuKey } from '@speed-tiptap-editor/shared'
+import type { BubbleMenuKey, SpeedEditorShellProps } from '@speed-tiptap-editor/shared'
 
 const props = defineProps<{
   editor: unknown
   bubbleMenus: BubbleMenuKey[]
   registry: Partial<Record<BubbleMenuKey, Component[]>>
-  textBubbleMenuEnabled?: boolean
+  textBubbleMenu?: SpeedEditorShellProps['textBubbleMenu']
 }>()
 
 const activeMenus = computed(() =>
   props.bubbleMenus.filter((key) => {
-    if (key === 'text') return props.textBubbleMenuEnabled !== false
+    if (key === 'text') return props.textBubbleMenu?.enabled !== false
     return true
   }),
 )
@@ -25,6 +25,7 @@ const activeMenus = computed(() =>
       :key="`${key}-${idx}`"
       :is="Comp"
       :editor="editor"
+      :text-bubble-menu="key === 'text' ? textBubbleMenu : undefined"
     />
   </template>
 </template>

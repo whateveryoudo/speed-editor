@@ -60,6 +60,11 @@ export interface SpeedEditorShellProps {
   editorStyle?: CSSProperties
   headerStyle?: CSSProperties
   mainStyle?: CSSProperties
+  /**
+   * 页面式内容宽度（居中留白，参考 knowledge 正文区）。
+   * 仅样式，不改变 preset（lite / knowledge）。
+   */
+  pageLayout?: boolean
   hideBorder?: boolean
   content?: string
   json?: string | null | Record<string, unknown>
@@ -80,11 +85,15 @@ export interface SpeedEditorShellProps {
     default?: string
     options?: { value: string; label: string }[]
   }
+  fontFamily?: {
+    default?: string
+    options?: { value: string; label: string }[]
+  }
   textBubbleMenu?: {
     enabled?: boolean
     items?: (
       | {
-          icon: string | VNode
+          icon: string
           title: string
           action?: (editor: unknown) => void
         }

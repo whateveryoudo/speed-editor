@@ -8,8 +8,8 @@
 -->
 
 <template>
-  <Popover :placement="placement" v-if="!disabled" overlay-class-name="color-board-popover-wrapper" trigger="click"
-    placement="bottomLeft">
+  <Popover :placement="placement" v-if="!disabled" overlay-class-name="speed-tiptap-editor color-board-popover-wrapper"
+    trigger="click" placement="bottomLeft">
     <template #content>
       <div class="color-board-wrapper">
         <div class="top-choosed-wrapper transition-bg"
@@ -126,87 +126,85 @@ onMounted(() => {
 </script>
 <style lang="less">
 // 增加命名空间，防止sheet影响
-.speed-tiptap-editor {
-  .color-board-popover-wrapper {
-    width: 240px;
+.speed-tiptap-editor.color-board-popover-wrapper {
+  width: 240px;
 
-    .ant-popover-inner {
-      padding: 0;
-    }
+  .ant-popover-inner {
+    padding: 0;
+  }
 
-    .color-board-wrapper {
-      padding-top: 5px;
+  .color-board-wrapper {
+    padding-top: 5px;
 
-      .top-choosed-item {
-        display: flex;
-        padding: 8px;
-        cursor: pointer;
-        align-items: center;
+    .top-choosed-item {
+      display: flex;
+      padding: 8px;
+      cursor: pointer;
+      align-items: center;
 
-        .color-board-item {
-          margin-right: 5px;
-        }
+      .color-board-item {
+        margin-right: 5px;
+      }
 
-        .no-color {
-          background-color: transparent;
+      .no-color {
+        background-color: transparent;
 
-          &>span {
-            border: 1px solid #f4f5f5;
+        &>span {
+          border: 1px solid #f4f5f5;
 
-            &::after {
-              position: absolute;
-              top: 8px;
-              left: 0;
-              display: block;
-              width: 17px;
-              height: 0;
-              content: '';
-              transform: rotate(45deg);
-              border-bottom: 2px solid #ff5151;
-            }
+          &::after {
+            position: absolute;
+            top: 8px;
+            left: 0;
+            display: block;
+            width: 17px;
+            height: 0;
+            content: '';
+            transform: rotate(45deg);
+            border-bottom: 2px solid #ff5151;
           }
         }
       }
-
-      .color-board-list-wrapper {
-        margin: 0;
-        padding: 8px;
-        font-size: 0;
-      }
     }
 
-    .color-board-item {
-      width: 24px;
-      height: 24px;
-      padding: 2px 2px;
-      display: inline-block;
-      border-radius: 3px 3px;
-      border: 1px solid transparent;
-      flex: 0 0 auto;
-      cursor: pointer;
+    .color-board-list-wrapper {
+      margin: 0;
+      padding: 8px;
+      font-size: 0;
+    }
+  }
+
+  .color-board-item {
+    width: 24px;
+    height: 24px;
+    padding: 2px 2px;
+    display: inline-block;
+    border-radius: 3px 3px;
+    border: 1px solid transparent;
+    flex: 0 0 auto;
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+      border: 1px solid #d8dad9;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    }
+
+    &>span.color-inner {
       position: relative;
+      width: 18px;
+      height: 18px;
+      display: block;
+      border-radius: 2px 2px;
+    }
 
-      &:hover {
-        border: 1px solid #d8dad9;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
-      }
-
-      &>span.color-inner {
-        position: relative;
-        width: 18px;
-        height: 18px;
-        display: block;
-        border-radius: 2px 2px;
-      }
-
-      .checked-icon {
-        font-size: 12px;
-        color: #fff;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
+    .checked-icon {
+      font-size: 12px;
+      color: #fff;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
   }
 }

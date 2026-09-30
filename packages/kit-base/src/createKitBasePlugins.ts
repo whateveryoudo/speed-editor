@@ -12,6 +12,7 @@ import Underline from './menus/underline.vue'
 import Strike from './menus/strike.vue'
 import Link from './menus/link/index.vue'
 import Heading from './menus/heading.vue'
+import FontFamily from './menus/fontFamily.vue'
 import FontSize from './menus/fontSize.vue'
 import TextColor from './menus/textColor.vue'
 import BackgroundColor from './menus/backgroundColor.vue'
@@ -47,6 +48,7 @@ const toolbarButtons: Record<string, Component> = {
   bold: Bold,
   italic: Italic,
   heading: Heading,
+  fontFamily: FontFamily,
   fontSize: FontSize,
   underline: Underline,
   strike: Strike,

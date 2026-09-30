@@ -5,9 +5,9 @@ export const liteLayout: EditorLayoutConfig = {
   name: 'lite',
   getExtensions: (props) => getLiteKit(props) as never,
   toolbar: [
-    'undo', 'redo', 'clearNodeAndMarks',
+    'undo', 'redo', 'format-painter', 'clearNodeAndMarks',
     '|',
-    'heading', 'fontSize', 'bold', 'italic', 'underline', 'strike',
+    'heading', 'fontFamily', 'fontSize', 'bold', 'italic', 'underline', 'strike',
     '|',
     'textColor', 'backgroundColor',
     '|',

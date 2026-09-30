@@ -7,7 +7,7 @@
  * @FilePath: \we-knowledge-base\src\tiptap\core\menus\bold.vue
 -->
 <template>
-  <Tooltip :title="disableMenu ? null : '图片'">
+  <Tooltip placement="bottom"  :title="disableMenu ? null : '图片'">
     <Button type="text" @click="handleClickImg" class="shadow-btn-wrapper"
       :class="[isImageActive ? 'is-active' : '', isTitleActive && 'disabled']" :disabled="disableMenu">
       <FileImageOutlined />

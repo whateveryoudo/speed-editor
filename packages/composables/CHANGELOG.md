@@ -1,5 +1,13 @@
 # @speed-tiptap-editor/composables
 
+## 2.0.2
+
+### Patch Changes
+
+- 首次发布到研发云
+- Updated dependencies
+  - @speed-tiptap-editor/shared@2.0.1
+
 ## 2.0.1
 
 ### Patch Changes

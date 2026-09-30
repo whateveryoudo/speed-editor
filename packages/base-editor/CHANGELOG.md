@@ -1,5 +1,30 @@
 # @speed-tiptap-editor/base-editor
 
+## 2.0.7
+
+### Patch Changes
+
+- 调整编辑器一些样式配置,字体支持
+- Updated dependencies
+  - @speed-tiptap-editor/shared@2.0.2
+  - @speed-tiptap-editor/ui@2.0.3
+
+## 2.0.6
+
+### Patch Changes
+
+- 更新一些功能
+
+## 2.0.5
+
+### Patch Changes
+
+- 首次发布到研发云
+- Updated dependencies
+  - @speed-tiptap-editor/composables@2.0.2
+  - @speed-tiptap-editor/shared@2.0.1
+  - @speed-tiptap-editor/ui@2.0.1
+
 ## 2.0.4
 
 ### Patch Changes

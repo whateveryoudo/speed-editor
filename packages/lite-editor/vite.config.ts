@@ -10,6 +10,7 @@ export default createVueLibConfig(dirname, {
       entry: {
         index: resolve(dirname, 'src/index.ts'),
         style: resolve(dirname, 'src/style.ts'),
+        plugin: resolve(dirname, 'src/plugin-entry.ts'),
       },
       formats: ['es'],
       fileName: (format, entryName) => `${entryName}.js`,

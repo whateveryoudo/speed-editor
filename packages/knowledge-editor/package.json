@@ -1,6 +1,6 @@
 {
   "name": "@speed-tiptap-editor/knowledge-editor",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -8,6 +8,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./plugin": {
+      "types": "./dist/plugin-entry.d.ts",
+      "import": "./dist/plugin.js"
     },
     "./style.css": "./dist/style.css"
   },
@@ -17,7 +21,7 @@
     "dist/*.css"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && cp src/plugin-entry.d.ts dist/plugin-entry.d.ts",
     "typecheck": "vue-tsc --noEmit",
     "clean": "rm -rf dist"
   },
@@ -32,7 +36,8 @@
     "@speed-tiptap-editor/shared": "workspace:^"
   },
   "peerDependencies": {
-    "vue": "^3.4.0"
+    "vue": "^3.4.0",
+    "ant-design-vue": "^4.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.0",
