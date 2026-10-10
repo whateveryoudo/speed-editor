@@ -77,9 +77,9 @@ import { ArrowLeftOutlined, CloseCircleOutlined, CheckCircleOutlined } from '@an
 import WordIcon from '@kb/assets/image/menus/word.svg'
 import MarkdownIcon from '@kb/assets/image/menus/markdown.svg'
 import SpeedIcon from '@kb/assets/image/menus/speed.svg'
-import { handleWordFileSelect } from '@speed-tiptap-editor/document-io'
-import { handleMarkdownFileSelect } from '@speed-tiptap-editor/document-io'
-import { handleSpeedFileSelect } from '@speed-tiptap-editor/document-io'
+import { handleWordFileSelect } from '@speed-editor/document-io'
+import { handleMarkdownFileSelect } from '@speed-editor/document-io'
+import { handleSpeedFileSelect } from '@speed-editor/document-io'
 const props = withDefaults(defineProps<{
     visible: boolean
     editor: Editor

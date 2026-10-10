@@ -25,13 +25,13 @@ async function prepareDeploy() {
     <title>Speed Tiptap Editor</title>
     <script>
       const path = window.location.pathname;
-      if (path === '/' || path === '/speed-tiptap-editor/' || path === '/speed-tiptap-editor/index.html') {
-        window.location.href = '/speed-tiptap-editor/docs/';
+      if (path === '/' || path === '/speed-editor/' || path === '/speed-editor/index.html') {
+        window.location.href = '/speed-editor/docs/';
       }
     </script>
   </head>
   <body>
-    <p>If you are not redirected automatically, <a href="/speed-tiptap-editor/docs/">click here</a>.</p>
+    <p>If you are not redirected automatically, <a href="/speed-editor/docs/">click here</a>.</p>
   </body>
 </html>
   `.trim();

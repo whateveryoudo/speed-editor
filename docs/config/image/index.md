@@ -8,8 +8,8 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./src/router";
-import SpeedTiptapEditor from "speed-tiptap-editor";
-import "speed-tiptap-editor/dist/style.css";
+import SpeedTiptapEditor from "speed-editor";
+import "speed-editor/dist/style.css";
 import { createPinia } from "pinia";
 import { useGlobalStore } from "#example/store/index";
 import "uno.css";
@@ -52,7 +52,7 @@ createApp(App)
 ### 说明点
 
 - 此处的配置会作用于`image`和`file`的上传
-- `getPreviewUrl` 为`file`下的预览页面，可根据后端提供地址自行配置，本项目提供[完整示例](https://github.com/whateveryoudo/speed-tiptap-editor),对应[node示例](https://github.com/whateveryoudo/speed-apis),你拉取两个仓库后，启动 `pnpm run dev`,
+- `getPreviewUrl` 为`file`下的预览页面，可根据后端提供地址自行配置，本项目提供[完整示例](https://github.com/whateveryoudo/speed-editor),对应[node示例](https://github.com/whateveryoudo/speed-apis),你拉取两个仓库后，启动 `pnpm run dev`,
   editor运行在`localhost://3003`，后端运行在`localhost://3005`(后端仅提供相关api辅助功能,并未连接数据库),如需要查看附件页面需拉取，[onlyoffice服务](https://github.com/whateveryoudo/onlyoffice),执行`./start.sh`
 
 ### upload 配置传入

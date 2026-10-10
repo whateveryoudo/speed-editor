@@ -1,5 +1,5 @@
-import { getKnowledgeKit } from '@speed-tiptap-editor/extension-kit'
-import type { EditorLayoutConfig } from '@speed-tiptap-editor/shared'
+import { getKnowledgeKit } from '@speed-editor/extension-kit'
+import type { EditorLayoutConfig } from '@speed-editor/shared'
 
 export const knowledgeLayout: EditorLayoutConfig = {
   name: 'knowledge',

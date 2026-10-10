@@ -21,7 +21,7 @@ pnpm add yjs @hocuspocus/provider
 ```vue
 <script setup lang="ts">
 import { computed } from 'vue'
-import { SpeedTiptapEditor, useCollaboration } from 'speed-tiptap-editor'
+import { SpeedTiptapEditor, useCollaboration } from 'speed-editor'
 
 const collaborationConfig = computed(() => ({
   documentId: 'doc-001',
@@ -118,7 +118,7 @@ interface CollaborationConfig {
 ```vue
 <script setup lang="ts">
 import { computed } from 'vue'
-import { SpeedTiptapEditor, useCollaboration } from 'speed-tiptap-editor'
+import { SpeedTiptapEditor, useCollaboration } from 'speed-editor'
 
 const collaborationConfig = computed(() => ({
   documentId: documentId.value,

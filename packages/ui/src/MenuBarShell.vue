@@ -10,8 +10,8 @@ import {
 import { Button, Divider, Popover, Tooltip } from 'ant-design-vue'
 import { EllipsisOutlined } from '@ant-design/icons-vue'
 import type { Component } from 'vue'
-import type { InsertMenuItem, ToolBarConfig } from '@speed-tiptap-editor/shared'
-import { resolveToolbarLayout } from '@speed-tiptap-editor/shared'
+import type { InsertMenuItem, ToolBarConfig } from '@speed-editor/shared'
+import { resolveToolbarLayout } from '@speed-editor/shared'
 import InsertMenuShell from './InsertMenuShell.vue'
 
 const props = defineProps<{
@@ -60,13 +60,13 @@ let rafId = 0
 let delayTimer = 0
 
 /**
- * 可用宽度取 .speed-tiptap-editor，再扣 header padding。
+ * 可用宽度取 .speed-editor，再扣 header padding。
  * （width:auto 后 header 自身宽仍可能是 left~right 整段，含大纲区）
  */
 function getAvailableWidth(bar: HTMLElement) {
   const editorRoot =
     editorRootRef.value ??
-    (bar.closest('.speed-tiptap-editor') as HTMLElement | null)
+    (bar.closest('.speed-editor') as HTMLElement | null)
   if (editorRoot) editorRootRef.value = editorRoot
   const widthSource = editorRoot ?? bar
   const style = getComputedStyle(bar)
@@ -143,7 +143,7 @@ function bindResizeObserver() {
 
   const bar = barRef.value
   const editorRoot =
-    (bar.closest('.speed-tiptap-editor') as HTMLElement | null) ?? bar
+    (bar.closest('.speed-editor') as HTMLElement | null) ?? bar
   editorRootRef.value = editorRoot === bar ? null : editorRoot
 
   resizeObserver = new ResizeObserver(() => scheduleMeasure())

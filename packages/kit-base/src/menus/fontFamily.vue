@@ -29,7 +29,7 @@
 import { Select } from 'ant-design-vue'
 import { type PropType, computed } from 'vue'
 import type { Editor } from '@tiptap/core'
-import { useActive, useAttributes, useSpeedEditor } from '@speed-tiptap-editor/composables'
+import { useActive, useAttributes, useSpeedEditor } from '@speed-editor/composables'
 import { CheckOutlined, CaretDownOutlined } from '@ant-design/icons-vue'
 
 const DEFAULT_FONT_OPTIONS = [

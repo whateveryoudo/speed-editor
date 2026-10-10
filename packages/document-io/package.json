@@ -1,5 +1,5 @@
 {
-  "name": "@speed-tiptap-editor/document-io",
+  "name": "@speed-editor/document-io",
   "version": "2.0.1",
   "description": "前端导入包（已废弃，会切换到后端进行实现，减少前端包大小）",
   "type": "module",

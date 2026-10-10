@@ -24,12 +24,12 @@ export default createVueLibConfig(dirname, {
         }
     
         if (id === 'vue') return true
-        if (id.startsWith('@speed-tiptap-editor/base-editor')) return true
-        if (id.startsWith('@speed-tiptap-editor/collaboration-editor')) return true
-        if (id.startsWith('@speed-tiptap-editor/shared')) return true
-        if (id.startsWith('@speed-tiptap-editor/kit-base')) return true
-        if (id.startsWith('@speed-tiptap-editor/extension-kit')) return true
-        if (/^@speed-tiptap-editor\/extension-/.test(id)) return true
+        if (id.startsWith('@speed-editor/base-editor')) return true
+        if (id.startsWith('@speed-editor/collaboration-editor')) return true
+        if (id.startsWith('@speed-editor/shared')) return true
+        if (id.startsWith('@speed-editor/kit-base')) return true
+        if (id.startsWith('@speed-editor/extension-kit')) return true
+        if (/^@speed-editor\/extension-/.test(id)) return true
     
         return false
       },

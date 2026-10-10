@@ -1,4 +1,4 @@
-# @speed-tiptap-editor/extension-import-export
+# @speed-editor/extension-import-export
 
 ## 2.0.0
 
@@ -6,6 +6,6 @@
 
 - 首次发布到研发云
 - Updated dependencies
-  - @speed-tiptap-editor/document-io@2.0.0
-  - @speed-tiptap-editor/kit-base@2.0.5
-  - @speed-tiptap-editor/shared@2.0.1
+  - @speed-editor/document-io@2.0.0
+  - @speed-editor/kit-base@2.0.5
+  - @speed-editor/shared@2.0.1

@@ -1,5 +1,5 @@
 {
-  "name": "speed-tiptap-editor",
+  "name": "speed-editor",
   "version": "2.0.0",
   "private": true,
   "description": "基于 Ant Design Vue + Tiptap 的富文本编辑器（Monorepo）",
@@ -7,14 +7,14 @@
     "build": "turbo run build",
     "build:lib": "node scripts/build-lib.mjs",
     "dev": "turbo run dev --parallel",
-    "demo": "pnpm --filter @speed-tiptap-editor/vue3-demo dev --host 0.0.0.0",
+    "demo": "pnpm --filter @speed-editor/vue3-demo dev --host 0.0.0.0",
     "typecheck": "turbo run typecheck",
     "clean": "turbo run clean",
     "clean:node_modules": "find . -name node_modules -type d -prune -exec rm -rf {} +",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "build:deploy": "pnpm docs:build && pnpm --filter @speed-tiptap-editor/vue3-demo build && node scripts/prepare-deploy.js",
+    "build:deploy": "pnpm docs:build && pnpm --filter @speed-editor/vue3-demo build && node scripts/prepare-deploy.js",
     "changeset:check": "bash ./changed-packages-since-release.sh",
     "changeset": "bash ./changed-packages-since-release.sh && changeset",
     "version-packages": "changeset version",
@@ -33,19 +33,19 @@
     "tiptap",
     "editor",
     "rich-text-editor",
-    "speed-tiptap-editor",
+    "speed-editor",
     "ant-design-vue"
   ],
   "author": "",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/whateveryoudo/speed-tiptap-editor.git"
+    "url": "git+https://github.com/whateveryoudo/speed-editor.git"
   },
   "bugs": {
-    "url": "https://github.com/whateveryoudo/speed-tiptap-editor/issues"
+    "url": "https://github.com/whateveryoudo/speed-editor/issues"
   },
-  "homepage": "https://github.com/whateveryoudo/speed-tiptap-editor#readme",
+  "homepage": "https://github.com/whateveryoudo/speed-editor#readme",
   "devDependencies": {
     "@ant-design/icons-vue": "^7.0.0",
     "@changesets/cli": "^2.31.0",

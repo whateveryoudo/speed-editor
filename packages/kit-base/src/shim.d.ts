@@ -1,4 +1,4 @@
-import type { SpeedEditorPlugin } from '@speed-tiptap-editor/shared'
+import type { SpeedEditorPlugin } from '@speed-editor/shared'
 
 export function createKitBasePlugin(): SpeedEditorPlugin
 export function createKitBasePlugins(): SpeedEditorPlugin[]

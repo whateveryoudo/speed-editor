@@ -18,9 +18,9 @@ export function warnSpeedComponentsPeerSetup(): void {
 
     console.warn(
       [
-        '[speed-tiptap-editor] speed-components-ui 未就绪（缺少 --ant-* / #antd-css-vars）。',
-        '正常应由 @speed-tiptap-editor/* 传递安装；请确认已 app.use(lite/knowledge-editor/plugin)，',
-        "并引入 '@speed-tiptap-editor/lite-editor/style.css'（或 knowledge 对应 style）。",
+        '[speed-editor] speed-components-ui 未就绪（缺少 --ant-* / #antd-css-vars）。',
+        '正常应由 @speed-editor/* 传递安装；请确认已 app.use(lite/knowledge-editor/plugin)，',
+        "并引入 '@speed-editor/lite-editor/style.css'（或 knowledge 对应 style）。",
         '本地联调可把 speed-components 源码 alias 到宿主 vite。',
       ].join('\n'),
     )

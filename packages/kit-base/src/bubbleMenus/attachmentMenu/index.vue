@@ -44,7 +44,7 @@
 import { Button, Divider, Space, Tooltip } from 'ant-design-vue'
 import { PropType, computed, inject, ref, Ref } from "vue";
 import BubbleContainer from "../BubbleContainer.vue";
-import { useAttributes } from "@speed-tiptap-editor/composables";
+import { useAttributes } from "@speed-editor/composables";
 import {
   EyeOutlined,
   ProfileOutlined,
@@ -52,7 +52,7 @@ import {
   DownloadOutlined,
 } from "@ant-design/icons-vue";
 import { type Editor } from "@tiptap/core";
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useSpeedEditor } from '@speed-editor/composables';
 // 初始化注入的对象
 const speedUseTiptapConfig = inject(
   "speedUseTiptapConfig",

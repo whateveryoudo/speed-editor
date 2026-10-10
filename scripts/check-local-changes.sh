@@ -8,7 +8,7 @@ cd "$ROOT"
 REGISTRY="https://gz01-srdart.srdcloud.cn/npm/p26gsw1yf8017/p26gsw1yf8017-da26gsw10020-release-npm-local/"
 
 IGNORE_NAMES=(
-  "@speed-tiptap-editor/vue3-demo"
+  "@speed-editor/vue3-demo"
 )
 
 is_ignored() {

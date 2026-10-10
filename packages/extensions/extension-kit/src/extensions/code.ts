@@ -6,7 +6,7 @@
  * @Description:
  * @FilePath: \we-knowledge-base\src\tiptap\core\extensions\code.ts
  */
-import { EXTENSION_PRIORITY_LOWER } from '@speed-tiptap-editor/shared'
+import { EXTENSION_PRIORITY_LOWER } from '@speed-editor/shared'
 import BuiltInCode from '@tiptap/extension-code'
 
 export const Code = BuiltInCode.extend({

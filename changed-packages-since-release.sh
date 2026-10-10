@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 对比各 @speed-tiptap-editor/* 包自最近一次 npm 发布 tag 以来的 git 变更，供 pnpm changeset 选包参考。
+# 对比各 @speed-editor/* 包自最近一次 npm 发布 tag 以来的 git 变更，供 pnpm changeset 选包参考。
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -11,7 +11,7 @@ if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
 fi
 
 IGNORE_NAMES=(
-  "@speed-tiptap-editor/vue3-demo"
+  "@speed-editor/vue3-demo"
 )
 
 is_ignored() {
@@ -38,7 +38,7 @@ declare -a NEVER_PUBLISHED=()
 
 echo ""
 echo "========================================"
-echo "  @speed-tiptap-editor 包变更检查（相对最近 tag）"
+echo "  @speed-editor 包变更检查（相对最近 tag）"
 echo "========================================"
 echo ""
 

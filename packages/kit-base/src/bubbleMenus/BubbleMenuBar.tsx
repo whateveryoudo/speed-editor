@@ -1,6 +1,6 @@
 import { defineComponent, computed, type PropType } from 'vue'
 import type { Editor } from '@tiptap/core'
-import type { BubbleMenuKey } from '@speed-tiptap-editor/shared'
+import type { BubbleMenuKey } from '@speed-editor/shared'
 import TextMenu from './textMenu/index.vue'
 import ImageMenu from './imageMenu/index.vue'
 import TableMenu from './tableMenu/index.vue'

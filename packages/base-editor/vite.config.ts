@@ -40,9 +40,9 @@ export default defineConfig({
       external: [
         'vue',
         'ant-design-vue',
-        '@speed-tiptap-editor/shared',
-        '@speed-tiptap-editor/composables',
-        '@speed-tiptap-editor/ui',
+        '@speed-editor/shared',
+        '@speed-editor/composables',
+        '@speed-editor/ui',
         'speed-components-ui',
         'speed-components-ui/components',
         'speed-components-ui/hooks',

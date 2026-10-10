@@ -66,12 +66,12 @@ import WordIcon from '@kb/assets/image/menus/word.svg'
 import MarkdownIcon from '@kb/assets/image/menus/markdown.svg'
 import SpeedIcon from '@kb/assets/image/menus/speed.svg'
 import ImageIcon from '@kb/assets/image/menus/image.svg'
-import { handleWordExport } from '@speed-tiptap-editor/document-io'
-import { handleMarkdownExport } from '@speed-tiptap-editor/document-io'
-import { handleSpeedExport } from '@speed-tiptap-editor/document-io'
-import { handleImageExport } from '@speed-tiptap-editor/document-io'
-import { type ExportSuccessResult } from '@speed-tiptap-editor/document-io'
-import { downloadFile } from '@speed-tiptap-editor/document-io'
+import { handleWordExport } from '@speed-editor/document-io'
+import { handleMarkdownExport } from '@speed-editor/document-io'
+import { handleSpeedExport } from '@speed-editor/document-io'
+import { handleImageExport } from '@speed-editor/document-io'
+import { type ExportSuccessResult } from '@speed-editor/document-io'
+import { downloadFile } from '@speed-editor/document-io'
 const props = withDefaults(defineProps<{
     visible: boolean
     editor: Editor

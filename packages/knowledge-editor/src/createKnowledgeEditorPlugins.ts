@@ -1,10 +1,10 @@
-import { createKitBasePlugins } from '@speed-tiptap-editor/kit-base'
-import { createSearchReplacePlugin } from '@speed-tiptap-editor/kit-base'
-import { createMindPlugin } from '@speed-tiptap-editor/extension-mind'
-import { createFlowPlugin } from '@speed-tiptap-editor/extension-flow'
-import { createImportExportPlugin } from '@speed-tiptap-editor/extension-import-export'
+import { createKitBasePlugins } from '@speed-editor/kit-base'
+import { createSearchReplacePlugin } from '@speed-editor/kit-base'
+import { createMindPlugin } from '@speed-editor/extension-mind'
+import { createFlowPlugin } from '@speed-editor/extension-flow'
+import { createImportExportPlugin } from '@speed-editor/extension-import-export'
 import { createDocumentSuggestOverlayPlugin } from './createDocumentSuggestOverlay'
-import type { SpeedEditorPlugin } from '@speed-tiptap-editor/shared'
+import type { SpeedEditorPlugin } from '@speed-editor/shared'
 
 export interface KnowledgeEditorPluginsOptions {
   /** 是否启用思维导图插件（需传入 adapter 后才有实际能力，见 extension-mind README） */

@@ -28,9 +28,9 @@
 import { Select } from 'ant-design-vue'
 import { PropType, reactive, computed } from 'vue'
 import { Editor } from '@tiptap/core'
-import { useActive } from '@speed-tiptap-editor/composables'
+import { useActive } from '@speed-editor/composables'
 import { CheckOutlined, CaretDownOutlined } from '@ant-design/icons-vue'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useSpeedEditor } from '@speed-editor/composables';
 const props = defineProps({
   editor: {
     type: Object as PropType<Editor>,

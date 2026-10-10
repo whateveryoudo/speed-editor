@@ -8,6 +8,6 @@ export default defineLibConfig({
     '@tiptap/core',
     '@tiptap/extension-collaboration',
     '@tiptap/extension-collaboration-caret',
-    '@speed-tiptap-editor/shared',
+    '@speed-editor/shared',
   ],
 })

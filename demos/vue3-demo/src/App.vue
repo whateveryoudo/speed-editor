@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import '@speed-tiptap-editor/knowledge-editor/style.css'
+import '@speed-editor/knowledge-editor/style.css'
 import { ref } from 'vue'
-import { LiteEditor } from '@speed-tiptap-editor/lite-editor'
-import { KnowledgeEditor } from '@speed-tiptap-editor/knowledge-editor'
+import { LiteEditor } from '@speed-editor/lite-editor'
+import { KnowledgeEditor } from '@speed-editor/knowledge-editor'
 
 const tab = ref<'lite' | 'knowledge'>('lite')
 const docJson = { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: '文档正文' }] }] }
@@ -10,8 +10,8 @@ const docJson = { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 
 
 <template>
   <div class="demo">
-    <h1>speed-tiptap-editor v2 架构预览</h1>
-    <p>无 core 包；编辑器 UI 将迁入 <code>@speed-tiptap-editor/ui</code></p>
+    <h1>speed-editor v2 架构预览</h1>
+    <p>无 core 包；编辑器 UI 将迁入 <code>@speed-editor/ui</code></p>
     <nav class="demo__tabs">
       <button :class="{ active: tab === 'lite' }" @click="tab = 'lite'">LiteEditor</button>
       <button :class="{ active: tab === 'knowledge' }" @click="tab = 'knowledge'">KnowledgeEditor</button>

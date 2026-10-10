@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Popover } from 'ant-design-vue'
-import type { InsertMenuItem } from '@speed-tiptap-editor/shared'
+import type { InsertMenuItem } from '@speed-editor/shared'
 
 defineProps<{
   editor: unknown

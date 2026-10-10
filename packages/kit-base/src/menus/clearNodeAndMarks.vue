@@ -19,9 +19,9 @@ import { Button } from 'ant-design-vue'
 import { PropType, ref, inject, computed } from 'vue'
 import { type Ref } from 'vue'
 import { Editor } from '@tiptap/core'
-import { useActive } from '@speed-tiptap-editor/composables'
-import { getShortcutTipByKey } from '@speed-tiptap-editor/shared'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useActive } from '@speed-editor/composables'
+import { getShortcutTipByKey } from '@speed-editor/shared'
+import { useSpeedEditor } from '@speed-editor/composables';
 const props = defineProps({
   editor: {
     type: Object as PropType<Editor>,

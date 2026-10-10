@@ -30,7 +30,7 @@ COMMIT_TIME=$(date '+%Y-%m-%d %H:%M:%S')
 git commit -m "部署到 GitHub Pages（根目录） - $COMMIT_TIME"
 
 echo "正在推送到 GitHub..."
-REPO_URL="https://github.com/whateveryoudo/speed-tiptap-editor.git"
+REPO_URL="https://github.com/whateveryoudo/speed-editor.git"
 git branch -M main
 git push -f "$REPO_URL" main:gh-pages
 
@@ -38,6 +38,6 @@ cd -
 
 echo ""
 echo "✅ 部署成功（根目录）！"
-echo "🌐 访问地址：https://whateveryoudo.github.io/speed-tiptap-editor/"
+echo "🌐 访问地址：https://whateveryoudo.github.io/speed-editor/"
 
 

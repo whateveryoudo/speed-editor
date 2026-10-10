@@ -51,7 +51,7 @@
 import { Input, Popover, Segmented, Tooltip } from 'ant-design-vue'
 import { ref, computed, watch, PropType } from 'vue'
 import { Editor } from '@tiptap/core'
-import { useAttributes } from '@speed-tiptap-editor/composables'
+import { useAttributes } from '@speed-editor/composables'
 
 const props = defineProps({
     editor: {

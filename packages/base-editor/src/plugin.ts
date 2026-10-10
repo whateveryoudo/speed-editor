@@ -4,7 +4,7 @@ import SpeedEditor from './SpeedEditor.vue'
 import SpeedTooltip from './components/SpeedTooltip.vue'
 import { ensureSpeedComponents } from 'speed-components-ui/components'
 import type { ResponseType } from 'speed-components-ui'
-import { editorConfig, type IUploadConfig } from '@speed-tiptap-editor/shared'
+import { editorConfig, type IUploadConfig } from '@speed-editor/shared'
 import { warnSpeedComponentsPeerSetup } from './warnPeerSetup'
 
 const components: Component[] = [SpeedEditor]

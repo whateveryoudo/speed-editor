@@ -1,4 +1,4 @@
-import type { SpeedEditorPlugin } from '@speed-tiptap-editor/shared'
+import type { SpeedEditorPlugin } from '@speed-editor/shared'
 import Import from './menus/import/index.vue'
 import Export from './menus/export/index.vue'
 

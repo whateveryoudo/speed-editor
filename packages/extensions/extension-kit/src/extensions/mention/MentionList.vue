@@ -27,7 +27,7 @@
 import scrollIntoView from 'scroll-into-view-if-needed'
 import AvatarDef from '@ek/assets/image/avatar_def.png';
 import { PropType, ref, watch } from 'vue'
-import type { UserInfo } from '@speed-tiptap-editor/shared'
+import type { UserInfo } from '@speed-editor/shared'
 import { nanoid } from 'nanoid'
 const props = defineProps({
   items: {

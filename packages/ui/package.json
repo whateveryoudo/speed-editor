@@ -1,5 +1,5 @@
 {
-  "name": "@speed-tiptap-editor/ui",
+  "name": "@speed-editor/ui",
   "version": "2.0.3",
   "type": "module",
   "main": "./dist/index.js",
@@ -17,8 +17,8 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@speed-tiptap-editor/composables": "workspace:^",
-    "@speed-tiptap-editor/shared": "workspace:^"
+    "@speed-editor/composables": "workspace:^",
+    "@speed-editor/shared": "workspace:^"
   },
   "peerDependencies": {
     "vue": "^3.4.0",

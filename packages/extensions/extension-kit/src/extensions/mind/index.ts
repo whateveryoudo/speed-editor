@@ -1,7 +1,7 @@
 /*
  * 编辑器侧 Mind：schema 契约 + 命令 / Vue NodeView / 输入规则
  */
-import { Mind as SchemaMind, DEFAULT_MIND_DATA } from '@speed-tiptap-editor/schema'
+import { Mind as SchemaMind, DEFAULT_MIND_DATA } from '@speed-editor/schema'
 import { nodeInputRule } from '@tiptap/core'
 import { VueNodeViewRenderer } from '@tiptap/vue-3'
 import Wrapper from './Wrapper.vue'

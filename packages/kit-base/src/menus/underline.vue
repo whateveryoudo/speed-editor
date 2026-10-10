@@ -24,10 +24,10 @@
 import { Button } from 'ant-design-vue'
 import { Editor } from '@tiptap/core'
 import { UnderlineOutlined } from '@ant-design/icons-vue'
-import { useActive } from '@speed-tiptap-editor/composables'
-import { useMenuButtonEvents } from '@speed-tiptap-editor/composables'
-import { getShortcutTipByKey } from '@speed-tiptap-editor/shared'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useActive } from '@speed-editor/composables'
+import { useMenuButtonEvents } from '@speed-editor/composables'
+import { getShortcutTipByKey } from '@speed-editor/shared'
+import { useSpeedEditor } from '@speed-editor/composables';
 
 
 

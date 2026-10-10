@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { watch, ref, inject, type Ref, computed, onUnmounted, type Component } from 'vue'
-import { MenuBarShell, BubbleMenuBarShell } from '@speed-tiptap-editor/ui'
+import { MenuBarShell, BubbleMenuBarShell } from '@speed-editor/ui'
 import {
   mergePluginRegistries,
   resolveToolbarKeys,
@@ -9,12 +9,12 @@ import {
   type SpeedEditorPlugin,
   type BubbleMenuKey,
   type SpeedEditorShellProps,
-} from '@speed-tiptap-editor/shared'
+} from '@speed-editor/shared'
 import { legacyToolbarButtons, legacyBubbleMenus } from './legacyRegistry'
 import { EditorContent, useEditor } from '@tiptap/vue-3'
-import { useSpeedEditorProvider } from '@speed-tiptap-editor/composables'
+import { useSpeedEditorProvider } from '@speed-editor/composables'
 import { EditorPreviewImage } from './helpers/previews'
-import { editorConfig } from '@speed-tiptap-editor/shared'
+import { editorConfig } from '@speed-editor/shared'
 import { onKeyStroke } from '@vueuse/core'
 import { ConfigProvider, message, theme } from 'ant-design-vue'
 import { useAntdCssVars } from 'speed-components-ui/hooks'
@@ -23,7 +23,7 @@ import { type GlobalConfig } from './plugin'
 import type { CSSProperties } from 'vue'
 import type { Editor, Extensions } from '@tiptap/core'
 import type { Transaction } from '@tiptap/pm/state'
-import type { UserInfo, IUploadConfig, ToolBarConfig, SearchReplaceConfig } from '@speed-tiptap-editor/shared'
+import type { UserInfo, IUploadConfig, ToolBarConfig, SearchReplaceConfig } from '@speed-editor/shared'
 
 const defaultLayout: EditorLayoutConfig = {
   name: 'custom',
@@ -379,7 +379,7 @@ onUnmounted(() => {
   <ConfigProvider :theme="cptTheme">
     <div
       :class="[
-        'wrap speed-tiptap-editor',
+        'wrap speed-editor',
         activeLayout.name,
         hideBorder ? 'hide-border' : '',
         pageLayout ? 'page-layout' : '',

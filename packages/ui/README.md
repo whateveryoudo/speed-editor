@@ -1,4 +1,4 @@
-# @speed-tiptap-editor/ui
+# @speed-editor/ui
 
 编辑器 **UI 壳 + 共享控件**。业务 toolbar/bubble 按钮跟 **plugin** 走，不平铺进 ui。
 

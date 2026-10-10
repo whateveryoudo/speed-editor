@@ -17,11 +17,11 @@ import {
 } from "vue";
 import { Editor } from "@tiptap/core";
 import BaseList from "./baseList.tsx";
-import { useActive } from "@speed-tiptap-editor/composables";
+import { useActive } from "@speed-editor/composables";
 import styles from "./popover.module.less";
 import { PlusCircleFilled } from "@ant-design/icons-vue";
 import { Popover, Tooltip, Button } from "ant-design-vue";
-import { useSpeedEditor } from "@speed-tiptap-editor/composables";
+import { useSpeedEditor } from "@speed-editor/composables";
 export default defineComponent({
   name: "InsertPopover",
   components: {

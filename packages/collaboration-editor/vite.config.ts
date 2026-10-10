@@ -6,8 +6,8 @@ export default createVueLibConfig(fileURLToPath(new URL('.', import.meta.url)), 
     rollupOptions: {
       external: [
         'vue',
-        '@speed-tiptap-editor/base-editor',
-        '@speed-tiptap-editor/shared',
+        '@speed-editor/base-editor',
+        '@speed-editor/shared',
         '@hocuspocus/provider',
         '@tiptap/core',
         '@tiptap/extension-collaboration',

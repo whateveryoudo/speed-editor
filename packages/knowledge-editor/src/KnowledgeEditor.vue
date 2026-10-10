@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { SpeedEditor } from '@speed-tiptap-editor/base-editor'
-import { CollaborativeEditor } from '@speed-tiptap-editor/collaboration-editor'
+import { SpeedEditor } from '@speed-editor/base-editor'
+import { CollaborativeEditor } from '@speed-editor/collaboration-editor'
 import type {
   CollaborationConfig,
   SpeedEditorShellProps,
   SpeedEditorPlugin,
-} from '@speed-tiptap-editor/shared'
+} from '@speed-editor/shared'
 import {
   createKnowledgeEditorPlugins,
   type KnowledgeEditorPluginsOptions,

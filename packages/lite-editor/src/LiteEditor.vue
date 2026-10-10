@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { SpeedEditor } from '@speed-tiptap-editor/base-editor'
+import { SpeedEditor } from '@speed-editor/base-editor'
 import type {
   BubbleMenuKey,
   EditorLayoutConfig,
   SpeedEditorShellProps,
-} from '@speed-tiptap-editor/shared'
+} from '@speed-editor/shared'
 import { createLiteEditorPlugins } from './createLiteEditorPlugins'
 import { liteLayout } from './preset'
 

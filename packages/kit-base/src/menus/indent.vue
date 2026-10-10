@@ -38,9 +38,9 @@
 import { Button, Popover, Tooltip } from 'ant-design-vue'
 import { type Editor } from '@tiptap/core'
 import { CaretDownOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue'
-import { useActive } from '@speed-tiptap-editor/composables'
+import { useActive } from '@speed-editor/composables'
 import { ref, type VNode, PropType, computed } from 'vue'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useSpeedEditor } from '@speed-editor/composables';
 const props = defineProps({
     editor: {
         type: Object as PropType<Editor>,

@@ -1,6 +1,6 @@
 import { createInjectionState } from '@vueuse/core'
 import { computed, ref, type ComputedRef, type Ref } from 'vue'
-import type { SpeedEditorShellProps } from '@speed-tiptap-editor/shared'
+import type { SpeedEditorShellProps } from '@speed-editor/shared'
 
 export interface SpeedEditorContext {
   speedTiptapConfig: ComputedRef<SpeedEditorShellProps>

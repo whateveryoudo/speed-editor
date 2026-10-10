@@ -1,4 +1,4 @@
-import type { SpeedEditorPlugin, TiptapExtension } from '@speed-tiptap-editor/shared'
+import type { SpeedEditorPlugin, TiptapExtension } from '@speed-editor/shared'
 import type { CreateMindPluginOptions } from './types'
 
 /**

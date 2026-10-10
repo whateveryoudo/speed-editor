@@ -6,7 +6,7 @@
  * @Description: Tiptap 3.0 扩展配置
  *
  * 分层约定：
- * - 会进文档 JSON、服务端 generateHTML 需要的 Node/Mark attrs → @speed-tiptap-editor/schema
+ * - 会进文档 JSON、服务端 generateHTML 需要的 Node/Mark attrs → @speed-editor/schema
  * - 有 Vue NodeView 的：schema 无 UI 版 + 本包 extend 挂 View/命令/快捷键
  * - 纯交互（搜索、格式刷、QuickInsert、FileHandler 等）→ 仅本包
  */
@@ -40,7 +40,7 @@ import { Mention } from "./mention";
 import { getMentionSuggestion } from "./mention/suggestion";
 import { CodeBlock } from "./codeBlock";
 import { Callout } from "./callout";
-import { Table, TableRow, TableHeader, TableCell } from "@speed-tiptap-editor/schema";
+import { Table, TableRow, TableHeader, TableCell } from "@speed-editor/schema";
 import { TaskList } from "./taskList";
 import { TaskItem } from "@tiptap/extension-list";
 import { Indent } from "./indent";

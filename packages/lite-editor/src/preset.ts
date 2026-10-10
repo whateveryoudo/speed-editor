@@ -1,5 +1,5 @@
-import { getLiteKit } from '@speed-tiptap-editor/extension-kit'
-import type { EditorLayoutConfig } from '@speed-tiptap-editor/shared'
+import { getLiteKit } from '@speed-editor/extension-kit'
+import type { EditorLayoutConfig } from '@speed-editor/shared'
 
 export const liteLayout: EditorLayoutConfig = {
   name: 'lite',

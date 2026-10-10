@@ -76,7 +76,7 @@ import AiPromptIcon from '@kb/assets/image/ai-prompt-icon.svg'
 import { getSelectedText } from '@kb/prose-utils/text'
 import { CheckOutlined, SyncOutlined, CloseOutlined, EnterOutlined } from '@ant-design/icons-vue';
 import { markdownToHTML, markdownToJSON } from '@kb/helpers/markdown'
-import { importKit } from '@speed-tiptap-editor/schema'
+import { importKit } from '@speed-editor/schema'
 // Props 定义
 const props = defineProps<{
     editor: Editor

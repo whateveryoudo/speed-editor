@@ -1,5 +1,5 @@
 {
-  "name": "@speed-tiptap-editor/shared",
+  "name": "@speed-editor/shared",
   "version": "2.0.4",
   "type": "module",
   "main": "./dist/index.js",

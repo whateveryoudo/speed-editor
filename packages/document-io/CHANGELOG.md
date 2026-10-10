@@ -1,4 +1,4 @@
-# @speed-tiptap-editor/document-io
+# @speed-editor/document-io
 
 ## 2.0.1
 

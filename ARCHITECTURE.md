@@ -1,7 +1,7 @@
-# speed-tiptap-editor Monorepo 架构（v2 草案）
+# speed-editor Monorepo 架构（v2 草案）
 
-> 基于现有单体 `speed-tiptap-editor` 的重构方案。  
-> **Git 仓库名保持不变**；npm scope：**`@speed-tiptap-editor/*`**。
+> 基于现有单体 `speed-editor` 的重构方案。  
+> **Git 仓库名保持不变**；npm scope：**`@speed-editor/*`**。
 
 ---
 
@@ -48,7 +48,7 @@ knowledge-editor ────────┤
 
 ### 与 speed-sheet 的差异
 
-| | speed-sheet | speed-tiptap-editor |
+| | speed-sheet | speed-editor |
 |---|-------------|---------------------|
 | 内核 | 自研 `@speed-sheet/core` | **Tiptap**（外部依赖） |
 | 拆分维度 | 技术层 + extension | **业务场景 + 可选能力包** |
@@ -59,10 +59,10 @@ knowledge-editor ────────┤
 ## 2. 仓库与命名
 
 ```
-Git 仓库:     speed-tiptap-editor          （不改名）
-Monorepo 根:  speed-tiptap-editor          private: true
-npm scope:    @speed-tiptap-editor/*
-旧包兼容:     speed-tiptap-editor@1.x      可 deprecate 或 re-export 至新 scope
+Git 仓库:     speed-editor          （不改名）
+Monorepo 根:  speed-editor          private: true
+npm scope:    @speed-editor/*
+旧包兼容:     speed-editor@1.x      可 deprecate 或 re-export 至新 scope
 ```
 
 ### 命名约定
@@ -70,27 +70,27 @@ npm scope:    @speed-tiptap-editor/*
 - **Editor 包**（含预设）：一律 `-editor` 后缀，且 **必须 export 可用的 Vue 组件**
 - **非 UI 基础包**：不加 `-editor` → `shared`、`schema`、`kit-base`、`ui`、`extension-mind`
 - **禁止** `packages/core` 或整包复制 `src/`——只按职责拆分到 `ui` / `kit-base` / `base-editor` 等
-- scope 已是 `@speed-tiptap-editor`，子包用 `base-editor` 不会变成 `editor/editor` 这种重复
+- scope 已是 `@speed-editor`，子包用 `base-editor` 不会变成 `editor/editor` 这种重复
 
 ---
 
 ## 3. 包结构总览
 
 ```
-speed-tiptap-editor/
+speed-editor/
 ├── package.json
 ├── pnpm-workspace.yaml
 ├── turbo.json
 ├── ARCHITECTURE.md
 │
 ├── packages/
-│   ├── shared/                      # @speed-tiptap-editor/shared
-│   ├── schema/                      # @speed-tiptap-editor/schema
-│   ├── composables/                 # @speed-tiptap-editor/composables
-│   ├── document-io/                 # @speed-tiptap-editor/document-io
+│   ├── shared/                      # @speed-editor/shared
+│   ├── schema/                      # @speed-editor/schema
+│   ├── composables/                 # @speed-editor/composables
+│   ├── document-io/                 # @speed-editor/document-io
 │   │
-│   ├── kit-base/                    # @speed-tiptap-editor/kit-base
-│   ├── ui/                          # @speed-tiptap-editor/ui（编辑器专用组件，非整包 src）
+│   ├── kit-base/                    # @speed-editor/kit-base
+│   ├── ui/                          # @speed-editor/ui（编辑器专用组件，非整包 src）
 │   ├── extensions/
 │   │   ├── extension-mind/
 │   │   ├── extension-flow/
@@ -139,7 +139,7 @@ base-editor（空壳，只吃 plugins[]）
 
 ## 5. 各包职责
 
-### 5.1 `@speed-tiptap-editor/shared`
+### 5.1 `@speed-editor/shared`
 
 纯公共、尽量无 Vue。
 
@@ -152,7 +152,7 @@ helpers/
 
 ---
 
-### 5.2 `@speed-tiptap-editor/schema`
+### 5.2 `@speed-editor/schema`
 
 文档 JSON 合同（无 UI）。前后端 + IO 共用。
 
@@ -166,20 +166,20 @@ kits/
 
 ---
 
-### 5.3 `@speed-tiptap-editor/composables`
+### 5.3 `@speed-editor/composables`
 
 `useFloatingPopup`、`useClickOutside`、`useActive` 等。  
 **不放** `useCollaboration`（在 collaboration-editor）、`useSpeedEditorContext`（在 base-editor）。
 
 ---
 
-### 5.4 `@speed-tiptap-editor/document-io`
+### 5.4 `@speed-editor/document-io`
 
 `wordToJson` / `jsonToDocx` 等，依赖 schema kits。
 
 ---
 
-### 5.5 `@speed-tiptap-editor/ui` — 【编辑器 UI 壳 + 共享控件】
+### 5.5 `@speed-editor/ui` — 【编辑器 UI 壳 + 共享控件】
 
 **不放业务 toolbar 大 map**，只放「壳」和多插件共用的控件。
 
@@ -219,13 +219,13 @@ MenuBarShell(buttons, toolbarKeys)   BubbleMenuBarShell(registry, bubbleMenus)
 
 ---
 
-### 5.6 `@speed-tiptap-editor/kit-base`
+### 5.6 `@speed-editor/kit-base`
 
 基础 **SpeedEditorPlugin** 合集（table、image、emoji… + 对应 bubble/toolbar UI）。
 
 ---
 
-### 5.7 `@speed-tiptap-editor/extension-*`
+### 5.7 `@speed-editor/extension-*`
 
 可选重型能力（mind、flow、import-export…），各自 peer 大库。
 
@@ -247,7 +247,7 @@ interface SpeedEditorPlugin {
 
 ---
 
-### 5.9 `@speed-tiptap-editor/base-editor` — 【通用壳】
+### 5.9 `@speed-editor/base-editor` — 【通用壳】
 
 **无内置业务扩展**，适合完全自定义场景。
 
@@ -272,7 +272,7 @@ useSpeedEditorProvider
 
 ---
 
-### 5.10 `@speed-tiptap-editor/collaboration-editor` — 【协同壳】
+### 5.10 `@speed-editor/collaboration-editor` — 【协同壳】
 
 **无内置业务扩展**，在 `SpeedEditor` 外包一层协同；适合「我要协同 + 自己拼插件」。
 
@@ -293,7 +293,7 @@ collabPlugin.ts
 
 ---
 
-### 5.11 `@speed-tiptap-editor/lite-editor` — 【首页预设组件】
+### 5.11 `@speed-editor/lite-editor` — 【首页预设组件】
 
 **依赖 `base-editor`**，扩展与 toolbar 已内置，宿主开箱即用。
 
@@ -322,7 +322,7 @@ createLiteEditorPlugins()   （可选 advanced export，供二次封装）
 
 ---
 
-### 5.12 `@speed-tiptap-editor/knowledge-editor` — 【文档预设组件】
+### 5.12 `@speed-editor/knowledge-editor` — 【文档预设组件】
 
 **依赖 `collaboration-editor`**（间接依赖 `base-editor`），文档场景扩展内置。
 
@@ -361,15 +361,15 @@ createKnowledgeEditorPlugins()   （可选 advanced export）
 
 ```json
 {
-  "@speed-tiptap-editor/lite-editor": "^2.0.0",
-  "@speed-tiptap-editor/knowledge-editor": "^2.0.0"
+  "@speed-editor/lite-editor": "^2.0.0",
+  "@speed-editor/knowledge-editor": "^2.0.0"
 }
 ```
 
 ```vue
 <script setup>
-import { LiteEditor } from '@speed-tiptap-editor/lite-editor'
-import { KnowledgeEditor } from '@speed-tiptap-editor/knowledge-editor'
+import { LiteEditor } from '@speed-editor/lite-editor'
+import { KnowledgeEditor } from '@speed-editor/knowledge-editor'
 </script>
 
 <!-- 首页：只装 lite-editor（ transitive → base-editor ） -->
@@ -385,16 +385,16 @@ import { KnowledgeEditor } from '@speed-tiptap-editor/knowledge-editor'
 
 ```ts
 // 路由 lazy load — 各场景一个包，互不拖后腿
-import('@speed-tiptap-editor/lite-editor')        // 首页
-import('@speed-tiptap-editor/knowledge-editor')   // 文档页
+import('@speed-editor/lite-editor')        // 首页
+import('@speed-editor/knowledge-editor')   // 文档页
 ```
 
 ### 6.2 完全自定义（高级）
 
 ```vue
 <script setup>
-import { SpeedEditor } from '@speed-tiptap-editor/base-editor'
-import { CollaborativeEditor } from '@speed-tiptap-editor/collaboration-editor'
+import { SpeedEditor } from '@speed-editor/base-editor'
+import { CollaborativeEditor } from '@speed-editor/collaboration-editor'
 import { myPlugins, myToolbar } from './my-editor-setup'
 </script>
 
@@ -415,8 +415,8 @@ import { myPlugins, myToolbar } from './my-editor-setup'
 
 ```json
 {
-  "@speed-tiptap-editor/schema": "^2.0.0",
-  "@speed-tiptap-editor/document-io": "^2.0.0"
+  "@speed-editor/schema": "^2.0.0",
+  "@speed-editor/document-io": "^2.0.0"
 }
 ```
 
@@ -442,7 +442,7 @@ import { myPlugins, myToolbar } from './my-editor-setup'
 | `src/presets/knowledge.ts` | `packages/knowledge-editor` → `KnowledgeEditor.vue` |
 | `src/hooks/useSpeedEditorContext` | `packages/base-editor` |
 | `src/hooks/useCollaboration` | `packages/collaboration-editor` |
-| `nestjs/tiptap-extends/` | `@speed-tiptap-editor/schema` |
+| `nestjs/tiptap-extends/` | `@speed-editor/schema` |
 
 ---
 
@@ -503,7 +503,7 @@ flowchart TB
 
 1. `KnowledgeEditor` 进入编辑态时，协同模块是否 dynamic import（减小预览首包）。
 2. extension 是否先 monorepo 内 `extensions/` 目录，稳定后再单独 publish。
-3. 旧 npm 包 `speed-tiptap-editor@1` 是否 re-export `@speed-tiptap-editor/knowledge-editor`。
+3. 旧 npm 包 `speed-editor@1` 是否 re-export `@speed-editor/knowledge-editor`。
 
 ---
 

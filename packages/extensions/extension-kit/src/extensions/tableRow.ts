@@ -1,3 +1,3 @@
-import { TableRow as SchemaTableRow } from '@speed-tiptap-editor/schema'
+import { TableRow as SchemaTableRow } from '@speed-editor/schema'
 
 export default SchemaTableRow

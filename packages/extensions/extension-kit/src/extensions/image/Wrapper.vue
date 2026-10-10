@@ -36,7 +36,7 @@ import {
 } from '@ek/prose-utils'
 import { useCustomUpload } from 'speed-components-ui/hooks'
 import { Spin, message } from 'ant-design-vue'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables'
+import { useSpeedEditor } from '@speed-editor/composables'
 import ImageResizeFrame from './ImageResizeFrame.vue'
 
 const speedUseTiptapConfig = inject(

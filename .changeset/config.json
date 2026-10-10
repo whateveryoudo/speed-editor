@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@speed-tiptap-editor/vue3-demo"]
+  "ignore": ["@speed-editor/vue3-demo"]
 }

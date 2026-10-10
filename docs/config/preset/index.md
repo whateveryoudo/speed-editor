@@ -70,7 +70,7 @@ Speed Tiptap Editor 通过 **预设（preset）** 提供开箱即用的编辑器
 
 ```vue
 <script setup>
-import { SpeedTiptapEditor, useCollaboration } from 'speed-tiptap-editor'
+import { SpeedTiptapEditor, useCollaboration } from 'speed-editor'
 
 const { ydoc, provider } = useCollaboration({ config, enabled })
 </script>

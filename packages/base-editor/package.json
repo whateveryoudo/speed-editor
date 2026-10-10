@@ -1,5 +1,5 @@
 {
-  "name": "@speed-tiptap-editor/base-editor",
+  "name": "@speed-editor/base-editor",
   "version": "2.0.9",
   "type": "module",
   "main": "./dist/index.js",
@@ -26,9 +26,9 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@speed-tiptap-editor/composables": "workspace:^",
-    "@speed-tiptap-editor/shared": "workspace:^",
-    "@speed-tiptap-editor/ui": "workspace:^",
+    "@speed-editor/composables": "workspace:^",
+    "@speed-editor/shared": "workspace:^",
+    "@speed-editor/ui": "workspace:^",
     "@tiptap/core": "3.13.0",
     "@tiptap/pm": "3.13.0",
     "@tiptap/vue-3": "3.6.6",

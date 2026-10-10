@@ -22,8 +22,8 @@ import { Button, Tooltip } from 'ant-design-vue'
 import { inject, ref, type Ref, computed } from 'vue'
 import { Editor } from '@tiptap/core'
 import { PaperClipOutlined } from '@ant-design/icons-vue'
-import { useActive } from '@speed-tiptap-editor/composables'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useActive } from '@speed-editor/composables'
+import { useSpeedEditor } from '@speed-editor/composables';
 const props = withDefaults(defineProps<{
   editor: Editor,
   triggerType?: 'menu' | 'bubble'

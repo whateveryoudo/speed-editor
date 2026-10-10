@@ -4,4 +4,4 @@
 export {
   BackgroundColor,
   type BackgroundColorOptions,
-} from '@speed-tiptap-editor/schema'
+} from '@speed-editor/schema'

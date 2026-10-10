@@ -8,14 +8,14 @@
 
 ```bash
 # npm
-npm install speed-tiptap-editor
+npm install speed-editor
 
 # pnpm
 
-pnpm add speed-tiptap-editor
+pnpm add speed-editor
 
 # yarn
-yarn add speed-tiptap-editor
+yarn add speed-editor
 ```
 
 ## 在 main.ts 中引入组件库(非必须)：
@@ -48,8 +48,8 @@ export type ResponseType<T = any> = {
 
 ```ts
 import { createApp } from "vue";
-import SpeedTiptapEditor from "speed-tiptap-editor";
-import "speed-tiptap-editor/dist/style.css";
+import SpeedTiptapEditor from "speed-editor";
+import "speed-editor/dist/style.css";
 import App from "./App.vue";
 // 范例请求，需替换为实际请求
 import { fileUploadSingle, fileUploadMulti, fileDel, fileDownload } from "@/api/attachment";
@@ -134,10 +134,10 @@ export default defineConfig({
 ```vue
 <template>
   <!-- 默认 preset="lite" 简易富文本 -->
-  <speed-tiptap-editor v-model:content="content" />
+  <speed-editor v-model:content="content" />
 
   <!-- 知识库完整富文本 -->
-  <speed-tiptap-editor preset="knowledge" v-model:title="title" :json="contentJson" />
+  <speed-editor preset="knowledge" v-model:title="title" :json="contentJson" />
 </template>
 ```
 

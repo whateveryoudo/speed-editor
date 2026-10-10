@@ -32,10 +32,10 @@ import { Editor } from '@tiptap/core'
 import ColorPicker from '@kb/components/colorPicker/index.vue'
 import { type ColorType } from '@kb/components/colorPicker/data'
 import { CaretDownOutlined } from '@ant-design/icons-vue'
-import { useActive } from '@speed-tiptap-editor/composables'
-import { useMenuButtonEvents } from '@speed-tiptap-editor/composables'
-import { getShortcutTipByKey } from '@speed-tiptap-editor/shared'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useActive } from '@speed-editor/composables'
+import { useMenuButtonEvents } from '@speed-editor/composables'
+import { getShortcutTipByKey } from '@speed-editor/shared'
+import { useSpeedEditor } from '@speed-editor/composables';
 const props = defineProps({
   editor: {
     type: Object as PropType<Editor>,

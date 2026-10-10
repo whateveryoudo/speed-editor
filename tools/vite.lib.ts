@@ -37,7 +37,7 @@ export function createVueLibConfig(
       rollupOptions: {
         external: [
           'vue',
-          /^@speed-tiptap-editor\//,
+          /^@speed-editor\//,
           /^@tiptap\//,
           'ant-design-vue',
           'yjs',

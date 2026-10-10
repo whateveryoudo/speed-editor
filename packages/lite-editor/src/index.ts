@@ -1,8 +1,8 @@
 export { default as LiteEditor } from './LiteEditor.vue'
 export { createLiteEditorPlugins } from './createLiteEditorPlugins'
 export { liteLayout, litePreset } from './preset'
-export { resolveToolbarKeys, resolveBubbleMenus } from '@speed-tiptap-editor/shared'
-export type { SpeedEditorPlugin } from '@speed-tiptap-editor/shared'
+export { resolveToolbarKeys, resolveBubbleMenus } from '@speed-editor/shared'
+export type { SpeedEditorPlugin } from '@speed-editor/shared'
 export {
   Extension,
   Node,
@@ -14,4 +14,4 @@ export {
   type MarkConfig,
   type Extensions,
   type JSONContent,
-} from '@speed-tiptap-editor/base-editor'
+} from '@speed-editor/base-editor'

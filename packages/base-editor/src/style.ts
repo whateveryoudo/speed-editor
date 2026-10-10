@@ -4,6 +4,6 @@
  * speed-components-ui 为本包 dependencies：样式随 style 入口带出，plugin 内 ensure 全局组件 / antd 变量。
  */
 import 'speed-components-ui/dist/style.css'
-import '@speed-tiptap-editor/ui/style.css'
+import '@speed-editor/ui/style.css'
 import './assets/index.less'
 import 'uno.css'

@@ -4,14 +4,14 @@ import { HocuspocusProvider, type onAwarenessUpdateParameters } from '@hocuspocu
 import Collaboration from '@tiptap/extension-collaboration'
 import CollaborationCaret from '@tiptap/extension-collaboration-caret'
 import type { Extensions } from '@tiptap/core'
-import { getRandomColor } from '@speed-tiptap-editor/shared'
+import { getRandomColor } from '@speed-editor/shared'
 
 export type {
   CollaborationConfig,
   CollaborationUser,
-} from '@speed-tiptap-editor/shared'
+} from '@speed-editor/shared'
 
-import type { CollaborationConfig, CollaborationUser } from '@speed-tiptap-editor/shared'
+import type { CollaborationConfig, CollaborationUser } from '@speed-editor/shared'
 
 export interface UseCollaborationOptions {
   config: MaybeRef<CollaborationConfig | null | undefined>

@@ -50,7 +50,7 @@ import { Button, Card, Checkbox, Flex, Input, Space } from 'ant-design-vue'
 import { ref, inject, computed } from 'vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import { Editor } from '@tiptap/core'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables'
+import { useSpeedEditor } from '@speed-editor/composables'
 import { FileSearchOutlined } from '@ant-design/icons-vue'
 const props = withDefaults(defineProps<{
     editor: Editor

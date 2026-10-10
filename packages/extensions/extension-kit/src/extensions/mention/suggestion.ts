@@ -1,4 +1,4 @@
-import type { UserInfo } from "@speed-tiptap-editor/shared";
+import type { UserInfo } from "@speed-editor/shared";
 import { useFloatingPopup } from "@ek/hooks/useFloatingPopup";
 import { VueRenderer } from "@tiptap/vue-3";
 import MentionList from "./MentionList.vue";

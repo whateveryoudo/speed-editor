@@ -19,10 +19,10 @@
 import { Button, Tooltip } from 'ant-design-vue'
 import { Editor } from '@tiptap/core'
 import { ImportOutlined } from '@ant-design/icons-vue'
-import { useMenuButtonEvents } from '@speed-tiptap-editor/composables'
+import { useMenuButtonEvents } from '@speed-editor/composables'
 import ImportFormatModal from './ImportFormatModal.vue'
 import { ref } from 'vue'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useSpeedEditor } from '@speed-editor/composables';
 const props = withDefaults(defineProps<{
     editor: Editor,
     triggerType?: 'menu' | 'bubble'

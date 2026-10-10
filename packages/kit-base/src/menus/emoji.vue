@@ -26,9 +26,9 @@ import { Button, Tooltip } from 'ant-design-vue'
 import { PropType, computed, inject, ref, type Ref } from 'vue'
 import { Editor } from '@tiptap/core'
 import EmojiPicker from '@kb/components/emojiPicker/index.vue'
-import { useActive } from '@speed-tiptap-editor/composables'
+import { useActive } from '@speed-editor/composables'
 import { Emoji } from '@tiptap/extension-emoji'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useSpeedEditor } from '@speed-editor/composables';
 const props = defineProps({
   editor: {
     type: Object as PropType<Editor>,

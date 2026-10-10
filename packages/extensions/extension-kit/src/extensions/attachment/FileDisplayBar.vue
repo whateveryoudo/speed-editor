@@ -46,7 +46,7 @@ import {
   CodeOutlined,
 } from "@ant-design/icons-vue";
 import { type IFileItem } from "speed-components-ui/hooks";
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useSpeedEditor } from '@speed-editor/composables';
 // 初始化注入的对象
 const speedUseTiptapConfig = inject(
   "speedUseTiptapConfig",

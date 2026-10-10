@@ -1,5 +1,5 @@
 {
-  "name": "@speed-tiptap-editor/extension-kit",
+  "name": "@speed-editor/extension-kit",
   "version": "2.0.9",
   "type": "module",
   "main": "./dist/index.js",
@@ -27,9 +27,9 @@
   "dependencies": {
     "@floating-ui/dom": "^1.6.0",
     "@floating-ui/vue": "^1.1.0",
-    "@speed-tiptap-editor/composables": "workspace:^",
-    "@speed-tiptap-editor/schema": "workspace:^",
-    "@speed-tiptap-editor/shared": "workspace:^",
+    "@speed-editor/composables": "workspace:^",
+    "@speed-editor/schema": "workspace:^",
+    "@speed-editor/shared": "workspace:^",
     "@tiptap/core": "3.13.0",
     "@tiptap/pm": "3.13.0",
     "@tiptap/vue-3": "3.6.6",

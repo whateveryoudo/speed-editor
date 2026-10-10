@@ -1,5 +1,5 @@
 import type { CodeBlockOptions } from './basicExtension'
-import { CodeBlock } from '@speed-tiptap-editor/schema'
+import { CodeBlock } from '@speed-editor/schema'
 import { LowlightPlugin } from './lowlightPlugin'
 
 export interface CodeBlockLowlightOptions extends CodeBlockOptions {

@@ -9,15 +9,15 @@ import { fileURLToPath } from 'node:url'
 const ROOT = path.join(fileURLToPath(new URL('.', import.meta.url)), '../packages/kit-base/src')
 
 const SIMPLE_REPLACEMENTS = [
-  [/@st\/hooks\/useActive/g, '@speed-tiptap-editor/composables'],
-  [/@st\/hooks\/useMenuButtonEvents/g, '@speed-tiptap-editor/composables'],
-  [/@st\/hooks\/useAttributes/g, '@speed-tiptap-editor/composables'],
-  [/@st\/hooks\/useSpeedEditorContext/g, '@speed-tiptap-editor/composables'],
+  [/@st\/hooks\/useActive/g, '@speed-editor/composables'],
+  [/@st\/hooks\/useMenuButtonEvents/g, '@speed-editor/composables'],
+  [/@st\/hooks\/useAttributes/g, '@speed-editor/composables'],
+  [/@st\/hooks\/useSpeedEditorContext/g, '@speed-editor/composables'],
   [/@st\/hooks\/useBubble/g, '@kb/hooks/useBubble'],
   [/@st\/hooks\/useAiAssistant/g, '@kb/hooks/useAiAssistant'],
-  [/@st\/helpers\/registKeyMap/g, '@speed-tiptap-editor/shared'],
-  [/@st\/presets/g, '@speed-tiptap-editor/shared'],
-  [/@st\/type/g, '@speed-tiptap-editor/shared'],
+  [/@st\/helpers\/registKeyMap/g, '@speed-editor/shared'],
+  [/@st\/presets/g, '@speed-editor/shared'],
+  [/@st\/type/g, '@speed-editor/shared'],
   [/@st\/components\/colorPicker/g, '@kb/components/colorPicker'],
   [/@st\/components\/emojiPicker/g, '@kb/components/emojiPicker'],
   [/@st\/components\/dragHandle/g, '@kb/components/dragHandle'],
@@ -27,16 +27,16 @@ const SIMPLE_REPLACEMENTS = [
   [/@st\/prose-utils\/text/g, '@kb/prose-utils/text'],
   [/@st\/prose-utils/g, '@kb/prose-utils'],
   [/@st\/helpers\/lru-cache/g, '@kb/helpers/lru-cache'],
-  [/@st\/helpers\/wordImport/g, '@speed-tiptap-editor/document-io'],
-  [/@st\/helpers\/markdownImport/g, '@speed-tiptap-editor/document-io'],
-  [/@st\/helpers\/speedImport/g, '@speed-tiptap-editor/document-io'],
-  [/@st\/helpers\/wordExport/g, '@speed-tiptap-editor/document-io'],
-  [/@st\/helpers\/markdownExport/g, '@speed-tiptap-editor/document-io'],
-  [/@st\/helpers\/speedExport/g, '@speed-tiptap-editor/document-io'],
-  [/@st\/helpers\/imageExport/g, '@speed-tiptap-editor/document-io'],
-  [/@st\/helpers\/type/g, '@speed-tiptap-editor/document-io'],
-  [/@st\/helpers\/fileDownload/g, '@speed-tiptap-editor/document-io'],
-  [/@st\/helpers\/markdown-to-json/g, '@speed-tiptap-editor/document-io'],
+  [/@st\/helpers\/wordImport/g, '@speed-editor/document-io'],
+  [/@st\/helpers\/markdownImport/g, '@speed-editor/document-io'],
+  [/@st\/helpers\/speedImport/g, '@speed-editor/document-io'],
+  [/@st\/helpers\/wordExport/g, '@speed-editor/document-io'],
+  [/@st\/helpers\/markdownExport/g, '@speed-editor/document-io'],
+  [/@st\/helpers\/speedExport/g, '@speed-editor/document-io'],
+  [/@st\/helpers\/imageExport/g, '@speed-editor/document-io'],
+  [/@st\/helpers\/type/g, '@speed-editor/document-io'],
+  [/@st\/helpers\/fileDownload/g, '@speed-editor/document-io'],
+  [/@st\/helpers\/markdown-to-json/g, '@speed-editor/document-io'],
 ]
 
 const EXTENSION_IMPORTS = [
@@ -111,6 +111,6 @@ console.log(`Migrated ${count} / ${files.length} files under kit-base/src`)
 const aiPath = path.join(ROOT, 'hooks/useAiAssistant.ts')
 if (fs.existsSync(aiPath)) {
   let ai = fs.readFileSync(aiPath, 'utf8')
-  ai = ai.replace(/@st\/hooks\/useSpeedEditorContext/g, '@speed-tiptap-editor/composables')
+  ai = ai.replace(/@st\/hooks\/useSpeedEditorContext/g, '@speed-editor/composables')
   fs.writeFileSync(aiPath, ai)
 }

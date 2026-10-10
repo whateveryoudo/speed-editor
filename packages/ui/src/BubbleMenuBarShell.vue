@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Component } from 'vue'
-import type { BubbleMenuKey, SpeedEditorShellProps } from '@speed-tiptap-editor/shared'
+import type { BubbleMenuKey, SpeedEditorShellProps } from '@speed-editor/shared'
 
 const props = defineProps<{
   editor: unknown

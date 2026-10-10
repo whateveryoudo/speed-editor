@@ -1,7 +1,7 @@
 /*
  * 编辑器侧 Attachment：schema 契约 + 上传命令 / Vue NodeView
  */
-import { Attachment as SchemaAttachment } from '@speed-tiptap-editor/schema'
+import { Attachment as SchemaAttachment } from '@speed-editor/schema'
 import { VueNodeViewRenderer } from '@tiptap/vue-3'
 import Wrapper from './Wrapper.vue'
 import { Editor } from '@tiptap/core'

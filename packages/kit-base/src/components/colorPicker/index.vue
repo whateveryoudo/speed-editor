@@ -8,7 +8,7 @@
 -->
 
 <template>
-  <Popover :placement="placement" v-if="!disabled" overlay-class-name="speed-tiptap-editor color-board-popover-wrapper"
+  <Popover :placement="placement" v-if="!disabled" overlay-class-name="speed-editor color-board-popover-wrapper"
     trigger="click" placement="bottomLeft">
     <template #content>
       <div class="color-board-wrapper">
@@ -126,7 +126,7 @@ onMounted(() => {
 </script>
 <style lang="less">
 // 增加命名空间，防止sheet影响
-.speed-tiptap-editor.color-board-popover-wrapper {
+.speed-editor.color-board-popover-wrapper {
   width: 240px;
 
   .ant-popover-inner {

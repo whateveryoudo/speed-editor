@@ -10,7 +10,7 @@
 pnpm changeset
 ```
 
-按提示选择受影响的包（例如 `@speed-tiptap-editor/knowledge-editor`），以及 bump 类型（patch / minor / major）。
+按提示选择受影响的包（例如 `@speed-editor/knowledge-editor`），以及 bump 类型（patch / minor / major）。
 
 未选中的包不会随本次发版更新。
 

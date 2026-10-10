@@ -39,10 +39,10 @@ pnpm release           # build + publish（一般由 CI 执行）
 
 | Secret | 说明 |
 |--------|------|
-| `NPM_TOKEN` | npm Automation token，需有 `@speed-tiptap-editor` scope 发布权限 |
+| `NPM_TOKEN` | npm Automation token，需有 `@speed-editor` scope 发布权限 |
 
 ## 单体版（v1）
 
-旧版单体代码在 `legacy/v1` 分支维护；`main` 为 monorepo v2（`@speed-tiptap-editor/*`）。
+旧版单体代码在 `legacy/v1` 分支维护；`main` 为 monorepo v2（`@speed-editor/*`）。
 
 发版前请确保 `pnpm build` 通过。

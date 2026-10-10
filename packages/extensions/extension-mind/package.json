@@ -1,5 +1,5 @@
 {
-  "name": "@speed-tiptap-editor/extension-mind",
+  "name": "@speed-editor/extension-mind",
   "version": "2.0.0",
   "type": "module",
   "main": "./dist/index.js",
@@ -16,7 +16,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@speed-tiptap-editor/shared": "workspace:^"
+    "@speed-editor/shared": "workspace:^"
   },
   "devDependencies": {
     "tsup": "^8.3.0",

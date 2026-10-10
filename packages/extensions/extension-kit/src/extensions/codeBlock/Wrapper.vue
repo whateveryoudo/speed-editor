@@ -97,7 +97,7 @@ import { useEdgeResize, type Edge } from '@ek/hooks/useEdgeResize'
 import { lowlightInstance } from './index'
 import { copy } from '@ek/helpers/copy-to-clipboard'
 import { useBubble } from '@ek/hooks/useBubble'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useSpeedEditor } from '@speed-editor/composables';
 const props = defineProps(nodeViewProps)
 const nodeAttrs = computed(() => props.node.attrs)
 const isHover = ref(false)

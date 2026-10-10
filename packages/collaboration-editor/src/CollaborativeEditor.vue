@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { SpeedEditor } from '@speed-tiptap-editor/base-editor'
+import { SpeedEditor } from '@speed-editor/base-editor'
 import { isChangeOrigin } from '@tiptap/extension-collaboration'
 import type { Transaction } from '@tiptap/pm/state'
 import { useCollaboration } from './useCollaboration'
@@ -8,7 +8,7 @@ import type {
   CollaborationConfig,
   CollaborativeShellProps,
   SpeedEditorPlugin,
-} from '@speed-tiptap-editor/shared'
+} from '@speed-editor/shared'
 
 const props = defineProps<CollaborativeShellProps & {
   collaborationConfig?: CollaborationConfig | null

@@ -8,16 +8,16 @@
 
 | 分支 / 包 | 说明 |
 |-----------|------|
-| **`main`** | Monorepo v2，npm scope：`@speed-tiptap-editor/*` |
-| **`legacy/v1`** | 旧版单体代码，npm 包 `speed-tiptap-editor@1.x` |
+| **`main`** | Monorepo v2，npm scope：`@speed-editor/*` |
+| **`legacy/v1`** | 旧版单体代码，npm 包 `speed-editor@1.x` |
 
-仍在使用单体版的项目，请切换到 **`legacy/v1`** 分支维护，或继续使用 npm 上的 `speed-tiptap-editor@1.x`。
+仍在使用单体版的项目，请切换到 **`legacy/v1`** 分支维护，或继续使用 npm 上的 `speed-editor@1.x`。
 
 ---
 
 ## 为什么要重构？
 
-v1 将所有能力打成一个包（`speed-tiptap-editor`），随着功能增加，暴露出几个问题：
+v1 将所有能力打成一个包（`speed-editor`），随着功能增加，暴露出几个问题：
 
 ### 1. 扩展越来越多，单体难以维护
 
@@ -35,10 +35,10 @@ v2 按职责拆成 `extension-kit`、`kit-base`、`extension-mind`、`extension-
 
 | 包 | 场景 | 特点 |
 |----|------|------|
-| `@speed-tiptap-editor/lite-editor` | 首页 / 轻量编辑 | 精简工具栏，无协同 |
-| `@speed-tiptap-editor/knowledge-editor` | 知识库文档 | 完整能力 + 协同 |
-| `@speed-tiptap-editor/base-editor` | 完全自定义 | 只提供 `SpeedEditor` 壳 |
-| `@speed-tiptap-editor/collaboration-editor` | 协同壳 | Yjs + Provider 集成 |
+| `@speed-editor/lite-editor` | 首页 / 轻量编辑 | 精简工具栏，无协同 |
+| `@speed-editor/knowledge-editor` | 知识库文档 | 完整能力 + 协同 |
+| `@speed-editor/base-editor` | 完全自定义 | 只提供 `SpeedEditor` 壳 |
+| `@speed-editor/collaboration-editor` | 协同壳 | Yjs + Provider 集成 |
 
 v1 无论用哪种场景，都要引入整包；v2 宿主 **只装用到的 Editor 预设**，依赖链随包传递，避免「为了一个 Lite 页面背上 mammoth / yjs / 协同」。
 
@@ -54,7 +54,7 @@ v1 无论用哪种场景，都要引入整包；v2 宿主 **只装用到的 Edit
 
 ### 4. 其他收益
 
-- **前后端 schema 一致**：`@speed-tiptap-editor/schema` 可单独给 NestJS 等后端复用
+- **前后端 schema 一致**：`@speed-editor/schema` 可单独给 NestJS 等后端复用
 - **独立发版**：Changesets 管理多包版本，修 `kit-base` 不必整库 bump
 - **Peer 单例清晰**：`@tiptap/core`、`@tiptap/pm`、`yjs` 由宿主安装，避免 monorepo 多实例问题
 
@@ -68,10 +68,10 @@ v1 无论用哪种场景，都要引入整包；v2 宿主 **只装用到的 Edit
 
 ```bash
 # 知识库完整编辑器（含协同能力链）
-pnpm add @speed-tiptap-editor/knowledge-editor
+pnpm add @speed-editor/knowledge-editor
 
 # 或轻量首页编辑器
-pnpm add @speed-tiptap-editor/lite-editor
+pnpm add @speed-editor/lite-editor
 ```
 
 宿主还需安装 Tiptap / 协同相关 **peer**（避免多实例）：
@@ -84,8 +84,8 @@ pnpm add @tiptap/core @tiptap/pm @tiptap/vue-3 @tiptap/y-tiptap yjs
 
 ```vue
 <script setup lang="ts">
-import { KnowledgeEditor } from '@speed-tiptap-editor/knowledge-editor'
-import '@speed-tiptap-editor/base-editor/style.css'
+import { KnowledgeEditor } from '@speed-editor/knowledge-editor'
+import '@speed-editor/base-editor/style.css'
 </script>
 
 <template>
@@ -107,7 +107,7 @@ pnpm docs:dev       # 文档站
 ## 包一览
 
 ```
-@speed-tiptap-editor/
+@speed-editor/
 ├── shared, composables, schema, ui     # 基础层
 ├── extension-kit, kit-base             # 扩展与工具栏
 ├── extension-mind, extension-flow      # 可选扩展
@@ -122,8 +122,8 @@ pnpm docs:dev       # 文档站
 
 ## 文档与示例
 
-- [在线文档](https://whateveryoudo.github.io/speed-tiptap-editor/docs/)
-- [在线 Demo](https://whateveryoudo.github.io/speed-tiptap-editor/demo/)
+- [在线文档](https://whateveryoudo.github.io/speed-editor/docs/)
+- [在线 Demo](https://whateveryoudo.github.io/speed-editor/demo/)
 - [发版与贡献指南](./CONTRIBUTING.md)
 
 ---
@@ -134,7 +134,7 @@ pnpm docs:dev       # 文档站
 
 1. 改动后运行 `pnpm changeset`
 2. 合并到 `main` → CI 创建 **Version Packages** PR
-3. 合并 Version PR → 自动 `pnpm build` 并发布到 `@speed-tiptap-editor/*`
+3. 合并 Version PR → 自动 `pnpm build` 并发布到 `@speed-editor/*`
 
 工作流：`.github/workflows/release-npm.yml`  
 需在仓库 Secrets 配置 `NPM_TOKEN`。详见 [CONTRIBUTING.md](./CONTRIBUTING.md)。

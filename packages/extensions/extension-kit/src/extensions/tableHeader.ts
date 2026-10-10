@@ -1,3 +1,3 @@
-import { TableHeader as SchemaTableHeader } from '@speed-tiptap-editor/schema'
+import { TableHeader as SchemaTableHeader } from '@speed-editor/schema'
 
 export default SchemaTableHeader

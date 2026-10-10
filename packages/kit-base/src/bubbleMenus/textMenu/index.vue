@@ -43,10 +43,10 @@ import Strike from '@kb/menus/strike.vue'
 import FontSize from '@kb/menus/fontSize.vue'
 import TextColor from '@kb/menus/textColor.vue'
 import BackgroundColor from '@kb/menus/backgroundColor.vue'
-import { type CollaborationEditorProps } from '@speed-tiptap-editor/shared'
+import { type CollaborationEditorProps } from '@speed-editor/shared'
 import Ai from '@kb/menus/ai/index.vue'
 import AiBubbleMenu from '@kb/menus/ai/ai-bubble-menu.vue'
-import { useActive } from '@speed-tiptap-editor/composables'
+import { useActive } from '@speed-editor/composables'
 const OTHER_BUBBLE_MENU_TYPES = ['title', 'callout', 'codeBlock', 'link', 'tag', 'attachment', 'image']
 const props = withDefaults(defineProps<{
     editor: any,

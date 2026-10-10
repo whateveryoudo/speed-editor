@@ -1,4 +1,4 @@
-import type { SpeedEditorPlugin } from '@speed-tiptap-editor/shared'
+import type { SpeedEditorPlugin } from '@speed-editor/shared'
 
 /**
  * 流程图插件（空壳）。

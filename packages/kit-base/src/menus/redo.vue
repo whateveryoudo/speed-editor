@@ -24,8 +24,8 @@ import { Button } from 'ant-design-vue'
 import { RedoOutlined } from '@ant-design/icons-vue'
 import { type PropType } from 'vue'
 import { Editor } from '@tiptap/core'
-import { getShortcutTipByKey } from '@speed-tiptap-editor/shared'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { getShortcutTipByKey } from '@speed-editor/shared'
+import { useSpeedEditor } from '@speed-editor/composables';
 const props = defineProps({
   editor: {
     type: Object as PropType<Editor>,

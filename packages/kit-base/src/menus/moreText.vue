@@ -46,13 +46,13 @@
 import { Button, Popover, Space, Tooltip } from 'ant-design-vue'
 import { Editor } from '@tiptap/core'
 import { CaretDownOutlined } from '@ant-design/icons-vue'
-import { useActive } from '@speed-tiptap-editor/composables'
+import { useActive } from '@speed-editor/composables'
 import { ref, PropType, computed } from 'vue'
 // import { Code as InlineCode } from '@st/extensions/code'
 import Superscript from '@tiptap/extension-superscript'
 import Subscript from '@tiptap/extension-subscript'
-import { getShortcutTipByKey } from '@speed-tiptap-editor/shared'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { getShortcutTipByKey } from '@speed-editor/shared'
+import { useSpeedEditor } from '@speed-editor/composables';
 const props = defineProps({
   editor: {
     type: Object as PropType<Editor>,

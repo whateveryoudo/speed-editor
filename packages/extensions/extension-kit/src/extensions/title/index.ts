@@ -1,7 +1,7 @@
 /*
  * 编辑器侧 Title：schema 契约 + Vue NodeView / 交互插件
  */
-import { Title as SchemaTitle, TitleExtensionName } from '@speed-tiptap-editor/schema'
+import { Title as SchemaTitle, TitleExtensionName } from '@speed-editor/schema'
 import { VueNodeViewRenderer } from '@tiptap/vue-3'
 import { Plugin, PluginKey, TextSelection } from '@tiptap/pm/state'
 import { Decoration, DecorationSet } from '@tiptap/pm/view'
@@ -10,8 +10,8 @@ import { mergeAttributes } from '@tiptap/core'
 
 import Wrapper from './Wrapper.vue'
 
-export type { TitleOptions } from '@speed-tiptap-editor/schema'
-export { TitleExtensionName } from '@speed-tiptap-editor/schema'
+export type { TitleOptions } from '@speed-editor/schema'
+export { TitleExtensionName } from '@speed-editor/schema'
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {

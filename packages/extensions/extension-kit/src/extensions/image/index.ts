@@ -1,7 +1,7 @@
 /*
  * 编辑器侧 Image：schema 契约 + 上传命令 / Vue NodeView
  */
-import { Image as SchemaImage } from '@speed-tiptap-editor/schema'
+import { Image as SchemaImage } from '@speed-editor/schema'
 import { VueNodeViewRenderer } from '@tiptap/vue-3'
 import ImageWrapper from './Wrapper.vue'
 import { v4 as uuidv4 } from 'uuid'

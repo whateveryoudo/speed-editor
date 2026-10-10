@@ -1,5 +1,5 @@
 {
-  "name": "@speed-tiptap-editor/knowledge-editor",
+  "name": "@speed-editor/knowledge-editor",
   "version": "2.0.5",
   "type": "module",
   "main": "./dist/index.js",
@@ -26,14 +26,14 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@speed-tiptap-editor/base-editor": "workspace:^",
-    "@speed-tiptap-editor/collaboration-editor": "workspace:^",
-    "@speed-tiptap-editor/extension-flow": "workspace:^",
-    "@speed-tiptap-editor/extension-import-export": "workspace:^",
-    "@speed-tiptap-editor/extension-kit": "workspace:^",
-    "@speed-tiptap-editor/extension-mind": "workspace:^",
-    "@speed-tiptap-editor/kit-base": "workspace:^",
-    "@speed-tiptap-editor/shared": "workspace:^"
+    "@speed-editor/base-editor": "workspace:^",
+    "@speed-editor/collaboration-editor": "workspace:^",
+    "@speed-editor/extension-flow": "workspace:^",
+    "@speed-editor/extension-import-export": "workspace:^",
+    "@speed-editor/extension-kit": "workspace:^",
+    "@speed-editor/extension-mind": "workspace:^",
+    "@speed-editor/kit-base": "workspace:^",
+    "@speed-editor/shared": "workspace:^"
   },
   "peerDependencies": {
     "vue": "^3.4.0",

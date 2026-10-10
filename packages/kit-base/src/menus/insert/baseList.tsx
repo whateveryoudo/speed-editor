@@ -14,7 +14,7 @@ import { type SubMenuGroup, type MenuGroup, useCommand } from './useCommand'
 import { createKeysLocalStorageLRUCache } from '@kb/helpers/lru-cache'
 import AutoExpandTableSelect from './autoExpandTableSelect.vue'
 import styles from './baseList.module.less'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useSpeedEditor } from '@speed-editor/composables';
 
 export default defineComponent({
   name: 'BaseList',

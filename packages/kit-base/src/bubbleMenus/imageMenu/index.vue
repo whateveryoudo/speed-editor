@@ -45,8 +45,8 @@ import BubbleContainer from "../BubbleContainer.vue";
 import align from "@kb/menus/align";
 import SizeSetting from "./SizeSetting.vue";
 import { useBubble } from "@kb/hooks/useBubble";
-import { useAttributes } from "@speed-tiptap-editor/composables";
-import { useSpeedEditor } from "@speed-tiptap-editor/composables";
+import { useAttributes } from "@speed-editor/composables";
+import { useSpeedEditor } from "@speed-editor/composables";
 import {
   DeleteOutlined,
   EyeOutlined,

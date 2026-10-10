@@ -1,5 +1,5 @@
 {
-  "name": "@speed-tiptap-editor/vue3-demo",
+  "name": "@speed-editor/vue3-demo",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,9 +10,9 @@
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.0",
     "@hocuspocus/provider": "^3.2.0",
-    "@speed-tiptap-editor/base-editor": "workspace:^",
-    "@speed-tiptap-editor/knowledge-editor": "workspace:^",
-    "@speed-tiptap-editor/lite-editor": "workspace:^",
+    "@speed-editor/base-editor": "workspace:^",
+    "@speed-editor/knowledge-editor": "workspace:^",
+    "@speed-editor/lite-editor": "workspace:^",
     "@tiptap/core": "^3.0.6",
     "@tiptap/pm": "^3.0.0",
     "@tiptap/vue-3": "3.6.6",

@@ -32,10 +32,10 @@
 import { Select } from 'ant-design-vue'
 import { type PropType, computed } from 'vue'
 import { Editor } from '@tiptap/core'
-import { useActive } from '@speed-tiptap-editor/composables'
-import { useAttributes } from '@speed-tiptap-editor/composables'
+import { useActive } from '@speed-editor/composables'
+import { useAttributes } from '@speed-editor/composables'
 import { CheckOutlined, CaretDownOutlined } from '@ant-design/icons-vue'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables'
+import { useSpeedEditor } from '@speed-editor/composables'
 
 /** 与 Umo Editor 字号列表对齐（value 保留 pt/px，便于对上 Word 粘贴） */
 const DEFAULT_FONT_SIZE_OPTIONS = [

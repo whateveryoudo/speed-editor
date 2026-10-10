@@ -51,7 +51,7 @@
 import { Button, Divider, Flex, Input, Popover, Space } from 'ant-design-vue'
 import { PropType, computed, ref, watch } from "vue";
 import BubbleContainer from "../BubbleContainer.vue";
-import { useAttributes } from "@speed-tiptap-editor/composables";
+import { useAttributes } from "@speed-editor/composables";
 import { type Editor } from "@tiptap/core";
 import ColorPicker from "@kb/components/colorPicker/index.vue";
 import { CheckOutlined } from '@ant-design/icons-vue'

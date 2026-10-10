@@ -24,8 +24,8 @@
 import { Button, Tooltip } from 'ant-design-vue'
 import { PropType, computed } from 'vue'
 import { Editor } from '@tiptap/core'
-import { useActive } from '@speed-tiptap-editor/composables'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useActive } from '@speed-editor/composables'
+import { useSpeedEditor } from '@speed-editor/composables';
 const props = defineProps({
   editor: {
     type: Object as PropType<Editor>,

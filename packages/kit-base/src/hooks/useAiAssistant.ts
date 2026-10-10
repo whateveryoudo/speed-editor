@@ -5,7 +5,7 @@
 import { ref, inject, type Ref } from 'vue'
 import { message } from 'ant-design-vue'
 import { fetchEventSource } from '@microsoft/fetch-event-source'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useSpeedEditor } from '@speed-editor/composables';
 export type AIAction = 'refactor' | 'check' | 'simple' | 'rich' | 'translate' | 'summary' | 'custom'
 
 // AI 处理状态 idle 空闲 pending 处理中  success 成功 error 失败 cancelled 取消

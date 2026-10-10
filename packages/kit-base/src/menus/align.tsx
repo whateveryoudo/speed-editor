@@ -14,12 +14,12 @@ import {
   AlignRightOutlined,
   AlignCenterOutlined,
 } from '@ant-design/icons-vue'
-import { useActive } from '@speed-tiptap-editor/composables'
+import { useActive } from '@speed-editor/composables'
 import { type VNode, PropType, computed, inject, ref, type Ref, defineComponent } from 'vue'
 import { Popover, Tooltip, Button, Space } from 'ant-design-vue'
-import { getShortcutTipByKey } from '@speed-tiptap-editor/shared'
+import { getShortcutTipByKey } from '@speed-editor/shared'
 import { KeyMapTip } from 'speed-components-ui/components'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useSpeedEditor } from '@speed-editor/composables';
 type AlignType = 'left' | 'center' | 'right'
 
 

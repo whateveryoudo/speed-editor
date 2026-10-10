@@ -1,5 +1,5 @@
 import { defineLibConfig } from '../../../tools/tsup.lib'
 
 export default defineLibConfig({
-  external: [/^@speed-tiptap-editor\//],
+  external: [/^@speed-editor\//],
 })

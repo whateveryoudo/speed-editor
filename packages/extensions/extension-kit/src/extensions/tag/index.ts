@@ -1,7 +1,7 @@
 /*
  * 编辑器侧 Tag：schema 契约 + 插入命令 / Vue NodeView
  */
-import { Tag as SchemaTag } from '@speed-tiptap-editor/schema'
+import { Tag as SchemaTag } from '@speed-editor/schema'
 import { VueNodeViewRenderer } from '@tiptap/vue-3'
 import { NodeSelection } from '@tiptap/pm/state'
 import Wrapper from './Wrapper.vue'

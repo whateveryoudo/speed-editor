@@ -1,4 +1,4 @@
-# @speed-tiptap-editor/extension-mind
+# @speed-editor/extension-mind
 
 ## 2.0.0
 
@@ -6,4 +6,4 @@
 
 - 首次发布到研发云
 - Updated dependencies
-  - @speed-tiptap-editor/shared@2.0.1
+  - @speed-editor/shared@2.0.1

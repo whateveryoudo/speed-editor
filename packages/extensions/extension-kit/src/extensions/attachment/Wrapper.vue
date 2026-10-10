@@ -36,7 +36,7 @@ import FileDisplayBar from "./FileDisplayBar.vue";
 import { useCustomUpload, type IFileItem } from "speed-components-ui/hooks";
 import { Progress, Spin, TypographyText, message } from 'ant-design-vue';
 import axios from 'axios';
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useSpeedEditor } from '@speed-editor/composables';
 import { InfoCircleOutlined } from '@ant-design/icons-vue';
 const uploadFailed = ref(false);
 const props = defineProps({

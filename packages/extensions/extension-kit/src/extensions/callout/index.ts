@@ -1,7 +1,7 @@
 /*
  * 编辑器侧 Callout：schema 契约 + Vue NodeView / 快捷键 / 命令
  */
-import { Callout as SchemaCallout } from '@speed-tiptap-editor/schema'
+import { Callout as SchemaCallout } from '@speed-editor/schema'
 import { VueNodeViewRenderer } from '@tiptap/vue-3'
 import Wrapper from './Wrapper.vue'
 import { TextSelection, NodeSelection } from '@tiptap/pm/state'

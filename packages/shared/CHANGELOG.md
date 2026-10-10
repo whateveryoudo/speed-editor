@@ -1,4 +1,4 @@
-# @speed-tiptap-editor/shared
+# @speed-editor/shared
 
 ## 2.0.4
 

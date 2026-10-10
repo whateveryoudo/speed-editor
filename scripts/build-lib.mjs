@@ -6,7 +6,7 @@
  *   pnpm build:lib
  *   pnpm build:lib -- schema
  *   pnpm build:lib -- kit-base
- *   pnpm build:lib -- @speed-tiptap-editor/extension-kit
+ *   pnpm build:lib -- @speed-editor/extension-kit
  */
 import { spawnSync } from 'node:child_process'
 import { dirname, join } from 'node:path'
@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, '..')
 
-const SCOPE = '@speed-tiptap-editor/'
+const SCOPE = '@speed-editor/'
 
 function resolveFilter(raw) {
   const name = raw.trim()

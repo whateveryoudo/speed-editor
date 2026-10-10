@@ -66,7 +66,7 @@
 <script setup lang="ts">
 import { Button, Divider, Flex, Popover, Space, Tooltip } from 'ant-design-vue'
 import { PropType, computed, onMounted, onUnmounted, ref } from "vue";
-import { useAttributes } from "@speed-tiptap-editor/composables";
+import { useAttributes } from "@speed-editor/composables";
 import { type Editor } from "@tiptap/core";
 import ColorPicker from "@kb/components/colorPicker/index.vue";
 import { useNodeTopCenterBubble } from "@kb/bubbleMenus/useNodeTopCenterBubble";

@@ -27,4 +27,4 @@ Speed Tiptap Editor  是一个基于 [tiptap](https://tiptap.dev/docs){target="_
 
 ## 许可证
 
-[MIT](https://github.com/whateveryoudo/speed-tiptap-editor/blob/main/LICENSE){target="_blank"} 
+[MIT](https://github.com/whateveryoudo/speed-editor/blob/main/LICENSE){target="_blank"} 

@@ -42,7 +42,7 @@ import { BubbleMenu as BaseBubbleMenu } from '@tiptap/vue-3/menus'
 import { findMarkPosition, isMarkActive } from '@kb/prose-utils'
 import { LinkModalProps } from './modal'
 import { ShareAltOutlined, DisconnectOutlined, EditOutlined } from '@ant-design/icons-vue'
-import { useAttributes } from '@speed-tiptap-editor/composables'
+import { useAttributes } from '@speed-editor/composables'
 
 const props = defineProps({
   editor: {

@@ -1,6 +1,6 @@
 export {
   createImportExportPlugin,
-} from '@speed-tiptap-editor/kit-base'
+} from '@speed-editor/kit-base'
 
 export {
   handleWordFileSelect,
@@ -10,4 +10,4 @@ export {
   handleMarkdownExport,
   handleSpeedExport,
   handleImageExport,
-} from '@speed-tiptap-editor/document-io'
+} from '@speed-editor/document-io'

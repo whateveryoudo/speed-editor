@@ -1,4 +1,4 @@
-# @speed-tiptap-editor/extension-mind
+# @speed-editor/extension-mind
 
 思维导图扩展包（**占位 / 接入示例**，尚未绑定具体第三方库）。
 
@@ -27,7 +27,7 @@
 见 `src/example.adapter.ts`：
 
 ```ts
-import type { MindEditorAdapter } from '@speed-tiptap-editor/extension-mind'
+import type { MindEditorAdapter } from '@speed-editor/extension-mind'
 
 export const myMindAdapter: MindEditorAdapter = {
   id: 'simple-mind-map',
@@ -59,4 +59,4 @@ createMindPlugin({ adapter: myMindAdapter })
 
 ## 与 extension-flow 的关系
 
-流程图包 `@speed-tiptap-editor/extension-flow` 采用相同模式，可复用 `MindEditorAdapter` 思路定义 `FlowEditorAdapter`。
+流程图包 `@speed-editor/extension-flow` 采用相同模式，可复用 `MindEditorAdapter` 思路定义 `FlowEditorAdapter`。

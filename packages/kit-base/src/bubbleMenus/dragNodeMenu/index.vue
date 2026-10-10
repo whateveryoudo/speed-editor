@@ -69,7 +69,7 @@ import { Button, Dropdown, Flex, Menu, MenuDivider, MenuItem, Popover, Space, To
 import { ref, type PropType, computed } from "vue";
 import type { Editor } from "@tiptap/core";
 import { DragHandle } from "@kb/components/dragHandle";
-import { useActive } from '@speed-tiptap-editor/composables'
+import { useActive } from '@speed-editor/composables'
 import { TextSelection } from '@tiptap/pm/state'
 import { useBubble } from "@kb/hooks/useBubble";
 import {
@@ -84,7 +84,7 @@ import {
     FileTextOutlined,
     RightOutlined,
 } from "@ant-design/icons-vue";
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useSpeedEditor } from '@speed-editor/composables';
 const props = defineProps({
     editor: {
         type: Object as PropType<Editor>,

@@ -2,7 +2,7 @@
  * 编辑器侧 Link：schema 契约 + Markdown 输入规则
  */
 import { markInputRule } from '@tiptap/core'
-import { Link as SchemaLink } from '@speed-tiptap-editor/schema'
+import { Link as SchemaLink } from '@speed-editor/schema'
 
 const extractHrefFromMatch = (match: any) => {
   return { href: match.groups.href }

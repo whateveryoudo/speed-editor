@@ -1,4 +1,4 @@
-# @speed-tiptap-editor/kit-base
+# @speed-editor/kit-base
 
 ## 2.0.9
 
@@ -6,9 +6,9 @@
 
 - 调整依赖位置明确版本
 - Updated dependencies
-  - @speed-tiptap-editor/composables@2.0.3
-  - @speed-tiptap-editor/schema@2.0.6
-  - @speed-tiptap-editor/shared@2.0.4
+  - @speed-editor/composables@2.0.3
+  - @speed-editor/schema@2.0.6
+  - @speed-editor/shared@2.0.4
 
 ## 2.0.8
 
@@ -16,7 +16,7 @@
 
 - 增加一些参数定义,支持excludekeys配置
 - Updated dependencies
-  - @speed-tiptap-editor/shared@2.0.3
+  - @speed-editor/shared@2.0.3
 
 ## 2.0.7
 
@@ -24,8 +24,8 @@
 
 - 调整编辑器一些样式配置,字体支持
 - Updated dependencies
-  - @speed-tiptap-editor/schema@2.0.5
-  - @speed-tiptap-editor/shared@2.0.2
+  - @speed-editor/schema@2.0.5
+  - @speed-editor/shared@2.0.2
 
 ## 2.0.6
 
@@ -33,7 +33,7 @@
 
 - 更新一些功能
 - Updated dependencies
-  - @speed-tiptap-editor/schema@2.0.4
+  - @speed-editor/schema@2.0.4
 
 ## 2.0.5
 
@@ -41,9 +41,9 @@
 
 - 首次发布到研发云
 - Updated dependencies
-  - @speed-tiptap-editor/composables@2.0.2
-  - @speed-tiptap-editor/schema@2.0.3
-  - @speed-tiptap-editor/shared@2.0.1
+  - @speed-editor/composables@2.0.2
+  - @speed-editor/schema@2.0.3
+  - @speed-editor/shared@2.0.1
 
 ## 2.0.4
 
@@ -51,7 +51,7 @@
 
 - fc69859: 修复一些样式问题,提取一些公共扩展到schema包
 - Updated dependencies [fc69859]
-  - @speed-tiptap-editor/schema@2.0.2
+  - @speed-editor/schema@2.0.2
 
 ## 2.0.3
 
@@ -59,8 +59,8 @@
 
 - aa7f88d: 调整样式导出方式,提取公共扩展到schema
 - Updated dependencies [aa7f88d]
-  - @speed-tiptap-editor/composables@2.0.1
-  - @speed-tiptap-editor/schema@2.0.1
+  - @speed-editor/composables@2.0.1
+  - @speed-editor/schema@2.0.1
 
 ## 2.0.2
 
@@ -80,5 +80,5 @@
 
 - efc8bdd: 发布新版monarepo版本
 - Updated dependencies [efc8bdd]
-  - @speed-tiptap-editor/composables@2.0.0
-  - @speed-tiptap-editor/shared@2.0.0
+  - @speed-editor/composables@2.0.0
+  - @speed-editor/shared@2.0.0

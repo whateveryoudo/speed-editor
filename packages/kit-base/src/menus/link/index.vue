@@ -41,9 +41,9 @@ import { isMarkActive } from '@kb/prose-utils'
 import LinkModalSetting from './modal.vue'
 import LinkBubble from './bubble.vue'
 import { LinkModalProps } from './modal'
-import { useActive } from '@speed-tiptap-editor/composables'
+import { useActive } from '@speed-editor/composables'
 import { isEmpty } from 'lodash-es'
-import { useSpeedEditor } from '@speed-tiptap-editor/composables';
+import { useSpeedEditor } from '@speed-editor/composables';
 const props = defineProps({
   editor: {
     type: Object as PropType<Editor>,
