@@ -7,7 +7,7 @@
  * @FilePath: \we-knowledge-base\src\tiptap\core\menus\insert\useCommand.tsx
  */
 import { type Editor } from '@tiptap/core'
-import { type VNode, ref, computed, inject } from 'vue'
+import { type VNode, type Ref, ref, computed, inject, unref } from 'vue'
 import {
   FileImageOutlined,
   FolderOutlined,
@@ -75,7 +75,7 @@ export interface InsertMenuConfig {
   insertGroups?: InsertMenuGroupConfig[]
 }
 
-export const useCommand = (config?: InsertMenuConfig) => {
+export const useCommand = (config?: InsertMenuConfig | Ref<InsertMenuConfig | undefined> | (() => InsertMenuConfig | undefined)) => {
   // 基础分组（作为构建的基底）
   const baseMenuGroup = ref<MenuGroup[]>([
     {
@@ -186,7 +186,8 @@ export const useCommand = (config?: InsertMenuConfig) => {
   ])
   // 基于配置生成最终分组
   const menuGroup = computed<MenuGroup[]>(() => {
-    const cfg = config || {}
+    const rawCfg = typeof config === 'function' ? config() : unref(config)
+    const cfg = rawCfg || {}
     const includeKeys = cfg.includeKeys
     const excludeKeys = cfg.excludeKeys
     const insertItems = cfg.insertItems || []
@@ -291,7 +292,7 @@ export const useCommand = (config?: InsertMenuConfig) => {
       const set = new Set(excludeKeys)
       result = result.map(g => ({
         ...g,
-        children: g.children.filter((c: any) => !set.has(`${g.key}&${c.key}`)),
+        children: g.children.filter((c: any) => !set.has(`${g.key}&${c.key}`) && !set.has(c.key)),
       })).filter(g => g.children.length > 0)
     }
     return result as MenuGroup[]

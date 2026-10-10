@@ -1,5 +1,11 @@
 # @speed-tiptap-editor/schema
 
+## 2.0.6
+
+### Patch Changes
+
+- 调整依赖位置明确版本
+
 ## 2.0.5
 
 ### Patch Changes

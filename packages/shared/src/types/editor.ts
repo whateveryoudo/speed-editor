@@ -77,6 +77,8 @@ export interface SpeedEditorShellProps {
   placeholder?: string
   toolbarKeys?: ToolBarConfig[]
   excludeKeys?: string[]
+  /** 快捷插入浮层（/ 唤起）排除的项，如 ['common&image', 'common&file'] 或 ['image', 'file'] */
+  quickInsertExcludeKeys?: string[]
   bubbleMenus?: BubbleMenuKey[]
   upload?: IUploadConfig
   image?: IUploadConfig
@@ -117,6 +119,16 @@ export interface SpeedEditorShellProps {
     apis?: Record<string, unknown>
     transformRequestRes?: (res: unknown) => unknown
   }
+  searchReplace?: SearchReplaceConfig
+}
+
+export interface SearchReplaceConfig {
+  /** 是否启用查找替换（默认在支持的预设中为 true，如设为 false 则隐藏弹窗并不拦截快捷键） */
+  enabled?: boolean
+  /** 是否拦截并启用快捷键 Ctrl/Cmd + F，默认跟随 enabled */
+  shortcut?: boolean
+  /** 自定义弹窗样式（如设置 top, right 等） */
+  style?: Record<string, string | number>
 }
 
 /** @deprecated 迁移期别名，请用 SpeedEditorShellProps */

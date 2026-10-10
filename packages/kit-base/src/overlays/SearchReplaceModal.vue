@@ -1,5 +1,5 @@
 <template>
-    <div class="search-replace-modal" v-if="searchReplaceVisible">
+    <div class="search-replace-modal" v-if="searchReplaceVisible && isEnabled" :style="modalStyle">
         <Card ref="modalRef" style="box-shadow: 0 8px 16px 4px rgba(0,0,0,.04)">
             <template #title>
                 <FileSearchOutlined class="mr-2" />
@@ -57,11 +57,16 @@ const props = withDefaults(defineProps<{
 }>(), {
     editor: () => ({}) as Editor
 })
-const { searchReplaceVisible, updateSearchReplaceVisible } = useSpeedEditor();
+const { searchReplaceVisible, updateSearchReplaceVisible, speedTiptapConfig } = useSpeedEditor();
 const modalRef = ref<HTMLDivElement>()
 const search = ref('')
 const replace = ref('')
 const caseSensitive = ref(false)
+
+const isEnabled = computed(() => speedTiptapConfig?.value?.searchReplace?.enabled !== false)
+const modalStyle = computed(() => {
+    return speedTiptapConfig?.value?.searchReplace?.style || {}
+})
 
 // 当前结果显示索引
 const resultIndex = computed(() => props.editor.storage.searchAndReplace?.resultIndex || 0)
@@ -115,10 +120,10 @@ const handleReplaceAll = () => {
 
 <style lang="less">
 .search-replace-modal {
-    position: absolute;
-    z-index: 100;
+    position: fixed;
+    z-index: 1000;
     width: 450px;
-    top: 50px;
-    right: 20px;
+    top: 60px;
+    right: 24px;
 }
 </style>

@@ -47,8 +47,16 @@ export default defineComponent({
   },
   emits: ['triggerVisible'],
   setup(props, { emit, expose }) {
-    const { menuGroup, flatLeafMenu } = useCommand(props.insertMenuConfig)
-    const { speedTiptapConfig  } = useSpeedEditor();
+    const { speedTiptapConfig } = useSpeedEditor();
+    const effectiveInsertConfig = computed(() => {
+      const base = props.insertMenuConfig || {}
+      const excludeKeys = props.insertMenuConfig?.excludeKeys ?? speedTiptapConfig.value?.quickInsertExcludeKeys
+      return {
+        ...base,
+        ...(excludeKeys ? { excludeKeys } : {}),
+      }
+    })
+    const { menuGroup, flatLeafMenu } = useCommand(effectiveInsertConfig)
     const { image, file } = speedTiptapConfig.value;
     const cacheKey = 'RECENT_MENU_LIST'
     // 创建最近使用菜单的LRU缓存，最多存储20条

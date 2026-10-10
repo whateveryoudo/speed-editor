@@ -1,6 +1,6 @@
 {
   "name": "@speed-tiptap-editor/base-editor",
-  "version": "2.0.7",
+  "version": "2.0.9",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -29,22 +29,22 @@
     "@speed-tiptap-editor/composables": "workspace:^",
     "@speed-tiptap-editor/shared": "workspace:^",
     "@speed-tiptap-editor/ui": "workspace:^",
+    "@tiptap/core": "3.13.0",
+    "@tiptap/pm": "3.13.0",
+    "@tiptap/vue-3": "3.6.6",
+    "lodash-es": "^4.17.21",
     "speed-components-ui": "^1.1.5",
     "viewerjs": "^1.11.0"
   },
   "peerDependencies": {
     "vue": "^3.4.0",
     "ant-design-vue": "^4.0.0",
-    "@tiptap/pm": "^3.0.0",
-    "@tiptap/vue-3": "3.6.6",
-    "@tiptap/core": "^3.0.6",
-    "@vueuse/core": "^13.1.0",
-    "lodash-es": "^4.17.0"
+    "@vueuse/core": "^13.1.0"
   },
   "devDependencies": {
     "@ant-design/icons-vue": "^7.0.0",
-    "@tiptap/core": "^3.0.6",
-    "@tiptap/pm": "^3.0.0",
+    "@tiptap/core": "3.13.0",
+    "@tiptap/pm": "3.13.0",
     "@tiptap/vue-3": "3.6.6",
     "@unocss/vite": "^0.58.0",
     "@vitejs/plugin-vue": "^5.0.0",

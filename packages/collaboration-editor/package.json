@@ -1,6 +1,6 @@
 {
   "name": "@speed-tiptap-editor/collaboration-editor",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -18,19 +18,19 @@
   "dependencies": {
     "@speed-tiptap-editor/base-editor": "workspace:^",
     "@speed-tiptap-editor/shared": "workspace:^",
-    "@tiptap/extension-collaboration": "^3.7.2",
-    "@tiptap/extension-collaboration-caret": "^3.15.0"
+    "@tiptap/core": "3.13.0",
+    "@tiptap/pm": "3.13.0",
+    "@tiptap/extension-collaboration": "3.13.0",
+    "@tiptap/extension-collaboration-caret": "3.15.0"
   },
   "peerDependencies": {
     "vue": "^3.4.0",
     "yjs": "^13.6.0",
-    "@hocuspocus/provider": "^3.2.0",
-    "@tiptap/core": "^3.0.6",
-    "@tiptap/pm": "^3.0.0"
+    "@hocuspocus/provider": "^3.2.0"
   },
   "devDependencies": {
-    "@tiptap/core": "^3.0.6",
-    "@tiptap/pm": "^3.0.0",
+    "@tiptap/core": "3.13.0",
+    "@tiptap/pm": "3.13.0",
     "@hocuspocus/provider": "^3.2.0",
     "@vitejs/plugin-vue": "^5.0.0",
     "typescript": "^5.6.0",

@@ -1,5 +1,14 @@
 # @speed-tiptap-editor/collaboration-editor
 
+## 2.0.2
+
+### Patch Changes
+
+- 调整依赖位置明确版本
+- Updated dependencies
+  - @speed-tiptap-editor/base-editor@2.0.9
+  - @speed-tiptap-editor/shared@2.0.4
+
 ## 2.0.1
 
 ### Patch Changes

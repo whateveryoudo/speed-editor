@@ -23,7 +23,7 @@ import { type GlobalConfig } from './plugin'
 import type { CSSProperties } from 'vue'
 import type { Editor, Extensions } from '@tiptap/core'
 import type { Transaction } from '@tiptap/pm/state'
-import type { UserInfo, IUploadConfig, ToolBarConfig } from '@speed-tiptap-editor/shared'
+import type { UserInfo, IUploadConfig, ToolBarConfig, SearchReplaceConfig } from '@speed-tiptap-editor/shared'
 
 const defaultLayout: EditorLayoutConfig = {
   name: 'custom',
@@ -43,14 +43,6 @@ const speedUseTiptapConfig = inject<Ref<GlobalConfig>>(
   'speedUseTiptapConfig',
   ref<GlobalConfig>({}),
 )
-
-onKeyStroke((e) => {
-  if ((e.ctrlKey || e.metaKey) && !e.shiftKey && e.key.toLowerCase() === 's') {
-    e.preventDefault()
-    message.info(`${editorConfig.TITLE}会实时保存你的数据，无需手动保存。`)
-    return false
-  }
-})
 
 defineOptions({
   name: 'SpeedEditor',
@@ -86,6 +78,7 @@ const props = withDefaults(defineProps<{
   placeholder?: string
   toolbarKeys?: ToolBarConfig[]
   excludeKeys?: string[]
+  quickInsertExcludeKeys?: string[]
   bubbleMenus?: BubbleMenuKey[]
   upload?: IUploadConfig
   image?: IUploadConfig
@@ -106,6 +99,7 @@ const props = withDefaults(defineProps<{
     apis?: { [key: string]: any }
     transformRequestRes?: (res: any) => ResponseType
   }
+  searchReplace?: SearchReplaceConfig
 }>(), {
   content: '',
   docType: 'document',
@@ -120,7 +114,19 @@ const props = withDefaults(defineProps<{
   placeholder: '输入 / 唤起更多',
   theme: 'light',
   textBubbleMenu: () => ({ enabled: true }),
+  searchReplace: () => ({ enabled: true, shortcut: true }),
   documentSuggestConfig: () => ({ rules: [] }),
+})
+
+const isSearchReplaceEnabled = computed(() => {
+  if (props.searchReplace?.enabled !== undefined) {
+    return props.searchReplace.enabled
+  }
+  return activeLayout.value.features?.showSearchReplace ?? true
+})
+const isSearchReplaceShortcutEnabled = computed(() => {
+  if (!isSearchReplaceEnabled.value) return false
+  return props.searchReplace?.shortcut !== false
 })
 
 const emit = defineEmits(['update:title', 'update:content', 'update:collaborators'])
@@ -188,7 +194,22 @@ const cptTheme = computed(() => {
   return token ? { token } : {}
 })
 
-const { previewInstance } = useSpeedEditorProvider(props)
+const { previewInstance, updateSearchReplaceVisible } = useSpeedEditorProvider(props)
+
+onKeyStroke((e) => {
+  if ((e.ctrlKey || e.metaKey) && !e.shiftKey && e.key.toLowerCase() === 's') {
+    e.preventDefault()
+    message.info(`${editorConfig.TITLE}会实时保存你的数据，无需手动保存。`)
+    return false
+  }
+  if ((e.ctrlKey || e.metaKey) && !e.shiftKey && e.key.toLowerCase() === 'f') {
+    if (isSearchReplaceShortcutEnabled.value) {
+      e.preventDefault()
+      updateSearchReplaceVisible(true)
+      return false
+    }
+  }
+})
 
 const { updateTheme, cleanup: cleanupAntdCssVars } = useAntdCssVars()
 
@@ -377,10 +398,10 @@ onUnmounted(() => {
         ]">
         <editor-content :editor="editor"
           :class="['h-full', (editor && editor?.storage?.formatPainter?.isFormatPainterActive) ? 'format-painter-active' : '']" />
-        <template v-for="(Overlay, index) in resolvedOverlays" :key="index">
-          <component :is="Overlay" v-if="editor" :editor="editor" />
-        </template>
       </main>
+      <template v-for="(Overlay, index) in resolvedOverlays" :key="index">
+        <component :is="Overlay" v-if="editor" :editor="editor" />
+      </template>
     </div>
   </ConfigProvider>
 </template>

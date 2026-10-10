@@ -4,7 +4,14 @@ import {
   computePosition,
 } from "@floating-ui/dom";
 import type { Editor } from "@tiptap/core";
-import { isChangeOrigin } from "@tiptap/extension-collaboration";
+// 【解耦说明】：官方源码此处静态引入了 @tiptap/extension-collaboration 和 @tiptap/y-tiptap，
+// 用于在协同编辑且鼠标悬停手柄时，处理远端用户改动引起的坐标相对偏移。
+// 但由于 kit-base 也是单机版 lite-editor 的底层，若静态导入会导致所有单机业务工程（如后台管理端）
+// 被迫安装庞大的 yjs 和 y-protocols peer 依赖。
+// 此处改用 ProseMirror 原生 tr.mapping.map(currentNodePos) 处理坐标变动，
+// 且鼠标悬停时本身就会在 mousemove 中重新拾取当前节点并重新定位手柄。
+// 这样既保留了完整的拖拽手柄功能，又彻底摆脱了 kit-base / lite-editor 对 Yjs 的硬性强依赖。
+// import { isChangeOrigin } from "@tiptap/extension-collaboration";
 import type { Node } from "@tiptap/pm/model";
 import {
   type EditorState,
@@ -14,11 +21,11 @@ import {
   TextSelection,
 } from "@tiptap/pm/state";
 import type { EditorView } from "@tiptap/pm/view";
-import {
-  absolutePositionToRelativePosition,
-  relativePositionToAbsolutePosition,
-  ySyncPluginKey,
-} from "@tiptap/y-tiptap";
+// import {
+//   absolutePositionToRelativePosition,
+//   relativePositionToAbsolutePosition,
+//   ySyncPluginKey,
+// } from "@tiptap/y-tiptap";
 
 import { dragHandler } from "./helpers/dragHandler.js";
 import { findElementNextToCoords } from "./helpers/findNextElementFromCursor.js";
@@ -32,37 +39,34 @@ export const defaultComputePositionConfig: ComputePositionConfig = {
   placement: "left-start",
   strategy: "absolute",
 };
-const getRelativePos = (state: EditorState, absolutePos: number) => {
-  const ystate = ySyncPluginKey.getState(state);
-
-  if (!ystate) {
-    return null;
-  }
-
-  return absolutePositionToRelativePosition(
-    absolutePos,
-    ystate.type,
-    ystate.binding.mapping
-  );
-};
-
-// biome-ignore lint/suspicious/noExplicitAny: y-prosemirror (and y-tiptap by extension) does not have types for relative positions
-const getAbsolutePos = (state: EditorState, relativePos: any) => {
-  const ystate = ySyncPluginKey.getState(state);
-
-  if (!ystate) {
-    return -1;
-  }
-
-  return (
-    relativePositionToAbsolutePosition(
-      ystate.doc,
-      ystate.type,
-      relativePos,
-      ystate.binding.mapping
-    ) || 0
-  );
-};
+// 【解耦说明】：保留原实现作为注释参考，解耦 Yjs 依赖。
+// const getRelativePos = (state: EditorState, absolutePos: number) => {
+//   const ystate = ySyncPluginKey.getState(state);
+//   if (!ystate) {
+//     return null;
+//   }
+//   return absolutePositionToRelativePosition(
+//     absolutePos,
+//     ystate.type,
+//     ystate.binding.mapping
+//   );
+// };
+// 
+// // biome-ignore lint/suspicious/noExplicitAny: y-prosemirror (and y-tiptap by extension) does not have types for relative positions
+// const getAbsolutePos = (state: EditorState, relativePos: any) => {
+//   const ystate = ySyncPluginKey.getState(state);
+//   if (!ystate) {
+//     return -1;
+//   }
+//   return (
+//     relativePositionToAbsolutePosition(
+//       ystate.doc,
+//       ystate.type,
+//       relativePos,
+//       ystate.binding.mapping
+//     ) || 0
+//   );
+// };
 
 const getOuterDomNode = (view: EditorView, domNode: HTMLElement) => {
   let tmpDomNode = domNode;
@@ -240,34 +244,23 @@ export const DragHandlePlugin = ({
 
           // Something has changed and drag handler is visible…
           if (tr.docChanged && currentNodePos !== -1 && element) {
-            // Yjs replaces the entire document on every incoming change and needs a special handling.
-            // If change comes from another user …
-            if (isChangeOrigin(tr)) {
-              // https://discuss.yjs.dev/t/y-prosemirror-mapping-a-single-relative-position-when-doc-changes/851/3
-              const newPos = getAbsolutePos(state, currentNodeRelPos);
+            // 【解耦说明】：官方源码此处原为：
+            //   if (isChangeOrigin(tr)) {
+            //     const newPos = getAbsolutePos(state, currentNodeRelPos);
+            //     ...
+            //   } else {
+            //     const newPos = tr.mapping.map(currentNodePos);
+            //     ...
+            //     currentNodeRelPos = getRelativePos(state, currentNodePos);
+            //   }
+            // 为了让单机版 lite-editor 彻底与 yjs/y-protocols 解耦，不再静态 import 协同库，
+            // 此处统一采用 ProseMirror 原生的 tr.mapping.map 进行坐标映射更新。
+            // 鼠标悬停时本身也会在 mousemove 中重新拾取当前节点并重新定位手柄。
+            const newPos = tr.mapping.map(currentNodePos);
 
-              if (newPos !== currentNodePos) {
-                // Set the new position for our current node.
-                currentNodePos = newPos;
-
-                // We will get the outer node with data and position in views update method.
-              }
-            } else {
-              // … otherwise use ProseMirror mapping to update the position.
-              const newPos = tr.mapping.map(currentNodePos);
-
-              if (newPos !== currentNodePos) {
-                // TODO: Remove
-                // console.log('Position has changed …', { old: currentNodePos, new: newPos }, tr);
-
-                // Set the new position for our current node.
-                currentNodePos = newPos;
-
-                // Memorize relative position to retrieve absolute position in case of collaboration
-                currentNodeRelPos = getRelativePos(state, currentNodePos);
-
-                // We will get the outer node with data and position in views update method.
-              }
+            if (newPos !== currentNodePos) {
+              currentNodePos = newPos;
+              // 原官方代码：currentNodeRelPos = getRelativePos(state, currentNodePos);
             }
           }
 
@@ -342,8 +335,8 @@ export const DragHandlePlugin = ({
             currentNode = outerNode;
             currentNodePos = outerNodePos;
 
-            // Memorize relative position to retrieve absolute position in case of collaboration
-            currentNodeRelPos = getRelativePos(view.state, currentNodePos);
+            // 【解耦说明】：原官方代码在此记录 Yjs 相对位置，已注释解耦：
+            // currentNodeRelPos = getRelativePos(view.state, currentNodePos);
 
             onNodeChange?.({ editor, node: currentNode, pos: currentNodePos });
 
@@ -473,8 +466,8 @@ export const DragHandlePlugin = ({
                 currentNode = outerNode;
                 currentNodePos = outerNodePos;
 
-                // Memorize relative position to retrieve absolute position in case of collaboration
-                currentNodeRelPos = getRelativePos(view.state, currentNodePos);
+                // 【解耦说明】：原官方代码在此记录 Yjs 相对位置，已注释解耦：
+                // currentNodeRelPos = getRelativePos(view.state, currentNodePos);
 
                 onNodeChange?.({
                   editor,

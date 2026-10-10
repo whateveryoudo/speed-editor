@@ -38,6 +38,7 @@ const props = withDefaults(
     menubar: false,
     hideBorder: false,
     layout: 'default',
+    searchReplace: () => ({ enabled: false, shortcut: false }),
   },
 )
 

@@ -1,6 +1,6 @@
 {
   "name": "@speed-tiptap-editor/composables",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -21,16 +21,16 @@
   },
   "dependencies": {
     "@speed-tiptap-editor/shared": "workspace:^",
-    "@vueuse/core": "^11.0.0"
+    "@tiptap/core": "3.13.0",
+    "@vueuse/core": "^11.0.0",
+    "lodash-es": "^4.17.21"
   },
   "peerDependencies": {
-    "vue": "^3.4.0",
-    "@tiptap/core": "^3.0.0",
-    "lodash-es": "^4.17.0"
+    "vue": "^3.4.0"
   },
   "devDependencies": {
     "@speed-tiptap-editor/shared": "workspace:^",
-    "@tiptap/core": "^3.0.6",
+    "@tiptap/core": "3.13.0",
     "@types/lodash-es": "^4.17.12",
     "@vueuse/core": "^11.3.0",
     "lodash-es": "^4.17.21",

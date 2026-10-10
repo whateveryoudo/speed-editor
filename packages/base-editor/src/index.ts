@@ -12,3 +12,15 @@ export type {
   BubbleMenuKey,
   SpeedEditorPlugin,
 } from '@speed-tiptap-editor/shared'
+export {
+  Extension,
+  Node,
+  Mark,
+  mergeAttributes,
+  Editor,
+  type ExtensionConfig,
+  type NodeConfig,
+  type MarkConfig,
+  type Extensions,
+  type JSONContent,
+} from '@tiptap/core'

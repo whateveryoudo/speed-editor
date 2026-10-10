@@ -16,3 +16,16 @@ export type {
   CollaborationUser,
   UseCollaborationOptions,
 } from '@speed-tiptap-editor/collaboration-editor'
+export type { SpeedEditorPlugin } from '@speed-tiptap-editor/shared'
+export {
+  Extension,
+  Node,
+  Mark,
+  mergeAttributes,
+  Editor,
+  type ExtensionConfig,
+  type NodeConfig,
+  type MarkConfig,
+  type Extensions,
+  type JSONContent,
+} from '@speed-tiptap-editor/base-editor'

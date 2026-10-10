@@ -1,5 +1,27 @@
 # @speed-tiptap-editor/lite-editor
 
+## 2.0.5
+
+### Patch Changes
+
+- 调整依赖位置明确版本
+- Updated dependencies
+  - @speed-tiptap-editor/extension-kit@2.0.9
+  - @speed-tiptap-editor/base-editor@2.0.9
+  - @speed-tiptap-editor/kit-base@2.0.9
+  - @speed-tiptap-editor/shared@2.0.4
+
+## 2.0.4
+
+### Patch Changes
+
+- 增加一些参数定义,支持excludekeys配置
+- Updated dependencies
+  - @speed-tiptap-editor/extension-kit@2.0.8
+  - @speed-tiptap-editor/base-editor@2.0.8
+  - @speed-tiptap-editor/kit-base@2.0.8
+  - @speed-tiptap-editor/shared@2.0.3
+
 ## 2.0.3
 
 ### Patch Changes
