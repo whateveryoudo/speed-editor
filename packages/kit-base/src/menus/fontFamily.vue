@@ -42,8 +42,13 @@ const DEFAULT_FONT_OPTIONS = [
   { value: 'FangSong_GB2312', label: '仿宋_GB2312' },
   { value: 'STSong', label: '华文宋体' },
   { value: 'STFangsong', label: '华文仿宋' },
+  { value: 'FZFangSong-Z02S', label: '方正仿宋简体' },
+  { value: 'FZXiaoBiaoSong-B05S', label: '方正小标宋' },
   { value: 'Microsoft YaHei', label: '微软雅黑' },
   { value: 'PingFang SC', label: '苹方' },
+  { value: 'Hiragino Sans GB', label: '冬青黑体简体中文' },
+  { value: 'DengXian', label: '等线' },
+  { value: 'DengXian Light', label: '等线 Light' },
   { value: 'Arial', label: 'Arial' },
   { value: 'Times New Roman', label: 'Times New Roman' },
 ]

@@ -1,5 +1,11 @@
 # @speed-editor/shared
 
+## 2.0.5
+
+### Patch Changes
+
+- 整体包名调整
+
 ## 2.0.4
 
 ### Patch Changes

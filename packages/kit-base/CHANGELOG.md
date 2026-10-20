@@ -1,5 +1,15 @@
 # @speed-editor/kit-base
 
+## 2.0.10
+
+### Patch Changes
+
+- 整体包名调整
+- Updated dependencies
+  - @speed-editor/composables@2.0.4
+  - @speed-editor/schema@2.0.7
+  - @speed-editor/shared@2.0.5
+
 ## 2.0.9
 
 ### Patch Changes

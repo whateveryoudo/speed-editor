@@ -1,5 +1,16 @@
 # @speed-editor/lite-editor
 
+## 2.0.6
+
+### Patch Changes
+
+- 整体包名调整
+- Updated dependencies
+  - @speed-editor/base-editor@2.0.10
+  - @speed-editor/extension-kit@2.0.10
+  - @speed-editor/kit-base@2.0.10
+  - @speed-editor/shared@2.0.5
+
 ## 2.0.5
 
 ### Patch Changes

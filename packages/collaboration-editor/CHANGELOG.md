@@ -1,5 +1,14 @@
 # @speed-editor/collaboration-editor
 
+## 2.0.3
+
+### Patch Changes
+
+- 整体包名调整
+- Updated dependencies
+  - @speed-editor/base-editor@2.0.10
+  - @speed-editor/shared@2.0.5
+
 ## 2.0.2
 
 ### Patch Changes

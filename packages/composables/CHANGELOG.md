@@ -1,5 +1,13 @@
 # @speed-editor/composables
 
+## 2.0.4
+
+### Patch Changes
+
+- 整体包名调整
+- Updated dependencies
+  - @speed-editor/shared@2.0.5
+
 ## 2.0.3
 
 ### Patch Changes

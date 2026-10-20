@@ -1,5 +1,11 @@
 # @speed-editor/schema
 
+## 2.0.7
+
+### Patch Changes
+
+- 整体包名调整
+
 ## 2.0.6
 
 ### Patch Changes
