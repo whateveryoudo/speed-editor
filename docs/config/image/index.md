@@ -1,196 +1,189 @@
-# 图片上传配置（image）
+# 上传配置与架构（Image & File Upload）
 
-不同于大多数编辑器的上传配置，Speed Tiptap Editor 优先支持你传入ajax的请求集合[why not url?](#why-not-url)
+Speed Tiptap Editor 采用**分层级联合并（Cascading Configuration）**与**统一管道抽象**的设计，外部既支持通过全局注入默认 API，也支持在组件 Props 层面传入通用上传或类型专属配置。
 
-### 初始use时，传入配置
+---
+
+## 一、配置优先级与层级
+
+所有上传相关配置（包括 `accept`、`maxSize`、`uploadApis`、`action`、`headers`、`data`、`beforeUpload` 等）按照以下优先级从高到低自动深度合并：
+
+$$\begin{aligned}
+\text{Props 专属配置 } (props.image / props.file) &\longrightarrow \text{Props 通用上传 } (props.upload) \\
+&\longrightarrow \text{Editor 全局专属 } (global.image / global.file) \\
+&\longrightarrow \text{Editor 全局上传 } (global.upload) \\
+&\longrightarrow \text{Editor 全局通用 APIs } (global.apis)
+\end{aligned}$$
+
+- **通用场景**：在 `app.use` 或 `props.upload` 中配置一次通用接口，所有扩展（图片、附件等）自动继承。
+- **细分场景**：若图片与附件的格式、大小或上传接口不同，可通过 `props.image` 或 `props.file` 覆盖对应字段。
+
+---
+
+## 二、配置方式示例
+
+### 1. 全局配置（`app.use`）
+
+在应用入口处注册全局默认上传接口：
 
 ```ts
-import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./src/router";
-import SpeedTiptapEditor from "speed-editor";
-import "speed-editor/dist/style.css";
-import { createPinia } from "pinia";
-import { useGlobalStore } from "#example/store/index";
-import "uno.css";
-
+import { createApp } from 'vue'
+import App from './App.vue'
+import SpeedTiptapEditor from '@speed-editor/base-editor/plugin'
 import {
   fileDownload,
   fileUploadSingle,
   fileUploadMulti,
   fileDel,
-} from "./src/api/attachement";
-// 配置一些请求地址，用于上传文件
-createApp(App)
-  .use(router)
-  .use(createPinia())
-  .use(SpeedTiptapEditor, {
-    // 定义编辑器的一些公共配置
-    apis: {
-      fileDownload: fileDownload,
-      fileUploadSingle: fileUploadSingle,
-      fileUploadMulti: fileUploadMulti,
-      fileDel: fileDel,
-      // 主要用于图片预览
-      getPreviewUrl: (fileId: string) => {
-        // 实际情况替换为实际地址(此处为本地启动的node附件服务)
-        const globalStore = useGlobalStore();
-        const token = globalStore.openJwt
-          ? localStorage.getItem("speed-tiptap-token")
-          : "speed-test-token"; // 未开启jwt 则使用一个模拟值
-        return (
-          "//localhost:3005/onlyoffice/filePreview/" +
-          fileId +
-          `?token=${token}`
-        );
-      },
-    },
-  })
-  .mount("#app");
+} from '@/api/attachment'
+
+const app = createApp(App)
+
+app.use(SpeedTiptapEditor, {
+  apis: {
+    fileDownload,
+    fileUploadSingle,
+    fileUploadMulti,
+    fileDel,
+    // 图片/文件预览地址
+    getPreviewUrl: (fileId: string) => `/api/attachment/preview/${fileId}`,
+    getFilePreviewUrl: (fileId: string) => `/api/attachment/filePreview/${fileId}`,
+  },
+  // 可选：全局设置默认 token
+  access_token: 'your-auth-token',
+})
+
+app.mount('#app')
 ```
 
-### 说明点
+---
 
-- 此处的配置会作用于`image`和`file`的上传
-- `getPreviewUrl` 为`file`下的预览页面，可根据后端提供地址自行配置，本项目提供[完整示例](https://github.com/whateveryoudo/speed-editor),对应[node示例](https://github.com/whateveryoudo/speed-apis),你拉取两个仓库后，启动 `pnpm run dev`,
-  editor运行在`localhost://3003`，后端运行在`localhost://3005`(后端仅提供相关api辅助功能,并未连接数据库),如需要查看附件页面需拉取，[onlyoffice服务](https://github.com/whateveryoudo/onlyoffice),执行`./start.sh`
+### 2. 组件 Props 通用配置（`upload`）
 
-### upload 配置传入
+在具体编辑器组件上配置通用上传行为，适用于单个页面需定制请求参数的场景：
 
 ```vue
 <template>
-  <SpeedTiptapEditor v-bind="simpleProps" />
+  <SpeedEditor :upload="uploadConfig" />
 </template>
-<script lang="ts" setup>
-import {
-  fileDownload,
-  fileUploadSingle,
-  fileUploadMulti,
-  fileDel,
-} from "#example/api/attachement";
 
-const simpleProps = {
-  upload: {
-    uploadApis: {
-      fileDownload: fileDownload,
-      fileUploadSingle: fileUploadSingle,
-      fileUploadMulti: fileUploadMulti,
-      fileDel: fileDel,
-      // 主要用于图片预览
-      getPreviewUrl: (fileId: string) => {
-        // 实际情况替换为实际地址(此处为本地启动的node附件服务)
-        const globalStore = useGlobalStore();
-        const token = globalStore.openJwt
-          ? localStorage.getItem("speed-tiptap-token")
-          : "speed-test-token"; // 未开启jwt 则使用一个模拟值
-        return (
-          "//localhost:3005/attachment/preview/" + fileId + `?token=${token}`
-        );
-      },
-      // 主要用于文件预览
-      getFilePreviewUrl: (fileId: string) => {
-        // 实际情况替换为实际地址(此处为本地启动的node附件服务)
-        const globalStore = useGlobalStore();
-        const token = globalStore.openJwt
-          ? localStorage.getItem("speed-tiptap-token")
-          : "speed-test-token"; // 未开启jwt 则使用一个模拟值
-        return (
-          "//localhost:3005/onlyoffice/filePreview/" +
-          fileId +
-          `?token=${token}`
-        );
-      },
-    },
+<script lang="ts" setup>
+import { SpeedEditor } from '@speed-editor/base-editor'
+import { fileUploadSingle, fileDel } from '@/api/attachment'
+
+const uploadConfig = {
+  maxSize: 20, // 限制 20MB
+  uploadApis: {
+    fileUploadSingle,
+    fileDel,
+    getPreviewUrl: (fileId: string) => `/api/preview/${fileId}`,
   },
-};
+}
 </script>
 ```
 
-upload配置会作用到`image`和`file`的上传，优先级高于use时传入的配置
+---
 
-### 上传配置`IUploadConfig`
+### 3. 组件 Props 专属配置（`image` / `file`）
+
+当需要对图片和附件进行差异化控制时：
+
+```vue
+<template>
+  <SpeedEditor
+    :upload="commonUploadConfig"
+    :image="imageConfig"
+    :file="fileConfig"
+  />
+</template>
+
+<script lang="ts" setup>
+import { SpeedEditor } from '@speed-editor/base-editor'
+
+const commonUploadConfig = {
+  uploadApis: {
+    fileUploadSingle,
+    getPreviewUrl: (id: string) => `/preview/${id}`,
+  },
+}
+
+// 专属图片配置：单文件限 5MB，限制格式
+const imageConfig = {
+  maxSize: 5,
+  accept: '.png,.jpg,.jpeg,.webp',
+}
+
+// 专属附件配置：放宽到 100MB
+const fileConfig = {
+  maxSize: 100,
+}
+</script>
+```
+
+---
+
+### 4. 传统 URL 地址模式（`action` 适配器）
+
+若不希望手动提供 Promise 函数，亦可直接传入后端 HTTP 上传 URL：
+
+```vue
+<template>
+  <SpeedEditor
+    :image="{
+      action: '/api/v1/upload',
+      headers: { Authorization: 'Bearer token' },
+      data: { category: 'editor-images' },
+    }"
+  />
+</template>
+```
+
+> **实现机制**：系统内置了 `action` 自动适配器，当配置了 `action` 时，会自动将其封装为标准接口接入流水线，**统一享受格式校验、大小拦截、`beforeUpload` 与 Loading 状态管理**，无需在组件内部区分两套分支。
+
+---
+
+## 三、配置项接口定义（`IUploadConfig`）
 
 ```ts
 interface IUploadConfig {
-  multiple?: boolean; // 是否支持多选
-  maxSize?: number; // 最大上传大小（单位：MB）
-  accept?: string; // ,拼接的mime或文件扩展名（如：.svg,.png,.bmp,.jpg,.jpeg,.gif,.webp,.heic,推荐使用.xx，mime仅会在选择文件进行过滤）,mime参考：https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/file#accept
-  action?: string; // 上传地址（注：内部会通过此配置判断是否是地址上传，配置了地址后会忽略api中的fileUploadSingle | fileUploadMulti）
-  headers?: Record<string, string>; // 上传请求头(action配置后)
-  data?: Record<string, any> | ((file: File) => Record<string, any>); // 上传额外参数(action配置后)
-  beforeUpload?: (file: File, fileList: File[]) => boolean | Promise<boolean>; // 上传前校验(action配置后)
-  // 支持直接传入的ajax请求(同上use传入)
+  multiple?: boolean // 是否支持多选
+  maxSize?: number // 单个文件最大大小（单位：MB）
+  accept?: string | string[] // 允许的文件扩展名（如 '.png,.jpg' 或 ['.png', '.jpg']）
+  action?: string // 传统上传接口 URL
+  headers?: Record<string, string> // 上传请求头（action 模式下有效）
+  data?: Record<string, any> | ((file: File) => Record<string, any>) // 上传附带数据
+  beforeUpload?: (file: File, fileList: File[]) => boolean | Promise<boolean> // 上传前自定义拦截校验
+  transformFileItem?: (res: any) => any // 响应结果字段映射转换
   uploadApis?: {
-    fileDownload: () => Promise<string>;
-    fileUploadSingle: (file: File) => Promise<string>;
-    fileUploadMulti: (files: File[]) => Promise<string[]>;
-    fileDel: (fileId: string) => Promise<boolean>;
-    getPreviewUrl: (fileId: string) => string;
-  };
+    fileUploadSingle: (formData: FormData) => Promise<any>
+    fileUploadMulti?: (formData: FormData) => Promise<any>
+    fileDel?: (fileId: string) => Promise<any>
+    fileDownload?: (fileId: string) => Promise<any>
+    getPreviewUrl?: (fileId: string) => string
+    getFilePreviewUrl?: (fileId: string) => string
+  }
 }
 ```
 
-### 注意点：action会使用普通请求，覆盖内置上传
+---
 
-### image 配置传入 (说明同上)
+## 四、自定义扩展接入（开发者指南）
 
-```vue
-<template>
-  <SpeedTiptapEditor v-bind="simpleProps" />
-</template>
-<script lang="ts" setup>
-import {
-  fileDownload,
-  fileUploadSingle,
-  fileUploadMulti,
-  fileDel,
-} from "#example/api/attachement";
+若需要开发新的上传类 NodeView（如音频、视频扩展），可直接使用内置 Hook：
 
-const simpleProps = {
-  image: {
-    uploadApis: {
-      fileDownload: fileDownload,
-      fileUploadSingle: fileUploadSingle,
-      fileUploadMulti: fileUploadMulti,
-      fileDel: fileDel,
-      // 主要用于图片预览
-      getPreviewUrl: (fileId: string) => {
-        // 实际情况替换为实际地址(此处为本地启动的node附件服务)
-        const globalStore = useGlobalStore();
-        const token = globalStore.openJwt
-          ? localStorage.getItem("speed-tiptap-token")
-          : "speed-test-token"; // 未开启jwt 则使用一个模拟值
-        return (
-          "//localhost:3005/attachment/preview/" + fileId + `?token=${token}`
-        );
-      },
-      // 主要用于文件预览
-      getFilePreviewUrl: (fileId: string) => {
-        // 实际情况替换为实际地址(此处为本地启动的node附件服务)
-        const globalStore = useGlobalStore();
-        const token = globalStore.openJwt
-          ? localStorage.getItem("speed-tiptap-token")
-          : "speed-test-token"; // 未开启jwt 则使用一个模拟值
-        return (
-          "//localhost:3005/onlyoffice/filePreview/" +
-          fileId +
-          `?token=${token}`
-        );
-      },
-    },
+```ts
+import { useEditorUpload } from '@speed-editor/extension-kit'
+
+const {
+  resolvedConfig, // 经过多层级联计算后的终态配置
+  uploadLoading,  // 上传加载态
+  uploadFailed,   // 失败态
+  startUpload,    // 触发上传（内置校验 -> 上传 -> 回调）
+} = useEditorUpload({
+  type: 'video', // 扩展类型
+  defaultAccept: '.mp4,.mov',
+  onSuccess: async (files, res) => {
+    // 写入节点属性
   },
-};
-</script>
+})
 ```
-
-### 注意点
-
-1. 3者优先级： `image` > `upload` > `use时传入的配置`
-2. image 会和 upload进行merge, 常用场景（请求配置upload，需要对大小，格式单独区分，走自身配置）
-
-
-### Why not url?
-
-1. 实际业务中，图片上传往往需要携带token信息
-2. 编辑器自身已经封装了大部分的图片处理，如：图片上传、预览、删除 你只需要传入对应请求即可
-3. 部分场景下，后端返回的是文件id，而不是url，需要根据id重新获取文件流

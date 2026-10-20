@@ -20,32 +20,25 @@
       <img v-else @click="handlePreivew" :src="displaySrc" :alt="nodeAttrs.alt" :style="previewImgStyle" />
     </template>
     <input ref="ImageInput" type="file" class="hidden-input" hidden
-      :accept="imageConfig?.accept ?? '.svg,.png,.bmp,.jpg,.jpeg,.gif,.webp,.heic'" @change="handleFileChange" />
+      :accept="resolvedConfig.accept ?? '.svg,.png,.bmp,.jpg,.jpeg,.gif,.webp,.heic'" @change="handleFileChange" />
   </NodeViewWrapper>
 </template>
 
 <script setup lang="ts">
-import { PropType, inject, ref, computed, watch, Ref } from 'vue'
+import { PropType, ref, computed, watch } from 'vue'
 import { NodeViewWrapper } from '@tiptap/vue-3'
 import { Editor } from '@tiptap/core'
 import ImgPlaceholder from '@ek/assets/image/img-placeholder.png'
-import axios from 'axios'
 import {
   getEditorContainerDOMSize,
   getImageWidthHeight,
 } from '@ek/prose-utils'
-import { useCustomUpload } from 'speed-components-ui/hooks'
-import { Spin, message } from 'ant-design-vue'
+import { Spin } from 'ant-design-vue'
 import { useSpeedEditor } from '@speed-editor/composables'
+import { useEditorUpload } from '@ek/hooks/useEditorUpload'
 import ImageResizeFrame from './ImageResizeFrame.vue'
 
-const speedUseTiptapConfig = inject(
-  'speedUseTiptapConfig',
-  ref({}),
-) as Ref<any>
-const { speedTiptapConfig, previewInstance, editableCpt } = useSpeedEditor()
-const { image: imageConfig } = speedTiptapConfig.value
-const uploadFailed = ref(false)
+const { previewInstance, editableCpt } = useSpeedEditor()
 
 const props = defineProps({
   node: {
@@ -76,7 +69,7 @@ const ImageInput = ref<HTMLInputElement>()
 const measuredWidth = ref<number | null>(null)
 const measuredHeight = ref<number | null>(null)
 
-const nodeAttrs = computed(() => props.node?.attrs)
+const nodeAttrs = computed(() => props.node?.attrs || {})
 const maxWidth = getEditorContainerDOMSize(props.editor)?.width || 760
 
 const parseSize = (v: unknown) => {
@@ -103,15 +96,43 @@ const previewImgStyle = computed(() => {
     maxWidth: '100%',
   }
 })
-// 这里提供展示url(采用拼接token的方式)
+
+// 统一接入 useEditorUpload Hook 处理配置级联、拦截、上传及状态
+const { resolvedConfig, uploadLoading, uploadFailed, startUpload } = useEditorUpload({
+  type: 'image',
+  defaultAccept: '.svg,.png,.bmp,.jpg,.jpeg,.gif,.webp,.heic',
+  onSuccess: async (files, res) => {
+    // 移除 TipTap storage 中的临时文件缓存
+    const tempId = nodeAttrs.value.tempFileId || nodeAttrs.value.fileId
+    if (tempId) {
+      props.editor?.commands?.removeTempFile?.(tempId)
+    }
+
+    const fileItem = Array.isArray(files) && files.length > 0 ? files[0] : (Array.isArray(res?.data) ? res.data[0] : res?.data)
+    const getPreviewUrl = resolvedConfig.value.apis?.getPreviewUrl
+    const rawPreviewUrl = getPreviewUrl && fileItem?.id ? getPreviewUrl(fileItem.id) : (fileItem?.previewUrl || '')
+    const relativePath = rawPreviewUrl ? rawPreviewUrl.split('?')[0] : ''
+    const size = await getImageWidthHeight(rawPreviewUrl || relativePath, maxWidth)
+
+    props.updateAttributes?.({
+      ...size,
+      src: relativePath, // 存入纯路径，避免 token 过期失效
+      originalWidth: size.width,
+      originalHeight: size.height,
+    })
+  },
+})
+
+// 这里提供展示 url（通过 access_token 拼接，支持全局注入与 props 注入）
 const displaySrc = computed(() => {
   const src = nodeAttrs.value?.src
   if (src) {
-    if (src?.startsWith('data:')) {
+    if (src.startsWith('data:')) {
       return src
     }
-    if (speedUseTiptapConfig?.value?.access_token) {
-      return `${src.split('?')[0]}?access_token=${speedUseTiptapConfig?.value?.access_token}`
+    const token = resolvedConfig.value.accessToken
+    if (token) {
+      return `${src.split('?')[0]}?access_token=${token}`
     }
   }
   return src
@@ -170,144 +191,10 @@ watch(
   { immediate: true },
 )
 
-const uploadOptions = computed(() => {
-  const rawAccept =
-    speedTiptapConfig?.value?.upload?.accept ||
-    speedTiptapConfig?.value?.image?.accept ||
-    speedUseTiptapConfig?.value?.image?.accept ||
-    undefined
-  const acceptTypes = Array.isArray(rawAccept)
-    ? rawAccept
-    : typeof rawAccept === 'string'
-      ? rawAccept.split(',')
-      : []
-  return {
-    acceptTypes,
-    maxSize:
-      speedTiptapConfig?.value?.upload?.maxSize ||
-      speedTiptapConfig?.value?.image?.maxSize ||
-      speedUseTiptapConfig?.value?.image?.maxSize,
-    apis: {
-      fileUploadMulti:
-        speedTiptapConfig?.value?.upload?.uploadApis?.fileUploadMulti ||
-        speedTiptapConfig?.value?.image?.uploadApis?.fileUploadMulti ||
-        speedUseTiptapConfig?.value?.apis?.fileUploadMulti,
-      fileUploadSingle:
-        speedTiptapConfig?.value?.upload?.uploadApis?.fileUploadSingle ||
-        speedTiptapConfig?.value?.image?.uploadApis?.fileUploadSingle ||
-        speedUseTiptapConfig?.value?.apis?.fileUploadSingle,
-      fileDel:
-        speedTiptapConfig?.value?.upload?.uploadApis?.fileDel ||
-        speedTiptapConfig?.value?.image?.uploadApis?.fileDel ||
-        speedUseTiptapConfig?.value?.apis?.fileDel,
-      fileDownload:
-        speedTiptapConfig?.value?.upload?.uploadApis?.fileDownload ||
-        speedTiptapConfig?.value?.image?.uploadApis?.fileDownload ||
-        speedUseTiptapConfig?.value?.apis?.fileDownload,
-    },
-    transformResult:
-      speedTiptapConfig?.value?.upload?.transformFileItem ||
-      speedTiptapConfig?.value?.image?.transformFileItem ||
-      speedUseTiptapConfig?.value?.upload?.transformFileItem,
-    afterUpload: async (files: any[], res: any) => {
-      props.editor.commands.removeTempFile(nodeAttrs.value.fileId)
-      if (!res?.success) {
-        message.error(res?.message)
-        uploadFailed.value = true
-        return
-      }
-      const file = files[0]
-      const getPreviewUrl =
-        speedTiptapConfig?.value?.upload?.uploadApis?.getPreviewUrl ||
-        speedTiptapConfig?.value?.image?.uploadApis?.getPreviewUrl ||
-        speedUseTiptapConfig?.value?.apis?.getPreviewUrl
-
-      const imgUrl = getPreviewUrl ? getPreviewUrl(file.id) : ''
-      const size = await getImageWidthHeight(imgUrl, maxWidth)
-      props.updateAttributes?.({
-        ...size,
-        src: imgUrl,
-        originalWidth: size.width,
-        originalHeight: size.height,
-      })
-    },
-    uploadError: (error: any) => {
-      message.error(error.message)
-      uploadFailed.value = true
-    },
-  }
-})
-
-const { customRequest, beforeUpload: commonBeforeUpload, uploadLoading } =
-  useCustomUpload(uploadOptions)
-
-const manualBeforeUpload = (file: File | File[]) => {
-  const beforeUpload =
-    speedTiptapConfig?.value?.image?.beforeUpload ||
-    speedTiptapConfig?.value?.upload?.beforeUpload ||
-    speedUseTiptapConfig?.value?.image?.beforeUpload
-  const fileItem = Array.isArray(file) ? file[0] : file
-  if (beforeUpload) return beforeUpload(fileItem)
-  return commonBeforeUpload(fileItem as any)
-}
-
-const startUpload = (file: File) => {
-  const action =
-    speedTiptapConfig?.value?.image?.action ||
-    speedTiptapConfig?.value?.upload?.action
-  if (!action) {
-    customRequest({ file })
-    return
-  }
-  if (!manualBeforeUpload(file)) return
-  const headers =
-    speedTiptapConfig?.value?.image?.headers ||
-    speedTiptapConfig?.value?.upload?.headers ||
-    speedUseTiptapConfig?.value?.image?.headers
-  const data =
-    speedTiptapConfig?.value?.image?.data ||
-    speedTiptapConfig?.value?.upload?.data ||
-    speedUseTiptapConfig?.value?.image?.data
-  axios
-    .post(action, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        ...headers,
-      },
-      data: typeof data === 'function' ? data(file) : data,
-    })
-    .then(async (res: any) => {
-      props.editor.commands.removeTempFile(nodeAttrs.value.fileId)
-      if (!res?.success) {
-        message.error(res?.message)
-        uploadFailed.value = true
-        return
-      }
-      const fileItem = Array.isArray(res.data) ? res.data[0] : res.data
-      const getPreviewUrl =
-        speedTiptapConfig?.value?.upload?.uploadApis?.getPreviewUrl ||
-        speedTiptapConfig?.value?.image?.uploadApis?.getPreviewUrl ||
-        speedUseTiptapConfig?.value?.apis?.getPreviewUrl
-      const imgUrl = getPreviewUrl ? getPreviewUrl(fileItem.id) : ''
-      const relativePath = imgUrl.split('?')[0]
-      const size = await getImageWidthHeight(imgUrl, maxWidth)
-      props.updateAttributes?.({
-        ...size,
-        src: relativePath, // 这里存入的是相对路径（避免存入json后 token过期）
-        originalWidth: size.width,
-        originalHeight: size.height,
-      })
-    })
-    .catch((err) => {
-      message.error(err)
-      uploadFailed.value = true
-    })
-}
-
 const handlePreivew = () => {
-  if (!editableCpt.value && previewInstance.value) {
+  if (!editableCpt.value && (previewInstance.value as any)) {
     // token 由 EditorPreviewImage 内部拼接
-    previewInstance.value.previewImage(nodeAttrs.value?.src)
+    ;(previewInstance.value as any).previewImage(nodeAttrs.value?.src)
   }
 }
 
@@ -316,15 +203,15 @@ const uploadAgain = () => {
 }
 
 const handleFileChange = (event: any) => {
-  startUpload(event?.target?.files[0])
+  startUpload(event?.target?.files?.[0])
 }
 
 watch(
-  () => nodeAttrs.value.tempFileId,
+  () => nodeAttrs.value?.tempFileId,
   (tempFileId: string) => {
     if (!tempFileId) return
-    const file = (props.editor.storage as any).image.tempFileMap.get(tempFileId)
-    if (file && !nodeAttrs.value.src) {
+    const file = (props.editor.storage as any)?.image?.tempFileMap?.get(tempFileId)
+    if (file && !nodeAttrs.value?.src) {
       startUpload(file)
     }
   },

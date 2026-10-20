@@ -52,14 +52,11 @@ import {
   DownloadOutlined,
 } from "@ant-design/icons-vue";
 import { type Editor } from "@tiptap/core";
-import { useSpeedEditor } from '@speed-editor/composables';
-// 初始化注入的对象
-const speedUseTiptapConfig = inject(
-  "speedUseTiptapConfig",
-  ref({})
-) as Ref<any>;
+import { useSpeedEditor, useEditorUploadConfig } from '@speed-editor/composables';
+
+const { resolvedConfig } = useEditorUploadConfig('file');
 // 顶层组件注入对象
-const { speedTiptapConfig, editableCpt } = useSpeedEditor();
+const { editableCpt } = useSpeedEditor();
 
 const props = defineProps({
   editor: {
@@ -89,9 +86,7 @@ const shouldShow = () => {
 
 // 调用本地服务
 const handlePreivew = () => {
-  const getFilePreviewUrl = speedTiptapConfig?.value?.upload?.uploadApis?.getFilePreviewUrl
-    || speedTiptapConfig?.value?.image?.uploadApis?.getFilePreviewUrl
-    || speedUseTiptapConfig?.value?.apis?.getFilePreviewUrl;
+  const getFilePreviewUrl = resolvedConfig.value.apis?.getFilePreviewUrl;
 
   getFilePreviewUrl && window.open(getFilePreviewUrl(attributes.value.fileId));
 };

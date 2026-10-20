@@ -46,14 +46,9 @@ import {
   CodeOutlined,
 } from "@ant-design/icons-vue";
 import { type IFileItem } from "speed-components-ui/hooks";
-import { useSpeedEditor } from '@speed-editor/composables';
-// 初始化注入的对象
-const speedUseTiptapConfig = inject(
-  "speedUseTiptapConfig",
-  ref({})
-) as Ref<any>;
-// 顶层组件注入对象
-const { speedTiptapConfig } = useSpeedEditor();
+import { useEditorUploadConfig } from '@speed-editor/composables';
+
+const { resolvedConfig } = useEditorUploadConfig('file');
 
 const props = withDefaults(
   defineProps<{
@@ -76,11 +71,7 @@ const emit = defineEmits<{
   (e: "download", file: IFileItem): void;
 }>();
 const handlePreview = () => {
-  const getFilePreviewUrl = speedTiptapConfig?.value?.upload?.uploadApis?.getFilePreviewUrl
-    || speedTiptapConfig?.value?.image?.uploadApis?.getFilePreviewUrl
-    || speedUseTiptapConfig?.value?.apis?.getFilePreviewUrl;
-
-
+  const getFilePreviewUrl = resolvedConfig.value.apis?.getFilePreviewUrl;
   props.fileId && window.open(getFilePreviewUrl ? getFilePreviewUrl(props.fileId) : "");
 };
 const fileTypeIcons = {
