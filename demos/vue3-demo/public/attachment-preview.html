@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>附件在线预览说明 - Speed Editor</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .preview-card {
+      background: #ffffff;
+      max-width: 620px;
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+      border: 1px solid #e2e8f0;
+      padding: 36px 32px;
+      text-align: center;
+    }
+    .icon-badge {
+      width: 64px;
+      height: 64px;
+      background: #eff6ff;
+      color: #2563eb;
+      border-radius: 16px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 12px;
+    }
+    .file-tag {
+      display: inline-block;
+      background: #f1f5f9;
+      color: #475569;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      max-width: 90%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .notice-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 12px;
+      padding: 18px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #166534;
+      margin-bottom: 28px;
+    }
+    .notice-box ul {
+      margin-left: 20px;
+      margin-top: 8px;
+    }
+    .action-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: #0ea5e9;
+      color: #ffffff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover {
+      background: #0284c7;
+    }
+    .btn-secondary {
+      display: inline-block;
+      background: #ffffff;
+      color: #64748b;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+      border: 1px solid #cbd5e1;
+      cursor: pointer;
+    }
+    .btn-secondary:hover {
+      background: #f8fafc;
+      color: #334155;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-card">
+    <div class="icon-badge">📄</div>
+    <h1>附件在线预览说明</h1>
+    <div class="file-tag" id="fileName">文档附件</div>
+
+    <div class="notice-box">
+      <strong>💡 当前为静态 Demo 体验环境：</strong>
+      <ul>
+        <li>本体验台运行在纯前端静态环境，未挂载云端解析服务。</li>
+        <li>在真实生产环境（开源知识库系统 <strong>Speed Knowledge</strong>）中，附件已深度接入 <strong>OnlyOffice 在线文档引擎</strong> 与 <strong>MinIO 对象存储</strong>，支持 Word、Excel、PPT、PDF 在线协同查看与批注编辑。</li>
+      </ul>
+    </div>
+
+    <div class="action-group">
+      <a href="http://speeddoc.cn/" target="_blank" class="btn-primary">
+        🚀 前往体验完整版知识库 (speeddoc.cn)
+      </a>
+      <button onclick="window.close()" class="btn-secondary">关闭窗口</button>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const fileName = params.get('name') || '演示文档附件';
+    document.getElementById('fileName').textContent = fileName;
+  </script>
+</body>
+</html>

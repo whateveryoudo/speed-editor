@@ -1,89 +1,76 @@
-# 预设配置
+# 内置模式 (Presets)
 
-Speed Tiptap Editor 通过 **预设（preset）** 提供开箱即用的编辑器形态。预设决定扩展集、默认工具栏、气泡菜单和若干功能开关；外界仍可通过 props 覆盖其中一部分。
+Speed Tiptap Editor 内置了两种开箱即用的编辑器形态，分别针对**日常轻量输入**与**长篇文档/知识库**量身定制。
 
-## 内置预设
+---
 
-| 预设 | 说明 |
-|------|------|
-| `lite` | 简易富文本，适合评论、表单说明等日常场景 |
-| `knowledge` | 完整知识库富文本，含标题、拖拽句柄、导入导出等 |
+## 模式特性对比
 
-### lite
+| 对比维度 | Lite 模式 (`LiteEditor`) | Knowledge 模式 (`KnowledgeEditor`) |
+| :--- | :--- | :--- |
+| **适用场景** | 评论、发帖、表单填写、后台日常文字录入 | 团队文档中心、个人知识库、类似语雀/Notion 场景 |
+| **文档大标题** | ❌ 无（专注正文编辑） | ✅ 内置独立文档大标题，支持 `v-model:title` |
+| **布局版心** | 紧凑型自适应，适合嵌入卡片或弹窗 | 类似语雀的居中阅读版心，行宽与间距规范优雅 |
+| **悬浮块拖拽** | ❌ 默认关闭 | ✅ 内置支持，悬浮即可拖拽段落块或进行块转化 |
+| **工具栏** | 精简常用工具（撤销、加粗、颜色、对齐等） | 全量工具栏（含插入下拉大菜单、表格等全套功能） |
+| **思维导图扩展** | ❌ 不包含 | ✅ 开箱支持（配置 `:mind="true"` 即可） |
+| **多人协同能力** | ❌ 单人本地编辑 | ✅ 原生就绪（传入 `collaboration-config` 即可） |
+| **推荐数据绑定** | 直接绑定 HTML 字符串：`v-model:content` | 推荐绑定文档模型：`v-model:json` |
 
-- 扩展集较轻量（不含脑图、流程图、格式刷、查找替换、标签等）
-- 默认工具栏较精简
-- 气泡菜单：`text`、`image`、`attachment`、`table`、`callout`
-- 内容通过 `v-model:content` 同步
+---
 
-### knowledge
+## 1. Lite 模式（轻量富文本）
 
-- 完整扩展集（含标题节点、文档检测等）
-- 知识库风格工具栏（含插入菜单、导入导出、查找替换等）
-- 气泡菜单全开（含拖拽句柄）
-- 协同场景下内容以 Yjs 为准，使用 `json` 做只读初始化
-
-## 基础用法
+适合常规业务系统中的文本录入。体积小、启动快，不附带任何重型依赖。
 
 ```vue
-<template>
-  <!-- 简易富文本（默认即为 lite） -->
-  <SpeedTiptapEditor v-model:content="content" />
+<script setup lang="ts">
+import { ref } from 'vue'
+import { LiteEditor } from '@speed-editor/lite-editor'
+import '@speed-editor/base-editor/style.css'
 
-  <!-- 显式指定 lite -->
-  <SpeedTiptapEditor preset="lite" v-model:content="content" />
-
-  <!-- 知识库完整富文本 -->
-  <SpeedTiptapEditor
-    preset="knowledge"
-    v-model:title="title"
-    :json="contentJson"
-  />
-</template>
-```
-
-## 外界覆盖默认配置
-
-预设提供默认值，以下 props 可覆盖：
-
-```vue
-<SpeedTiptapEditor
-  preset="knowledge"
-  :exclude-keys="['import', 'export']"
-  :toolbar-keys="customToolbar"
-  :bubble-menus="['text', 'image', 'table']"
-  :insert-menu-config="{ excludeKeys: ['mind', 'flowMap'] }"
-/>
-```
-
-| prop | 作用 |
-|------|------|
-| `toolbarKeys` | 全量覆盖预设工具栏 |
-| `excludeKeys` | 在预设工具栏基础上去除部分按键 |
-| `bubbleMenus` | 覆盖预设气泡菜单白名单 |
-| `insertMenuConfig` | 合并/排除插入菜单项 |
-| `textBubbleMenu` | 控制文本选区气泡菜单 |
-
-## 预设与协同的关系
-
-协同不是第三种预设，而是可组合能力。请配合 [`useCollaboration`](/config/collaboration/) 在业务侧创建 `ydoc` / `provider`，再传入编辑器：
-
-```vue
-<script setup>
-import { SpeedTiptapEditor, useCollaboration } from 'speed-editor'
-
-const { ydoc, provider } = useCollaboration({ config, enabled })
+const content = ref('<p>这是一段普通富文本内容</p>')
+const isEditing = ref(true)
 </script>
 
 <template>
-  <SpeedTiptapEditor
-    v-if="ydoc"
-    preset="knowledge"
-    :ydoc="ydoc"
-    :provider="provider"
-    :collaboration-user="config.user"
-  />
+  <div style="border: 1px solid #e2e8f0; border-radius: 8px;">
+    <LiteEditor
+      v-model:content="content"
+      :editable="isEditing"
+      :menubar="isEditing"
+    />
+  </div>
 </template>
 ```
 
-协同模式下请勿使用 `v-model:content` 双向同步，内容以 Yjs 为准。
+---
+
+## 2. Knowledge 模式（知识库全功能模式）
+
+适合知识库、长文档排版或企业协同平台。
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { KnowledgeEditor } from '@speed-editor/knowledge-editor'
+import '@speed-editor/base-editor/style.css'
+
+const docTitle = ref('我的第一篇文档')
+const docJson = ref({
+  type: 'doc',
+  content: [{ type: 'paragraph', content: [{ type: 'text', text: '知识库正文...' }] }]
+})
+const isEditing = ref(true)
+</script>
+
+<template>
+  <KnowledgeEditor
+    v-model:title="docTitle"
+    :json="docJson"
+    :editable="isEditing"
+    :menubar="isEditing"
+    :mind="true"
+  />
+</template>
+```

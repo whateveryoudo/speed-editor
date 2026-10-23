@@ -14,8 +14,8 @@ const base =
   process.env.NODE_ENV === "production" ? "/speed-editor/docs/" : "/";
 
 export default defineConfig({
-  title: "Speed Tiptap Editor",
-  description: "基于 Ant Design Vue + Tiptap 的富文本编辑器",
+  title: "Speed Editor",
+  description: "基于 Ant Design Vue + Tiptap 的现代化富文本套件",
   base,
   themeConfig: {
     nav: [
@@ -44,6 +44,7 @@ export default defineConfig({
             { text: "文件上传", link: "/config/file/" },
             { text: "字体大小", link: "/config/font-size/" },
             { text: "文本气泡菜单", link: "/config/bubble-text/" },
+            { text: "自定义扩展插件", link: "/config/plugin-extension/" },
           ],
         },
         {

@@ -1,27 +1,32 @@
-<script setup>
-</script>
+# 在线示例与体验
 
-### 基础示例(已废弃，直接跳转单独部署的页面)
+Speed Tiptap Editor 采用独立体验台部署，以便提供更沉浸、无干扰的全屏交互体验。
 
-[查看示例](http://localhost:3000/){target="_blank"} 
+---
 
-```vue
-<script setup>
-import { ref } from "vue";
-import { SpeedTiptapEditor } from "@/main";
+## 体验台入口
 
-const content = ref("<p>欢迎使用 Speed Tiptap Editor！</p>");
+我们为你准备了完整的交互式 Playground，内置了 **KnowledgeEditor（知识库全功能模式）** 与 **LiteEditor（轻量模式）** 的自由切换体验：
 
-const onUpdate = (content) => {
-  console.log(content);
-};
-</script>
+👉 **[点击打开在线体验台 (Live Demo)](/speed-editor/demo/){target="_blank"}**
 
-<template>
-  <SpeedTiptapEditor v-model:content="content" @update="onUpdate" />
-</template>
+---
 
-<style scoped></style>
+### 体验台包含的功能演示
+
+* 📘 **知识库文档模式**：体验类似语雀的大标题、全量工具栏、思维导图扩展、段落与多级标题
+* 📝 **轻量编辑器模式**：体验紧凑型常用排版、浮动选中文本气泡菜单
+* ⚡ **实时模式切换**：一键切换「可编辑输入」与「只读排版预览」
+* 🎨 **Ant Design 原生质感**：纯正的 Ant Design 交互与弹窗组件风格
+
+---
+
+### 本地启动体验台
+
+如果你拉取了源码，也可以在本地一键启动：
+
+```bash
+pnpm demo
 ```
 
-<Basic/>
+启动后访问 `http://localhost:5175` 即可在本地进行调试。

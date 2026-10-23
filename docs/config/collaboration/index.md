@@ -1,152 +1,97 @@
 # 协同编辑
 
-协同能力已从编辑器组件内部剥离，由 `useCollaboration` hook 在业务侧管理。编辑器只接收外部传入的 `ydoc` 和 `provider`。
+Speed Editor 原生支持多人实时在线协同编辑。底层基于 **Yjs (CRDT)** 与 **WebSocket (Hocuspocus 协议)**，保证多人并发编辑冲突能够自动平滑解决，并实时感知所有协作者的光标与选中范围。
 
-## 为什么这样设计
+---
 
-- 业务侧可控制协同连接生命周期（如等待 `onSynced` 后再渲染编辑器）
-- 避免 `v-model:content` 与 Yjs CRDT 冲突
-- 与表格等其他协同编辑器保持一致的接入方式
+## 核心设计：查看态与协同编辑态分离
+
+在真实业务场景中（如企业知识库），绝大多数用户是在“阅读/查看”文档，只有在主动点击“编辑”时才需要建立实时协同连接：
+
+* **查看态（预览模式）**：
+  * 无需连接 WebSocket，直接渲染文档内容，**零网络长连接开销，首屏渲染极快**。
+* **编辑态（协同模式）**：
+  * 自动建立 WebSocket 连接，直接走 socket 与服务端协同集群进行文档状态同步，并实时广播协作者光标。
+
+---
 
 ## 安装依赖
 
-协同依赖 `yjs` 和 `@hocuspocus/provider`，使用协同时请确保项目中已安装：
+使用协同编辑能力时，请确保宿主已安装 peer 依赖：
 
 ```bash
 pnpm add yjs @hocuspocus/provider
 ```
 
-## 基础用法
+---
+
+## 开箱即用配置示例 (KnowledgeEditor)
+
+在 `KnowledgeEditor` 中，你无需在外部手动管理复杂的 `ydoc` 生命周期，只需将协同配置传入 `:collaboration-config` 即可：
 
 ```vue
 <script setup lang="ts">
-import { computed } from 'vue'
-import { SpeedTiptapEditor, useCollaboration } from 'speed-editor'
+import { ref, computed } from 'vue'
+import { KnowledgeEditor } from '@speed-editor/knowledge-editor'
+import '@speed-editor/base-editor/style.css'
 
+const isEditing = ref(false)
+const docTitle = ref('团队协同方案说明')
+const previewJson = ref({
+  type: 'doc',
+  content: [{ type: 'paragraph', content: [{ type: 'text', text: '文档正文内容...' }] }]
+})
+
+// 协同服务连接配置
 const collaborationConfig = computed(() => ({
-  documentId: 'doc-001',
-  url: 'ws://localhost:3005/collaboration',
-  token: 'your-token',
+  documentId: 'doc_10024',
+  url: 'ws://your-collab-server.com/collaboration',
+  token: 'user_access_token',
   user: {
-    id: '1',
-    username: 'ykx',
-    nickname: 'YKX',
-    avatar: '',
+    id: 'user_01',
+    username: 'alex',
+    nickname: 'Alex',
+    avatar: 'https://avatar-url.png',
   },
 }))
-
-const { ydoc, provider } = useCollaboration({
-  config: collaborationConfig,
-  enabled: true,
-  onCollaboratorsChange: (users) => {
-    console.log('在线协作者', users)
-  },
-})
-
-const ready = computed(() => !!ydoc.value)
 </script>
 
 <template>
-  <SpeedTiptapEditor
-    v-if="ready"
-    preset="knowledge"
-    :ydoc="ydoc!"
-    :provider="provider!"
-    :collaboration-user="collaborationConfig.user"
-    :json="initialContentJson"
-  />
+  <div style="height: 100vh;">
+    <!-- 
+      查看态（isEditing 为 false）时：不连接协同，快速纯静态展示
+      编辑态（isEditing 为 true）时：自动接入 socket 协同同步
+    -->
+    <KnowledgeEditor
+      v-model:title="docTitle"
+      :json="!isEditing ? previewJson : undefined"
+      :editable="isEditing"
+      :menubar="isEditing"
+      :collaboration-config="isEditing ? collaborationConfig : undefined"
+      @update:collaborators="(users) => console.log('当前在线协作者:', users)"
+    />
+  </div>
 </template>
 ```
 
-::: warning 注意
-请等待 `ydoc` 就绪（`onSynced` 之后）再渲染编辑器，避免用空文档初始化导致结构缺失。
-:::
+---
 
-## useCollaboration API
+## CollaborationConfig 字段说明
 
-### 参数
+| 字段 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| **`documentId`** | `string` | 当前协同文档的唯一标识 ID |
+| **`url`** | `string` | 协同服务的 WebSocket 地址（如 `wss://your-domain.com/collab`） |
+| **`token`** | `string` | 用户鉴权 Token |
+| **`user`** | `CollaborationUser` | 当前用户的协同信息，包含 `id`, `name`/`nickname`, `avatar` 等，用于多人光标显示 |
 
-```ts
-interface UseCollaborationOptions {
-  /** 协同配置，传 null 时不连接 */
-  config: MaybeRef<CollaborationConfig | null | undefined>
-  /** 是否启用，默认 true */
-  enabled?: MaybeRef<boolean>
-  /** 协作者列表变化回调 */
-  onCollaboratorsChange?: (users: CollaborationUser[]) => void
-}
+---
 
-interface CollaborationConfig {
-  documentId: string
-  url: string
-  token: string
-  user: CollaborationUser
-}
-```
+## 生产级后端与协同服务参考
 
-### 返回值
+多人实时协同需要服务端的 WebSocket 协同集群与数据库状态落盘支持。
 
-| 字段 | 说明 |
-|------|------|
-| `ydoc` | 同步完成后的 Y.Doc，传给编辑器 |
-| `provider` | HocuspocusProvider 实例，传给编辑器 |
-| `caretUser` | 光标用户信息 |
-| `isCollaborationActive` | 是否已进入协同态 |
-| `collaborationExtensions` | 协同 Tiptap 扩展（一般无需手动使用） |
-| `destroy` | 手动销毁连接 |
+如果你需要了解完整的生产级实现（包括 **WebSocket 协同服务、MinIO 对象存储接入、OnlyOffice 在线文档预览引擎** 等），请参考我们的全栈开源知识库项目：
 
-## 编辑器协同相关 Props
-
-| prop | 类型 | 说明 |
-|------|------|------|
-| `ydoc` | `Y.Doc` | 外部协同文档 |
-| `provider` | `HocuspocusProvider` | 外部协同 Provider |
-| `collaborationUser` | `CollaborationUser` | 协同光标展示的用户信息 |
-| `json` | `string \| object` | 非协同模式下的 JSON 初始化；协同模式下由 Yjs 管理内容 |
-
-## 内容同步规则
-
-| 模式 | 内容来源 | 是否 emit `update:content` |
-|------|----------|---------------------------|
-| 普通（无 ydoc） | `v-model:content` / `json` | 是 |
-| 协同（有 ydoc） | Yjs 实时同步 | 否 |
-
-协同模式下请勿绑定 `v-model:content`，否则会和 CRDT 产生冲突。
-
-## 知识库平台接入示例
-
-```vue
-<script setup lang="ts">
-import { computed } from 'vue'
-import { SpeedTiptapEditor, useCollaboration } from 'speed-editor'
-
-const collaborationConfig = computed(() => ({
-  documentId: documentId.value,
-  url: `${import.meta.env.VITE_APP_COLLABORATE_URL}/collaboration?knowledgeId=${knowledgeId.value}`,
-  token: localStorage.getItem('access_token')!,
-  user: currentUser.value,
-}))
-
-const { ydoc, provider } = useCollaboration({
-  config: collaborationConfig,
-  enabled: computed(() => isEditMode.value),
-  onCollaboratorsChange: (users) => emit('update:collaborators', users),
-})
-</script>
-
-<template>
-  <SpeedTiptapEditor
-    v-if="isEditMode ? ydoc : true"
-    preset="knowledge"
-    :editable="isEditMode"
-    :ydoc="isEditMode ? ydoc : undefined"
-    :provider="isEditMode ? provider : undefined"
-    :collaboration-user="collaborationConfig.user"
-    :json="!isEditMode ? previewJson : undefined"
-  />
-</template>
-```
-
-## 后端服务
-
-协同需要配合 WebSocket 服务，可参考 [speed-apis](https://github.com/whateveryoudo/speed-apis) 启动示例后端。
+* 🚀 **开源知识库系统**：[speed-knowledge-client](https://github.com/whateveryoudo/speed-knowledge-client)
+* 🌐 **生产环境在线体验**：[SpeedDoc (speeddoc.cn)](http://speeddoc.cn/)

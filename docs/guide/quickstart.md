@@ -1,153 +1,123 @@
 # 快速开始
 
-本节将介绍如何在项目中使用 Speed Tiptap Editor。
+Speed Editor 提供了高度分层与开箱即用的编辑器形态。根据你的业务场景，直接选择对应的组件即可快速上手。
 
-## 安装
+---
 
-使用 npm 、 pnpm 或 yarn 安装：
+## 1. 常见场景选择
+
+* **场景 A：普通轻量编辑 / 文档纯静态查看态（无协同、极致轻量）**  
+  👉 推荐使用 **`@speed-editor/lite-editor`**  
+  * **编辑场景**：日常表单输入、评论留言、后台说明文本等；
+  * **查看场景**：作为纯文档展示阅读器，不建立任何网络长连接，性能极佳。
+
+* **场景 B：企业协作知识库 / 长篇技术文档（全功能、编辑态协同）**  
+  👉 推荐使用 **`@speed-editor/knowledge-editor`**  
+  * 自带文档大标题输入、类似语雀的阅读排版版心、全量工具栏与思维导图；
+  * 进入编辑态时直接通过 socket 走多人实时协同与光标感知。
+
+---
+
+## 2. 安装
+
+### 方式 1：安装轻量编辑器 (Lite)
 
 ```bash
+# pnpm (推荐)
+pnpm add @speed-editor/lite-editor
+
 # npm
-npm install speed-editor
-
-# pnpm
-
-pnpm add speed-editor
-
-# yarn
-yarn add speed-editor
+npm install @speed-editor/lite-editor
 ```
 
-## 在 main.ts 中引入组件库(非必须)：
+### 方式 2：安装知识库全功能编辑器 (Knowledge)
 
-::: warning 初始化全局配置（app.use的第二个参数）
-**iconfontUrl** - iconfont在线地址，实际使用替换为自己的;<br>
-**transformRequestRes** - 通用响应结果转换方法（用于将后端结构转换为`'ResponseType'`形式，此方法会在上传中用到）
-**registerGlobal** - 是否注册为全局组件，默认为true(如果按需，需设置为false)<br>
-**apis** - 请求方法配置，部分组件会携带一些请求（常为api中导出的请求方法，图片/附件扩展需要，大多数场景你只需要配置api请求即可，可在自身api下面创建相关ajax请求（注：请按照`'ResponseType'`返回形式））
- - fileUploadSingle 上传附件(单)通用方法,默认key为`file`
- - fileUploadMulti 上传附件(多)通用方法,默认key为`files[]`
- - fileDel 删除附件通用方法
- - fileDownload 下载附件通用方法
+```bash
+# pnpm
+pnpm add @speed-editor/knowledge-editor
+
+# npm
+npm install @speed-editor/knowledge-editor
+```
+
+::: tip Peer 依赖建议
+宿主请确保已安装 Vue 3 与 Ant Design Vue：
+```bash
+pnpm add vue ant-design-vue
+```
+若使用知识库多人实时协同，按需安装协同依赖：
+```bash
+pnpm add @tiptap/core @tiptap/pm @tiptap/vue-3 yjs
+```
 :::
 
-### ResponseType
+---
 
-``` ts
-// 统一配置请求返回数据类型
-export type ResponseType<T = any> = {
-  code: number;
-  message: string;
-  success: boolean;
-  data: T;
-  [key: string]: any;
-};
-```
+## 3. 代码示例
 
-### 完整的main.ts示例
-
-```ts
-import { createApp } from "vue";
-import SpeedTiptapEditor from "speed-editor";
-import "speed-editor/dist/style.css";
-import App from "./App.vue";
-// 范例请求，需替换为实际请求
-import { fileUploadSingle, fileUploadMulti, fileDel, fileDownload } from "@/api/attachment";
-
-const app = createApp(App);
-const globalConfig = {
-  iconfontUrl: "//at.alicdn.com/t/c/font_3871804_pab634p3if.js", // 替换为你的iconfont地址
-  registerGlobal: true, // false 需要你在使用的地方手动import组件
-  apis: {
-    fileUploadSingle: fileUploadSingle,
-    fileUploadMulti: fileUploadMulti,
-    fileDel: fileDel,
-    fileDownload: fileDownload,
-  },
-};
-app.use(SpeedTiptapEditor, globalConfig);
-app.mount("#app");
-```
-### api下attachment.ts示例
-这里后端是返回了`ResponseType`结构，如果你的后端返回结构不同，请使用`transformRequestRes`进行转换
-``` ts
-import request from "../request";
-import { attachmentPrefix } from "../path";
-export const fileDownload = (fileId: string) => {
-  return request.get(`${attachmentPrefix}/download/${fileId}`, {
-    responseType: "blob",
-    headers: {
-      fullRes: true,
-    },
-  });
-};
-
-export const fileUploadSingle = (formData: FormData) => {
-  return request.post(`${attachmentPrefix}/upload/single`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data"
-    }
-  });
-};
-export const fileUploadMulti = (formData: FormData) => {
-  return request.post(`${attachmentPrefix}/upload/multi`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data"
-    }
-  });
-};
-
-export const fileDel = (fileId: string) => {
-  return request.delete(`${attachmentPrefix}/delete/${fileId}`);
-};
-
-```
-
-## 按需引入(需手动关闭registerGlobal)
-
-使用 Vite 的项目，推荐使用 `unplugin-vue-components` 进行按需引入：
-
-1. 安装插件：
-
-```bash
-npm install unplugin-vue-components -D
-```
-
-2. 在 vite.config.ts 中配置：
-
-```ts
-import { defineConfig } from "vite";
-import Components from "unplugin-vue-components/vite";
-import { SpeedComponentsResolver } from "speed-components/resolver";
-
-export default defineConfig({
-  plugins: [
-    Components({
-      resolvers: [SpeedComponentsResolver()],
-    }),
-  ],
-});
-```
-
-3. 在组件中直接使用：
+### 使用 LiteEditor（轻量编辑 / 纯查看态）
 
 ```vue
-<template>
-  <!-- 默认 preset="lite" 简易富文本 -->
-  <speed-editor v-model:content="content" />
+<script setup lang="ts">
+import { ref } from 'vue'
+import { LiteEditor } from '@speed-editor/lite-editor'
+import '@speed-editor/base-editor/style.css'
 
-  <!-- 知识库完整富文本 -->
-  <speed-editor preset="knowledge" v-model:title="title" :json="contentJson" />
+const isEditing = ref(true)
+const content = ref('<p>你好，Speed Editor！</p>')
+</script>
+
+<template>
+  <div style="height: 500px; border: 1px solid #e2e8f0; border-radius: 8px;">
+    <!-- 
+      isEditing 为 true: 进入日常普通富文本编辑
+      isEditing 为 false: 作为纯查看态文档渲染
+    -->
+    <LiteEditor
+      v-model:content="content"
+      :editable="isEditing"
+      :menubar="isEditing"
+    />
+  </div>
 </template>
 ```
 
-## 预设与协同
+---
 
-- 预设说明见 [预设配置](/config/preset/)
-- 协同编辑需配合 `useCollaboration` hook，见 [协同编辑](/config/collaboration/)
+### 使用 KnowledgeEditor（文档与知识库形态）
 
-## 注意事项
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { KnowledgeEditor } from '@speed-editor/knowledge-editor'
+import '@speed-editor/base-editor/style.css'
 
-1. 按需引入时，不需要手动引入样式
-2. 完整引入时，需要手动引入样式文件
-3. 建议使用 TypeScript 以获得更好的开发体验
+const isEditing = ref(true)
+const docTitle = ref('团队协作项目方案')
+const docJson = ref({
+  type: 'doc',
+  content: [
+    {
+      type: 'paragraph',
+      content: [{ type: 'text', text: '知识库正文排版内容...' }]
+    }
+  ]
+})
+
+// 若需要协同，编辑态传入 collaboration-config 即可通过 socket 实时同步
+const collabConfig = ref(undefined)
+</script>
+
+<template>
+  <div style="height: 100vh;">
+    <KnowledgeEditor
+      v-model:title="docTitle"
+      :editable="isEditing"
+      :menubar="isEditing"
+      :json="docJson"
+      :mind="true"
+      :collaboration-config="isEditing ? collabConfig : undefined"
+    />
+  </div>
+</template>
+```
