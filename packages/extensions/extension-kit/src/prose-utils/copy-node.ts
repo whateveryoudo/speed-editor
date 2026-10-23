@@ -11,7 +11,11 @@ import { copy } from '@ek/helpers/copy-to-clipboard';
 import { safeJSONStringify } from '@ek/helpers/json';
 import { Fragment, Node } from '@tiptap/pm/model';
 
-import { debug } from './debug';
+function debug(run: () => void) {
+  if (typeof window !== 'undefined' && window.location?.search?.includes('dev=1')) {
+    run();
+  }
+}
 
 export function copyNode(nodeOrNodeName: Node | Fragment<any>, editor: Editor);
 export function copyNode(nodeOrNodeName: string, editor: Editor);

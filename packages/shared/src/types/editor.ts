@@ -29,11 +29,13 @@ export interface IUploadConfig {
   data?: Record<string, unknown> | ((file: File) => Record<string, unknown>)
   beforeUpload?: (file: File, fileList: File[]) => boolean | Promise<boolean>
   uploadApis?: {
-    fileDownload: () => Promise<string>
-    fileUploadSingle: (file: File) => Promise<string>
-    fileUploadMulti: (files: File[]) => Promise<string[]>
-    fileDel: (fileId: string) => Promise<boolean>
-    getPreviewUrl: (fileId: string) => string
+    fileDownload?: () => Promise<string>
+    fileUploadSingle?: (file: File) => Promise<string>
+    fileUploadMulti?: (files: File[]) => Promise<string[]>
+    fileDel?: (fileId: string) => Promise<boolean>
+    getPreviewUrl?: (fileId: string) => string
+    getFilePreviewUrl?: (fileId: string) => string
+    [key: string]: any
   }
 }
 

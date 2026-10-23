@@ -11,7 +11,7 @@
 默认：`enabled: true`（见 `src/editor.vue` 默认 props）
 
 ## 默认项
-`['bold','italic','underline','strike','fontSize','textColor','backgroundColor']`
+`['bold','italic','underline','strike','fontFamily','fontSize','textColor','backgroundColor']`
 
 ## 自定义 items
 ```vue

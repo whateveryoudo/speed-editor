@@ -15,6 +15,7 @@ const LITE_TEXT_BUBBLE_ITEMS: string[] = [
   'italic',
   'underline',
   'strike',
+  'fontFamily',
   'fontSize',
   'textColor',
   'backgroundColor',

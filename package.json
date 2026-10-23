@@ -14,7 +14,7 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "build:deploy": "pnpm docs:build && pnpm --filter @speed-editor/vue3-demo build && node scripts/prepare-deploy.js",
+    "build:deploy": "pnpm build && pnpm docs:build && pnpm --filter @speed-editor/vue3-demo build && node scripts/prepare-deploy.js",
     "changeset:check": "bash ./changed-packages-since-release.sh",
     "changeset": "bash ./changed-packages-since-release.sh && changeset",
     "version-packages": "changeset version",

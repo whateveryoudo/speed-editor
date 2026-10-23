@@ -1,5 +1,15 @@
 # @speed-editor/lite-editor
 
+## 2.0.7
+
+### Patch Changes
+
+- 前端一些冗余代码剔除,一些报告样式适配
+- Updated dependencies
+  - @speed-editor/extension-kit@2.0.11
+  - @speed-editor/kit-base@2.0.11
+  - @speed-editor/shared@2.0.6
+
 ## 2.0.6
 
 ### Patch Changes

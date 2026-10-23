@@ -40,6 +40,7 @@ import Bold from '@kb/menus/bold.vue'
 import Italic from '@kb/menus/italic.vue'
 import Underline from '@kb/menus/underline.vue'
 import Strike from '@kb/menus/strike.vue'
+import FontFamily from '@kb/menus/fontFamily.vue'
 import FontSize from '@kb/menus/fontSize.vue'
 import TextColor from '@kb/menus/textColor.vue'
 import BackgroundColor from '@kb/menus/backgroundColor.vue'
@@ -74,6 +75,7 @@ onUnmounted(() => {
 })
 
 const bubbleMenuMap = {
+    fontFamily: FontFamily,
     bold: Bold,
     italic: Italic,
     underline: Underline,
@@ -119,6 +121,7 @@ const defaultBubbleMenuItems = [
     'italic',
     'underline',
     'strike',
+    'fontFamily',
     'fontSize',
     'textColor',
     'backgroundColor',

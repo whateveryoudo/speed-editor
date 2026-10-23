@@ -1,5 +1,11 @@
 # @speed-editor/shared
 
+## 2.0.6
+
+### Patch Changes
+
+- 前端一些冗余代码剔除,一些报告样式适配
+
 ## 2.0.5
 
 ### Patch Changes
