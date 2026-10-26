@@ -17,6 +17,17 @@ export default defineConfig({
   title: "Speed Editor",
   description: "基于 Ant Design Vue + Tiptap 的现代化富文本套件",
   base,
+  sitemap: {
+    hostname: "https://whateveryoudo.github.io/speed-editor/docs/",
+  },
+  head: [
+    ["meta", { name: "keywords", content: "speed-editor, tiptap, prosemirror, vue3, 富文本编辑器, 在线文档, 协同编辑, yjs, antd-vue, 思维导图" }],
+    ["meta", { name: "author", content: "Speed Platform" }],
+    ["meta", { property: "og:title", content: "Speed Editor - 基于 Ant Design Vue + Tiptap 的现代协作富文本套件" }],
+    ["meta", { property: "og:description", content: "开箱即用、轻量与知识库双模式、思维导图、文档导入导出与多人实时协同。" }],
+    ["meta", { property: "og:type", content: "website" }],
+    ["meta", { property: "og:url", content: "https://whateveryoudo.github.io/speed-editor/docs/" }],
+  ],
   themeConfig: {
     nav: [
       { text: "指南", link: "/guide/" },
