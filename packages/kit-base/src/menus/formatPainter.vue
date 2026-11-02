@@ -12,7 +12,7 @@
       :class="[isActive ? 'is-active' : '']"
       :disabled="disableMenu"
       >
-      <ClearOutlined style="font-size: 16px;" />
+      <s-icon-font type="icon-kl-format-painter" style="font-size: 16px;" />
     </Button>
   </s-keymap-tip>
 </template>
