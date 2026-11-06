@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import type * as Y from 'yjs'
 import { SpeedEditor } from '@speed-editor/base-editor'
-import { CollaborativeEditor } from '@speed-editor/collaboration-editor'
+import { CollaborativeEditor, type CollaborationProviderLike } from '@speed-editor/collaboration-editor'
 import type {
-  CollaborationConfig,
+  CollaborationUser,
   SpeedEditorShellProps,
   SpeedEditorPlugin,
 } from '@speed-editor/shared'
@@ -14,7 +15,12 @@ import {
 import { knowledgeLayout } from './preset'
 
 const props = defineProps<SpeedEditorShellProps & KnowledgeEditorPluginsOptions & {
-  collaborationConfig?: CollaborationConfig | null
+  /** 外部直接注入的 Y.Doc（由协同连接器提供） */
+  ydoc?: Y.Doc | null
+  /** 外部直接注入的协同 Provider（可选，用于光标和感知） */
+  provider?: CollaborationProviderLike | null
+  /** 外部直接注入的用户信息 */
+  user?: CollaborationUser | null
   extraPlugins?: SpeedEditorPlugin[]
 }>()
 
@@ -35,7 +41,9 @@ const menubar = computed(() => props.menubar ?? props.editable)
 
 const editorBindProps = computed(() => {
   const {
-    collaborationConfig: _cc,
+    ydoc: _ydoc,
+    provider: _provider,
+    user: _user,
     mind: _m,
     flow: _f,
     extraPlugins: _e,
@@ -54,7 +62,9 @@ const editorBindProps = computed(() => {
   <CollaborativeEditor
     v-if="editable"
     v-bind="editorBindProps"
-    :collaboration-config="collaborationConfig"
+    :ydoc="ydoc"
+    :provider="provider"
+    :user="user"
     @update:title="emit('update:title', $event)"
     @update:collaborators="emit('update:collaborators', $event)"
   />
