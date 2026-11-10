@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { Editor } from '@tiptap/vue-3'
 import { onMounted, onUnmounted } from 'vue'
-import { useTableBubbleMenu, tableItems } from './useTableBubbleMenu.tsx'
+import { useTableBubbleMenu } from './useTableBubbleMenu.tsx'
 import RenderMenuItems from './RenderMenuItems.vue'
 const props = defineProps<{
   editor: Editor
@@ -10,6 +10,7 @@ const props = defineProps<{
 const {
   isVisible,
   floatingElement,
+  currentTableItems,
   handleSelectionUpdate
 } = useTableBubbleMenu(props.editor)
 
@@ -18,6 +19,7 @@ const {
 onMounted(() => {
   if (props.editor) {
     props.editor.on('selectionUpdate', handleSelectionUpdate)
+    props.editor.on('transaction', handleSelectionUpdate)
   }
 })
 
@@ -25,13 +27,14 @@ onMounted(() => {
 onUnmounted(() => {
   if (props.editor) {
     props.editor.off('selectionUpdate', handleSelectionUpdate)
+    props.editor.off('transaction', handleSelectionUpdate)
   }
 })
 </script>
 
 <template>
   <div v-if="isVisible" ref="floatingElement" class="bubble-menu-wrapper absolute z-[500]">
-    <RenderMenuItems :editor="editor" :tableItems="tableItems" />
+    <RenderMenuItems :editor="editor" :tableItems="currentTableItems" />
   </div>
 </template>
 

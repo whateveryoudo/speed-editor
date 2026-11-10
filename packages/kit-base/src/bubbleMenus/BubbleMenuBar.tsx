@@ -4,7 +4,6 @@ import type { BubbleMenuKey } from '@speed-editor/shared'
 import TextMenu from './textMenu/index.vue'
 import ImageMenu from './imageMenu/index.vue'
 import TableMenu from './tableMenu/index.vue'
-import TableBubbleMenu from './tableMenu/Bubble.vue'
 import AttachmentMenu from './attachmentMenu/index.vue'
 import TagMenu from './tagMenu/index.vue'
 import CalloutMenu from './calloutMenu/index.vue'
@@ -20,7 +19,6 @@ const bubbleMenuComponents: Record<
   attachment: [{ name: 'AttachmentMenu', component: AttachmentMenu }],
   table: [
     { name: 'TableMenu', component: TableMenu },
-    { name: 'TableBubbleMenu', component: TableBubbleMenu },
   ],
   callout: [{ name: 'CalloutMenu', component: CalloutMenu }],
   drag: [{ name: 'DragNodeMenu', component: DragNodeMenu }],

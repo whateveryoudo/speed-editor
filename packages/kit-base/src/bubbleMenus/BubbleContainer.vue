@@ -13,7 +13,7 @@
     :should-show="shouldShow"
     :plugin-key="pluginKey"
   >
-    <div :class="['bubble-menu-wrapper', bubbleClassName || '']">
+    <div :class="['bubble-menu-wrapper', bubbleClassName || '']" style="position: relative; z-index: 1000;">
       <slot />
     </div>
   </BaseBubbleMenu>

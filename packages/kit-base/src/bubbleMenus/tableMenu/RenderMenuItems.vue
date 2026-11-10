@@ -8,27 +8,28 @@
             </template>
             <!-- 使用配置式 -->
             <template v-else>
-                <Tooltip :title="item.title">
-                    <Button v-if="!item.children" type="text" class="shadow-btn-wrapper" :disabled="item.disabled?.(editor)"
+                <!-- 普通按钮：支持 Tooltip 提示 -->
+                <Tooltip v-if="!item.children" :title="item.title">
+                    <Button type="text" class="shadow-btn-wrapper" :disabled="item.disabled?.(editor)"
                         @click="handleItemClick(item, $event)">
                         <component :is="item.iconRender" />
                     </Button>
-                    <!-- 带有下拉项 -->
-                    <Dropdown v-else>
-                        <Button type="text" class="shadow-btn-wrapper" :disabled="item.disabled">
-                            <component :is="item.iconRender" />
-                        </Button>
-                        <template #overlay>
-                            <Menu>
-                                <MenuItem v-for="child in item.children" :key="child.key"
-                                    @click="handleItemClick(child, $event)">
-                                    <component :is="child.iconRender" />
-                                    {{ child.title }}
-                                </MenuItem>
-                            </Menu>
-                        </template>
-                    </Dropdown>
                 </Tooltip>
+                <!-- 带有下拉项：直接使用 Dropdown，杜绝 Tooltip 与 Dropdown 双浮层冲突抖动 -->
+                <Dropdown v-else :trigger="['hover', 'click']">
+                    <Button type="text" class="shadow-btn-wrapper" :disabled="item.disabled">
+                        <component :is="item.iconRender" />
+                    </Button>
+                    <template #overlay>
+                        <Menu>
+                            <MenuItem v-for="child in item.children" :key="child.key"
+                                @click="handleItemClick(child, $event)">
+                                <component :is="child.iconRender" />
+                                {{ child.title }}
+                            </MenuItem>
+                        </Menu>
+                    </template>
+                </Dropdown>
             </template>
         </template>
 

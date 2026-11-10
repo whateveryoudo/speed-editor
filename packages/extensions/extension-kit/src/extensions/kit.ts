@@ -40,7 +40,8 @@ import { Mention } from "./mention";
 import { getMentionSuggestion } from "./mention/suggestion";
 import { CodeBlock } from "./codeBlock";
 import { Callout } from "./callout";
-import { Table, TableRow, TableHeader, TableCell } from "@speed-editor/schema";
+import { Table } from "./table";
+import { TableRow, TableHeader, TableCell } from "@speed-editor/schema";
 import { TaskList } from "./taskList";
 import { TaskItem } from "@tiptap/extension-list";
 import { Indent } from "./indent";
@@ -156,11 +157,9 @@ export const getDefaultKit = (props: any) => [
   TextAlign.configure({
     types: ["heading", "paragraph"],
   }),
-  // 这里没使用tableKit,要扩展tableCell属性
+  // 这里没使用tableKit,要扩展tableCell属性（关闭官方原生拖拽，使用自定义通天引导线拖拽模式）
   Table.configure({
-    resizable: true,
-    handleWidth: 5,
-    lastColumnResizable: false,
+    resizable: false,
   }),
   TableRow,
   TableHeader,

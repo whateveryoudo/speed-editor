@@ -33,7 +33,6 @@ import File from './menus/insert/file.vue'
 import TextMenu from './bubbleMenus/textMenu/index.vue'
 import ImageMenu from './bubbleMenus/imageMenu/index.vue'
 import TableMenu from './bubbleMenus/tableMenu/index.vue'
-import TableBubbleMenu from './bubbleMenus/tableMenu/Bubble.vue'
 import AttachmentMenu from './bubbleMenus/attachmentMenu/index.vue'
 import TagMenu from './bubbleMenus/tagMenu/index.vue'
 import CalloutMenu from './bubbleMenus/calloutMenu/index.vue'
@@ -81,7 +80,7 @@ export function createKitBasePlugin(): SpeedEditorPlugin {
       tag: [TagMenu],
       image: [ImageMenu],
       attachment: [AttachmentMenu],
-      table: [TableMenu, TableBubbleMenu],
+      table: [TableMenu],
       callout: [CalloutMenu],
       drag: [DragNodeMenu],
     },

@@ -252,7 +252,9 @@ const buildExtensions = (): Extensions => {
 const editor = useEditor({
   editable: props.editable,
   autofocus: 'end',
-  content: props.collaborationMode ? undefined : (props.content || undefined),
+  content: props.collaborationMode ? undefined : (props.json ? (
+    typeof props.json === 'string' ? JSON.parse(props.json) : props.json
+  ) : (props.content || undefined)),
   editorProps: {
     attributes: {
       class: activeLayout.value.features.hasDragHandle
@@ -343,7 +345,6 @@ watch(
       newJson ? (typeof newJson === 'string' ? JSON.parse(newJson) : newJson) : '',
     )
   },
-  { immediate: true },
 )
 
 watch(
@@ -377,25 +378,21 @@ onUnmounted(() => {
 
 <template>
   <ConfigProvider :theme="cptTheme">
-    <div
-      :class="[
-        'wrap speed-editor',
-        activeLayout.name,
-        hideBorder ? 'hide-border' : '',
-        pageLayout ? 'page-layout' : '',
-      ]"
-      :style="editorStyle"
-    >
+    <div :class="[
+      'wrap speed-editor',
+      activeLayout.name,
+      hideBorder ? 'hide-border' : '',
+      pageLayout ? 'page-layout' : '',
+    ]" :style="editorStyle">
       <MenuBarShell :style="headerStyle" :toolbar-keys="resolvedToolbarKeys" v-if="menubar && editor" class="header"
         :editor="editor" :buttons="resolvedToolbarButtons" :insert-items="resolvedInsertItems" />
       <BubbleMenuBarShell v-if="editor" :editor="editor" :bubble-menus="resolvedBubbleMenus"
         :registry="resolvedBubbleRegistry" :text-bubble-menu="textBubbleMenu" />
-      <main :style="mainStyle"
-        :class="[
-          'editor-content-wrap',
-          activeLayout.name === 'knowledge' || pageLayout ? 'page-content-wrap' : '',
-          activeLayout.name === 'knowledge' ? 'knowledge-content-wrap' : '',
-        ]">
+      <main :style="mainStyle" :class="[
+        'editor-content-wrap',
+        activeLayout.name === 'knowledge' || pageLayout ? 'page-content-wrap' : '',
+        activeLayout.name === 'knowledge' ? 'knowledge-content-wrap' : '',
+      ]">
         <editor-content :editor="editor"
           :class="['h-full', (editor && editor?.storage?.formatPainter?.isFormatPainterActive) ? 'format-painter-active' : '']" />
       </main>
@@ -439,7 +436,7 @@ onUnmounted(() => {
   }
 
   /* knowledge：正文区自身限宽（与历史一致） */
-  &.knowledge > main.page-content-wrap {
+  &.knowledge>main.page-content-wrap {
     max-width: 1000px;
     margin: 0 auto;
   }
@@ -448,7 +445,7 @@ onUnmounted(() => {
    * lite + pageLayout（word）：main 通栏，滚动条贴容器最右；
    * 正文内容再居中留白。
    */
-  &.page-layout:not(.knowledge) > main.page-content-wrap {
+  &.page-layout:not(.knowledge)>main.page-content-wrap {
     max-width: none;
     width: 100%;
     margin: 0;
@@ -467,7 +464,7 @@ onUnmounted(() => {
   }
 
   >header {
-    z-index: 110;
+    z-index: 200;
     display: flex;
     padding: 0 10px;
     height: 40px;

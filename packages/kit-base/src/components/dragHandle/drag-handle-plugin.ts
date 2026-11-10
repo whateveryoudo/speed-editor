@@ -146,22 +146,64 @@ export const DragHandlePlugin = ({
   }
 
   function repositionDragHandle(dom: Element) {
+    const isTable =
+      currentNode?.type.name === "table" ||
+      dom?.classList?.contains("speed-table-node-view") ||
+      dom?.classList?.contains("speed-table-container") ||
+      dom?.tagName?.toLowerCase() === "table" ||
+      Boolean(dom?.querySelector?.(".speed-table-container, table"));
+
+    // 只有在表格激活显示把手辅助栏（拥有 .show-handles）时，左侧才实际凸出 20px 宽的行把手，顶部凸出 20px 宽的列把手
+    const hasTableHandles = Boolean(
+      isTable &&
+      (dom?.classList?.contains("show-handles") ||
+       dom?.querySelector?.(".speed-table-container.show-handles"))
+    );
+
+    const tableOffsetX = hasTableHandles ? 20 : 0;
+    const tableOffsetY = hasTableHandles ? 20 : 0;
+
     const virtualElement = getReferencedVirtualElement?.() || {
-      getBoundingClientRect: () => dom.getBoundingClientRect(),
+      getBoundingClientRect: () => {
+        const rect = dom.getBoundingClientRect();
+        if (hasTableHandles) {
+          return {
+            x: rect.x - tableOffsetX,
+            y: rect.y - tableOffsetY,
+            left: rect.left - tableOffsetX,
+            top: rect.top - tableOffsetY,
+            width: rect.width + tableOffsetX,
+            height: rect.height + tableOffsetY,
+            right: rect.right,
+            bottom: rect.bottom,
+          } as DOMRect;
+        }
+        return rect;
+      },
     };
 
     computePosition(virtualElement, element, computePositionConfig).then(
       (val) => {
+        let posX = val.x;
+        let posY = val.y;
+        if (getReferencedVirtualElement && hasTableHandles) {
+          posX -= tableOffsetX;
+          posY -= tableOffsetY;
+        }
         Object.assign(element.style, {
           position: val.strategy,
-          left: `${val.x}px`,
-          top: `${val.y}px`,
+          left: `${posX}px`,
+          top: `${posY}px`,
         });
       }
     );
   }
 
   function onDragStart(e: DragEvent) {
+    if (!editor.isEditable) {
+      e.preventDefault();
+      return;
+    }
     isDragging = true;
     onDragStateChange?.(isDragging);
     onElementDragStart?.(e);
@@ -287,6 +329,7 @@ export const DragHandlePlugin = ({
 
             if (!editor.isEditable) {
               hideHandle();
+              element.draggable = false;
               return;
             }
 
@@ -297,8 +340,12 @@ export const DragHandlePlugin = ({
               element.draggable = true;
             }
 
-            // Recalculate popup position if doc has changend and drag handler is visible.
-            if (view.state.doc.eq(oldState.doc) || currentNodePos === -1) {
+            // Recalculate popup position if doc or selection has changed and drag handler is visible.
+            if (
+              (view.state.doc.eq(oldState.doc) &&
+                view.state.selection.eq(oldState.selection)) ||
+              currentNodePos === -1
+            ) {
               return;
             }
 
@@ -397,8 +444,11 @@ export const DragHandlePlugin = ({
           },
 
           mousemove(view, e) {
-            // Do not continue if popup is not initialized or open.
-            if (!element || locked) {
+            // Do not continue if popup is not initialized or open or editor is not editable.
+            if (!element || locked || !editor.isEditable) {
+              if (element && !editor.isEditable) {
+                hideHandle();
+              }
               return false;
             }
 
