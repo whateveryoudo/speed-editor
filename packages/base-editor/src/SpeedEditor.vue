@@ -73,6 +73,7 @@ const props = withDefaults(defineProps<{
   docId?: string
   docType?: 'document' | 'template'
   editable?: boolean
+  autofocus?: SpeedEditorShellProps['autofocus']
   menubar?: boolean
   hideComment?: boolean
   placeholder?: string
@@ -104,6 +105,7 @@ const props = withDefaults(defineProps<{
   content: '',
   docType: 'document',
   editable: true,
+  autofocus: 'end',
   menubar: true,
   collaborationMode: false,
   editorStyle: () => ({}),
@@ -240,6 +242,7 @@ const buildExtensions = (): Extensions => {
   }
   // ① preset 默认能力：layout.getExtensions，如 knowledge → getKnowledgeKit（extension-kit）
   const layoutExtensions = activeLayout.value.getExtensions(shellProps) as Extensions
+  console.log(props.extraExtensions, '额外扩展')
   return [
     ...layoutExtensions,
     // ② 插件追加能力：plugins[].extensions，如 extraPlugins、mind adapter、import-export
@@ -251,7 +254,7 @@ const buildExtensions = (): Extensions => {
 
 const editor = useEditor({
   editable: props.editable,
-  autofocus: 'end',
+  autofocus: props.autofocus ?? 'end',
   content: props.collaborationMode ? undefined : (props.json ? (
     typeof props.json === 'string' ? JSON.parse(props.json) : props.json
   ) : (props.content || undefined)),
@@ -356,18 +359,7 @@ watch(
   },
   { immediate: true },
 )
-watch(
-  [() => props.extraExtensions, () => props.layout, () => props.plugins],
-  () => {
-    if (!editor.value) {
-      return
-    }
-    editor.value.setOptions({
-      extensions: buildExtensions(),
-    })
-  },
-  { deep: true },
-)
+
 
 onUnmounted(() => {
   editor.value?.destroy()

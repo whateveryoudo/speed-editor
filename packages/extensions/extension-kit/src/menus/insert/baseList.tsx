@@ -144,9 +144,18 @@ export default defineComponent({
       }
     }
 
-    // 搜索结果
+    // 搜索结果（支持名称、key、shortcut 如 /hb、描述等精准匹配）
     const searchItems = computed(() => {
-      return flatLeafMenu.value.filter((item) => item.name.includes(innerQuery.value))
+      const q = innerQuery.value.trim().toLowerCase()
+      if (!q) return flatLeafMenu.value
+      return flatLeafMenu.value.filter((item) => {
+        const nameMatch = item.name?.toLowerCase().includes(q)
+        const keyMatch = item.key?.toLowerCase().includes(q)
+        const shortcut = item.shortcut?.toLowerCase() || ''
+        const shortcutMatch = shortcut.includes(q) || shortcut.replace(/^\//, '').includes(q)
+        const descMatch = item.description?.toLowerCase().includes(q)
+        return nameMatch || keyMatch || shortcutMatch || descMatch
+      })
     })
 
     const upHandler = () => {
@@ -295,7 +304,21 @@ export default defineComponent({
                               <img src={subItem.imgModule} alt="" />
                             ) : null}
                           </span>
-                          {subItem.name}
+                          <div class="flex-1 min-w-0 flex flex-col justify-center">
+                            <div class="flex items-center justify-between">
+                              <span class="truncate">{subItem.name}</span>
+                              {subItem.shortcut && (
+                                <span class="text-xs text-[var(--ant-color-text-tertiary,#8c8c8c)] font-mono ml-2">
+                                  {subItem.shortcut}
+                                </span>
+                              )}
+                            </div>
+                            {subItem.description && (
+                              <div class="text-xs text-[var(--ant-color-text-tertiary,#8c8c8c)] truncate leading-tight mt-0.5">
+                                {subItem.description}
+                              </div>
+                            )}
+                          </div>
                           {/* file,img隐藏一个input，点击后选择文件 */}
                           {['file', 'image'].includes(subItem.key) && (
                             <input 
@@ -341,7 +364,21 @@ export default defineComponent({
                         <s-icon-font size={subItem.size} type={subItem.iconType} />
                       ) : null}
                     </span>
-                    {subItem.name}
+                    <div class="flex-1 min-w-0 flex flex-col justify-center">
+                      <div class="flex items-center justify-between">
+                        <span class="truncate">{subItem.name}</span>
+                        {subItem.shortcut && (
+                          <span class="text-xs text-[var(--ant-color-text-tertiary,#8c8c8c)] font-mono ml-2">
+                            {subItem.shortcut}
+                          </span>
+                        )}
+                      </div>
+                      {subItem.description && (
+                        <div class="text-xs text-[var(--ant-color-text-tertiary,#8c8c8c)] truncate leading-tight mt-0.5">
+                          {subItem.description}
+                        </div>
+                      )}
+                    </div>
                   </li>
                 ))}
               </ul>

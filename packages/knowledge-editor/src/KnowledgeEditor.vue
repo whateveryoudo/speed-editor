@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import type * as Y from 'yjs'
 import { SpeedEditor } from '@speed-editor/base-editor'
 import { CollaborativeEditor, type CollaborationProviderLike } from '@speed-editor/collaboration-editor'
@@ -33,6 +33,7 @@ const plugins = computed(() =>
   createKnowledgeEditorPlugins({
     mind: props.mind,
     flow: props.flow,
+    board: props.board,
     extraPlugins: props.extraPlugins,
   }),
 )
@@ -46,6 +47,7 @@ const editorBindProps = computed(() => {
     user: _user,
     mind: _m,
     flow: _f,
+    board: _b,
     extraPlugins: _e,
     ...rest
   } = props as Record<string, unknown>
@@ -56,11 +58,19 @@ const editorBindProps = computed(() => {
     plugins: plugins.value,
   }
 })
+
+const innerEditorRef = ref<any>(null)
+const editor = computed(() => innerEditorRef.value?.editor)
+
+defineExpose({
+  editor,
+})
 </script>
 
 <template>
   <CollaborativeEditor
     v-if="editable"
+    ref="innerEditorRef"
     v-bind="editorBindProps"
     :ydoc="ydoc"
     :provider="provider"
@@ -70,6 +80,7 @@ const editorBindProps = computed(() => {
   />
   <SpeedEditor
     v-else
+    ref="innerEditorRef"
     v-bind="editorBindProps"
     @update:title="emit('update:title', $event)"
   />

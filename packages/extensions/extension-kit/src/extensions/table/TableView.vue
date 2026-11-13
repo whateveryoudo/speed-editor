@@ -6,15 +6,15 @@
       'show-handles': isHandlesVisible,
       'all-selected': isAllTableSelected,
     }">
-      <!-- 1. 左上角操作角标：纯色块，点击全选表格并唤起主格式气泡（查看态不渲染） -->
-      <div v-if="props.editor?.isEditable" class="speed-table-corner flex items-center justify-center cursor-pointer"
+      <!-- 1. 左上角操作角标：纯色块，点击全选表格并唤起主格式气泡（查看态通过 v-show 隐藏，杜绝 DOM 结构增删抖动） -->
+      <div v-show="props.editor?.isEditable" class="speed-table-corner flex items-center justify-center cursor-pointer"
         :class="{ 'is-active': isAllTableSelected }" title="全选表格" @mousedown.prevent @click="handleSelectAll" />
 
-      <!-- 2. 顶部：列手柄视口（限制在表格容器可视宽度内，overflow: hidden 裁剪溢出，随表格水平滚动 1:1 同步平移）（查看态不渲染） -->
-      <div v-if="props.editor?.isEditable" class="speed-table-handle-cols-viewport absolute">
+      <!-- 2. 顶部：列手柄视口（限制在表格容器可视宽度内，overflow: hidden 裁剪溢出，随表格水平滚动 1:1 同步平移） -->
+      <div v-show="props.editor?.isEditable" class="speed-table-handle-cols-viewport absolute">
         <div ref="colHandlesBarRef" class="speed-table-handle-cols flex"
           :class="{ 'all-selected': isAllTableSelected }" @mousedown.prevent @mouseleave="handleColBarMouseLeave">
-          <div v-for="(col, colIdx) in colPositions" :key="colIdx"
+          <div v-for="(col, colIdx) in renderedColPositions" :key="colIdx"
             class="col-handle flex items-center justify-center relative cursor-pointer flex-shrink-0" :class="{
               'is-active': activeCol === colIdx || isAllTableSelected,
               'is-dragging-source': isDraggingCol && dragColSourceIndex === colIdx,
@@ -47,11 +47,11 @@
         </div>
       </div>
 
-      <!-- 3. 左侧：行手柄视口（限制在表格容器可视高度内，overflow: hidden 裁剪溢出，随表格垂直滚动 1:1 同步平移）（查看态不渲染） -->
-      <div v-if="props.editor?.isEditable" class="speed-table-handle-rows-viewport absolute">
+      <!-- 3. 左侧：行手柄视口（限制在表格容器可视高度内，overflow: hidden 裁剪溢出，随表格垂直滚动 1:1 同步平移） -->
+      <div v-show="props.editor?.isEditable" class="speed-table-handle-rows-viewport absolute">
         <div ref="rowHandlesBarRef" class="speed-table-handle-rows flex flex-col"
           :class="{ 'all-selected': isAllTableSelected }" @mousedown.prevent @mouseleave="handleRowBarMouseLeave">
-          <div v-for="(row, rowIdx) in rowPositions" :key="rowIdx"
+          <div v-for="(row, rowIdx) in renderedRowPositions" :key="rowIdx"
             class="row-handle flex items-center justify-center relative cursor-pointer flex-shrink-0" :class="{
               'is-active': activeRow === rowIdx || isAllTableSelected,
               'is-dragging-source': isDraggingRow && dragRowSourceIndex === rowIdx,
@@ -91,8 +91,14 @@
         @mousemove="handleTableMouseMove"
         @mousedown="handleTableMouseDown"
         @mouseleave="handleTableMouseLeave">
-        <table class="speed-editor-table">
-          <colgroup ref="colgroupRef"></colgroup>
+        <table class="speed-editor-table" :style="tableWidthStyle">
+          <colgroup ref="colgroupRef">
+            <col
+              v-for="(w, idx) in colWidths"
+              :key="idx"
+              :style="w ? { width: `${w}px` } : undefined"
+            />
+          </colgroup>
           <tbody data-node-view-content></tbody>
         </table>
       </div>
@@ -202,8 +208,9 @@ const updateHoveredBorderPosition = (colIdx: number) => {
   } else {
     let accum = 0
     const scrollLeft = tableWrapperRef.value?.scrollLeft || 0
+    const cols = renderedColPositions.value
     for (let i = 0; i <= colIdx; i++) {
-      accum += colPositions.value[i]?.width || 100
+      accum += cols[i]?.width || 100
     }
     hoveredBorderLeft.value = accum - scrollLeft
   }
@@ -352,13 +359,10 @@ const updateActiveSelection = () => {
   }
 }
 
-// 原生同步 colgroup 内的 col 元素，杜绝任何 Vue 注释/文本节点，100% 兼容 ProseMirror 拖拽列宽 (columnResizing)
-const syncColGroup = () => {
-  const colgroup = colgroupRef.value
-  if (!colgroup) return
-
+// 响应式解析每一列的目标宽度（优先从 ProseMirror node 读取并由 Vue 声明式同步，挂载首帧即定型）
+const colWidths = computed<(number | null)[]>(() => {
   const firstRow = props.node?.firstChild
-  if (!firstRow) return
+  if (!firstRow) return []
 
   const widths: (number | null)[] = []
   firstRow.forEach((cell: any) => {
@@ -375,85 +379,113 @@ const syncColGroup = () => {
     }
   })
 
-  // 检查是否有任何一列设置了固定宽度
   const hasAnyWidth = widths.some((w) => w !== null && w > 0)
   const defaultCellMinWidth = 100 // 默认保底列宽
 
-  let totalWidth = 0
-  let colElem = colgroup.firstElementChild as HTMLElement | null
-  for (let i = 0; i < widths.length; i++) {
-    let w = widths[i]
+  return widths.map((w) => {
     if (hasAnyWidth && (!w || w <= 0)) {
-      // 如果表格中已有其他列具有自定义宽度，而新列未指定宽度，给一个保底默认宽度（例如 100px），杜绝宽度为 0 的情况
-      w = defaultCellMinWidth
+      return defaultCellMinWidth
     }
+    return w
+  })
+})
 
-    if (w) {
-      totalWidth += w
-    }
-
-    if (!colElem) {
-      const newCol = document.createElement('col')
-      if (w) newCol.style.width = `${w}px`
-      colgroup.appendChild(newCol)
-    } else {
-      if (w) {
-        if (colElem.style.width !== `${w}px`) {
-          colElem.style.width = `${w}px`
-        }
-      } else {
-        if (colElem.style.width) {
-          colElem.style.width = ''
-        }
-      }
-      colElem = colElem.nextElementSibling as HTMLElement | null
+// 表格总宽度样式：从挂载第一帧起即生效，彻底根除切换编辑态时从 100% 异步跳变为固定像素宽度的页面抖动
+const tableWidthStyle = computed<{ width: string; minWidth?: string }>(() => {
+  const widths = colWidths.value
+  const hasAnyWidth = widths.some((w) => w !== null && w > 0)
+  if (hasAnyWidth) {
+    const total = widths.reduce((acc, w) => acc + (w || 0), 0)
+    if (total > 0) {
+      return { width: `${total}px` }
     }
   }
+  return { width: '100%' }
+})
 
-  while (colElem) {
-    const next = colElem.nextElementSibling as HTMLElement | null
-    colElem.remove()
-    colElem = next
+// 首屏垫底的列把手位置（避免首次挂载测量前把手列表为空导致的高度/宽度跳动）
+const renderedColPositions = computed<ColPosition[]>(() => {
+  if (colPositions.value.length > 0) {
+    return colPositions.value
   }
+  return colWidths.value.map((w) => ({
+    width: w || 100,
+  }))
+})
 
-  // 同步更新表格总宽度（若有固定列宽，确保 table.style.width 随着列的增删自适应扩展，支持出现横向滚动条而不是把新列挤成 0）
-  const table = tableWrapperRef.value?.querySelector('table')
-  if (table) {
-    if (hasAnyWidth && totalWidth > 0) {
-      table.style.width = `${totalWidth}px`
-      table.style.minWidth = ''
-    } else {
-      table.style.width = '100%'
-      table.style.minWidth = ''
-    }
+// 首屏垫底的行把手位置
+const renderedRowPositions = computed<RowPosition[]>(() => {
+  if (rowPositions.value.length > 0) {
+    return rowPositions.value
   }
-}
+  const count = props.node?.childCount || 0
+  const arr: RowPosition[] = []
+  for (let i = 0; i < count; i++) {
+    arr.push({ height: 34 })
+  }
+  return arr
+})
 
 // 判断当前表格是否处于列宽拖拽缩放中
 const isResizingColumnActive = () => isColumnResizing.value
 
 // 测量每一个格子的真实渲染宽高（完全与语雀/飞书对齐：由 flex 流式自然排布，无任何 left/top 偏移计算）
 const syncSizes = () => {
-  // 核心防护：拖拽调整列宽期间，绝对不能执行 syncColGroup，否则会把 ProseMirror 正在动态修改的 col 实时宽度强行覆写回旧值！
-  if (!isResizingColumnActive()) {
-    syncColGroup()
+  // 查看态无需把手几何测量，仅维护左右滚动阴影状态，避免无意义 reflow
+  if (!props.editor?.isEditable) {
+    updateScrollState()
+    return
   }
+
   const table = tableWrapperRef.value?.querySelector('table')
   if (!table) return
 
   const rows = table.querySelectorAll('tr')
   if (rows.length === 0) return
 
-  rowPositions.value = Array.from(rows).map((tr) => ({
-    height: (tr as HTMLElement).getBoundingClientRect().height,
-  }))
+  // 1. 只有数值真实变动 (>= 1px) 时才更新，杜绝重复创建新数组引用触发 Vue 频繁重新 patch DOM
+  let rowsChanged = false
+  if (rowPositions.value.length !== rows.length) {
+    rowsChanged = true
+  } else {
+    for (let i = 0; i < rows.length; i++) {
+      const h = (rows[i] as HTMLElement).getBoundingClientRect().height
+      if (Math.abs((rowPositions.value[i]?.height || 0) - h) >= 1) {
+        rowsChanged = true
+        break
+      }
+    }
+  }
 
-  const firstRowCells = rows[0].children
-  if (firstRowCells.length > 0) {
-    colPositions.value = Array.from(firstRowCells).map((cell) => ({
-      width: (cell as HTMLElement).getBoundingClientRect().width,
+  if (rowsChanged) {
+    rowPositions.value = Array.from(rows).map((tr) => ({
+      height: (tr as HTMLElement).getBoundingClientRect().height,
     }))
   }
+
+  // 2. 测量第一行各列真实渲染宽度
+  const firstRowCells = rows[0].children
+  if (firstRowCells.length > 0) {
+    let colsChanged = false
+    if (colPositions.value.length !== firstRowCells.length) {
+      colsChanged = true
+    } else {
+      for (let i = 0; i < firstRowCells.length; i++) {
+        const w = (firstRowCells[i] as HTMLElement).getBoundingClientRect().width
+        if (Math.abs((colPositions.value[i]?.width || 0) - w) >= 1) {
+          colsChanged = true
+          break
+        }
+      }
+    }
+
+    if (colsChanged) {
+      colPositions.value = Array.from(firstRowCells).map((cell) => ({
+        width: (cell as HTMLElement).getBoundingClientRect().width,
+      }))
+    }
+  }
+
   nextTick(updateScrollState)
 }
 
@@ -474,12 +506,10 @@ const handleTableScroll = () => {
 }
 
 let resizeObserver: ResizeObserver | null = null
-let mutationObserver: MutationObserver | null = null
 
 const handleSelectionChange = () => {
   checkTableFocus()
   updateActiveSelection()
-  syncSizes()
 }
 
 const handleBlur = () => {
@@ -503,12 +533,6 @@ const handleBlur = () => {
   }, 120)
 }
 
-const handleTransaction = () => {
-  if (!isResizingColumnActive()) {
-    syncSizes()
-  }
-}
-
 onMounted(() => {
   nextTick(() => {
     syncSizes()
@@ -517,27 +541,13 @@ onMounted(() => {
 
     if (props.editor) {
       props.editor.on('selectionUpdate', handleSelectionChange)
-      props.editor.on('transaction', handleTransaction)
       props.editor.on('focus', checkTableFocus)
       props.editor.on('blur', handleBlur)
     }
 
     const tableElem = tableWrapperRef.value?.querySelector('table')
     if (tableElem) {
-      // 1. 深度监听表格内部的行/列增删和单元格内容变动，确保行数与高度绝不滞后
-      mutationObserver = new MutationObserver(() => {
-        // 拖拽期间忽略由 colgroup 变动触发的 mutation，避免相互打架卡顿
-        if (isResizingColumnActive()) return
-        syncSizes()
-      })
-      mutationObserver.observe(tableElem, {
-        childList: true,
-        subtree: true,
-        characterData: true,
-        attributes: true,
-      })
-
-      // 2. 监听真实 table 元素的几何尺寸变化
+      // 监听真实 table 元素的几何尺寸变化（行高变动、视口缩放等），自动同步把手位置
       resizeObserver = new ResizeObserver(() => {
         if (isResizingColumnActive()) return
         syncSizes()
@@ -548,12 +558,10 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  mutationObserver?.disconnect()
   resizeObserver?.disconnect()
   document.removeEventListener('click', handleGlobalClick)
   if (props.editor) {
     props.editor.off('selectionUpdate', handleSelectionChange)
-    props.editor.off('transaction', handleTransaction)
     props.editor.off('focus', checkTableFocus)
     props.editor.off('blur', handleBlur)
   }
@@ -873,6 +881,7 @@ const handleColPointerDown = (e: PointerEvent, colIdx: number) => {
       hasMoved = true
       isDraggingCol.value = true
       dragColSourceIndex.value = colIdx
+      document.body.classList.add('speed-table-is-dragging')
     }
 
     if (isDraggingCol.value && containerRef.value) {
@@ -881,24 +890,55 @@ const handleColPointerDown = (e: PointerEvent, colIdx: number) => {
       const tableRect = containerRef.value.getBoundingClientRect()
       const mouseRelativeX = moveEvent.clientX - tableRect.left
 
-      let targetIdx = colPositions.value.length - 1
-      let indicatorPos = 0
-      let accumLeft = 0
-
+      // 计算当前拖拽列自身的像素范围 [selfLeft, selfRight]
+      let selfLeft = 0
+      let selfRight = 0
+      let curLeft = 0
       for (let i = 0; i < colPositions.value.length; i++) {
         const w = colPositions.value[i].width
-        const colMid = accumLeft + w / 2
-        if (mouseRelativeX < colMid) {
-          targetIdx = i
-          indicatorPos = accumLeft
+        if (i === colIdx) {
+          selfLeft = curLeft
+          selfRight = curLeft + w
           break
         }
-        accumLeft += w
-        indicatorPos = accumLeft
+        curLeft += w
       }
 
-      dragColTargetIndex.value = targetIdx
-      dragColIndicatorLeft.value = indicatorPos
+      // 1. 若鼠标仍在自身列范围内：完全属于原地，严禁显示任何指示线与徽章，松手不位移
+      if (mouseRelativeX >= selfLeft && mouseRelativeX <= selfRight) {
+        dragColTargetIndex.value = null
+        dragColIndicatorLeft.value = null
+      } else {
+        // 2. 鼠标已移出自身列，寻找离鼠标最近的垂直分割线（borderIdx: 0 到 colPositions.length）
+        let borderIdx = 0
+        let indicatorPos = 0
+        let accumLeft = 0
+
+        for (let i = 0; i < colPositions.value.length; i++) {
+          const w = colPositions.value[i].width
+          const colMid = accumLeft + w / 2
+          if (mouseRelativeX < colMid) {
+            borderIdx = i
+            indicatorPos = accumLeft
+            break
+          }
+          accumLeft += w
+          borderIdx = i + 1
+          indicatorPos = accumLeft
+        }
+
+        const from = colIdx
+        // 原地未动判定：若分割线依然紧贴自身左边缘(from)或右边缘(from+1)，不展示指示线
+        if (borderIdx === from || borderIdx === from + 1) {
+          dragColTargetIndex.value = null
+          dragColIndicatorLeft.value = null
+        } else {
+          // 向右移动：由于先从原位置移除 from，后续元素索引前移 1 位，实际目标插入索引为 borderIdx - 1
+          // 向左移动：原位置在后方，前面元素索引未受影响，实际目标插入索引为 borderIdx
+          dragColTargetIndex.value = borderIdx > from + 1 ? borderIdx - 1 : borderIdx
+          dragColIndicatorLeft.value = indicatorPos
+        }
+      }
     }
   }
 
@@ -918,6 +958,7 @@ const handleColPointerDown = (e: PointerEvent, colIdx: number) => {
     }
 
     isDraggingCol.value = false
+    document.body.classList.remove('speed-table-is-dragging')
     dragColSourceIndex.value = null
     dragColTargetIndex.value = null
     dragColIndicatorLeft.value = null
@@ -953,6 +994,7 @@ const handleRowPointerDown = (e: PointerEvent, rowIdx: number) => {
       hasMoved = true
       isDraggingRow.value = true
       dragRowSourceIndex.value = rowIdx
+      document.body.classList.add('speed-table-is-dragging')
     }
 
     if (isDraggingRow.value && containerRef.value) {
@@ -961,24 +1003,55 @@ const handleRowPointerDown = (e: PointerEvent, rowIdx: number) => {
       const tableRect = containerRef.value.getBoundingClientRect()
       const mouseRelativeY = moveEvent.clientY - tableRect.top
 
-      let targetIdx = rowPositions.value.length - 1
-      let indicatorPos = 0
-      let accumTop = 0
-
+      // 计算当前拖拽行自身的像素范围 [selfTop, selfBottom]
+      let selfTop = 0
+      let selfBottom = 0
+      let curTop = 0
       for (let i = 0; i < rowPositions.value.length; i++) {
         const h = rowPositions.value[i].height
-        const rowMid = accumTop + h / 2
-        if (mouseRelativeY < rowMid) {
-          targetIdx = i
-          indicatorPos = accumTop
+        if (i === rowIdx) {
+          selfTop = curTop
+          selfBottom = curTop + h
           break
         }
-        accumTop += h
-        indicatorPos = accumTop
+        curTop += h
       }
 
-      dragRowTargetIndex.value = targetIdx
-      dragRowIndicatorTop.value = indicatorPos
+      // 1. 若鼠标仍在自身行范围内：完全属于原地，严禁显示任何指示线与徽章，松手不位移
+      if (mouseRelativeY >= selfTop && mouseRelativeY <= selfBottom) {
+        dragRowTargetIndex.value = null
+        dragRowIndicatorTop.value = null
+      } else {
+        // 2. 鼠标已移出自身行，寻找离鼠标最近的水平分割线（borderIdx: 0 到 rowPositions.length）
+        let borderIdx = 0
+        let indicatorPos = 0
+        let accumTop = 0
+
+        for (let i = 0; i < rowPositions.value.length; i++) {
+          const h = rowPositions.value[i].height
+          const rowMid = accumTop + h / 2
+          if (mouseRelativeY < rowMid) {
+            borderIdx = i
+            indicatorPos = accumTop
+            break
+          }
+          accumTop += h
+          borderIdx = i + 1
+          indicatorPos = accumTop
+        }
+
+        const from = rowIdx
+        // 原地未动判定：若分割线依然紧贴自身上边缘(from)或下边缘(from+1)，不展示指示线
+        if (borderIdx === from || borderIdx === from + 1) {
+          dragRowTargetIndex.value = null
+          dragRowIndicatorTop.value = null
+        } else {
+          // 向下移动：先移除 from，后续行索引前移 1 位，实际目标插入索引为 borderIdx - 1
+          // 向上移动：原位置在下方，前面行索引未受影响，实际目标插入索引为 borderIdx
+          dragRowTargetIndex.value = borderIdx > from + 1 ? borderIdx - 1 : borderIdx
+          dragRowIndicatorTop.value = indicatorPos
+        }
+      }
     }
   }
 
@@ -998,6 +1071,7 @@ const handleRowPointerDown = (e: PointerEvent, rowIdx: number) => {
     }
 
     isDraggingRow.value = false
+    document.body.classList.remove('speed-table-is-dragging')
     dragRowSourceIndex.value = null
     dragRowTargetIndex.value = null
     dragRowIndicatorTop.value = null
@@ -1044,7 +1118,7 @@ const startColumnResize = (e: MouseEvent | PointerEvent, colIdx: number) => {
   if (!table) return
 
   // 1. 获取当前每列的渲染宽度
-  const renderedWidths = colPositions.value.map((c) => c.width)
+  const renderedWidths = renderedColPositions.value.map((c) => c.width)
   const startWidth = renderedWidths[colIdx] || 100
   const startX = e.clientX
 
@@ -1589,6 +1663,17 @@ const handleTableMouseLeave = () => {
     .table-scroll-shadow-left,
     .table-scroll-shadow-right {
       top: -20px;
+    }
+  }
+
+  // 拖拽排序列或行期间，隐藏表格上方所有气泡菜单，避免挡住操作视线
+  body.speed-table-is-dragging {
+    .tiptap-bubble-menu,
+    .bubble-menu-wrapper,
+    .table-bubble-menu {
+      display: none !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
     }
   }
 }

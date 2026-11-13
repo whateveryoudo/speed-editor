@@ -36,6 +36,7 @@ import { Emoji } from "@tiptap/extension-emoji";
 import { TextAlign } from "./textAlign";
 import { Tag } from "./tag";
 import { Mind } from "./mind";
+import { BoardNode } from "@speed-editor/extension-board";
 import { Mention } from "./mention";
 import { getMentionSuggestion } from "./mention/suggestion";
 import { CodeBlock } from "./codeBlock";
@@ -130,6 +131,7 @@ export const getDefaultKit = (props: any) => [
   Color,
   BackgroundColor,
   Mind,
+  BoardNode,
   CodeBlock,
   Callout,
   Code,

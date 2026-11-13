@@ -25,18 +25,30 @@ import { RedoOutlined } from '@ant-design/icons-vue'
 import { type PropType } from 'vue'
 import { Editor } from '@tiptap/core'
 import { getShortcutTipByKey } from '@speed-editor/shared'
-import { useSpeedEditor } from '@speed-editor/composables';
+import { useSpeedEditor } from '@speed-editor/composables'
+
 const props = defineProps({
   editor: {
     type: Object as PropType<Editor>,
-    default: () => ({}),  
+    default: () => ({}),
   },
 })
-const keyMap = getShortcutTipByKey('redo');
-const { editableCpt } = useSpeedEditor();
+const keyMap = getShortcutTipByKey('redo')
+const { editableCpt } = useSpeedEditor()
 
 const redo = () => {
-  props.editor && props.editor.chain().focus().redo().run()
+  if (!props.editor) return
+  const plugin = props.editor.state.plugins.find((p: any) => p.key?.startsWith('y-undo'))
+  const undoState = plugin ? plugin.getState(props.editor.state) : null
+  const um = undoState?.undoManager
+  console.log('[Redo Clicked]', {
+    canRedo: props.editor.can().redo(),
+    undoStackLen: um?.undoStack?.length,
+    redoStackLen: um?.redoStack?.length,
+    trackedOrigins: um?.trackedOrigins ? Array.from(um.trackedOrigins) : [],
+  })
+  const chainRes = props.editor.chain().focus().redo().run()
+  console.log('[Redo chain run result]:', chainRes, 'new redoStackLen:', um?.redoStack?.length)
 }
 </script>
 

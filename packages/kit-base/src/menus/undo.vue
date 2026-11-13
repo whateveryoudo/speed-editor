@@ -25,18 +25,34 @@ import { UndoOutlined } from '@ant-design/icons-vue'
 import { type PropType } from 'vue'
 import { Editor } from '@tiptap/core'
 import { getShortcutTipByKey } from '@speed-editor/shared'
-import { useSpeedEditor } from '@speed-editor/composables';
+import { useSpeedEditor } from '@speed-editor/composables'
 
-const keyMap = getShortcutTipByKey('undo');
+const keyMap = getShortcutTipByKey('undo')
 const props = defineProps({
   editor: {
     type: Object as PropType<Editor>,
     default: () => ({}),
   },
 })
-const { editableCpt } = useSpeedEditor();
+const { editableCpt } = useSpeedEditor()
+
 const undo = () => {
-  props.editor && props.editor.chain().focus().undo().run()
+  if (!props.editor) return
+  const plugin = props.editor.state.plugins.find((p: any) => p.key?.startsWith('y-undo'))
+  const undoState = plugin ? plugin.getState(props.editor.state) : null
+  const um = undoState?.undoManager
+  console.log('[Undo Before]', {
+    canUndo: props.editor.can().undo(),
+    undoStackLen: um?.undoStack?.length,
+    redoStackLen: um?.redoStack?.length,
+  })
+  const chainRes = props.editor.chain().focus().undo().run()
+  console.log('[Undo After]', {
+    chainRes,
+    undoStackLen: um?.undoStack?.length,
+    redoStackLen: um?.redoStack?.length,
+    canRedo: props.editor.can().redo(),
+  })
 }
 </script>
 

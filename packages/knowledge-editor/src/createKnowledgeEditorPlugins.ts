@@ -2,6 +2,7 @@ import { createKitBasePlugins } from '@speed-editor/kit-base'
 import { createSearchReplacePlugin } from '@speed-editor/kit-base'
 import { createMindPlugin } from '@speed-editor/extension-mind'
 import { createFlowPlugin } from '@speed-editor/extension-flow'
+import { createBoardPlugin } from '@speed-editor/extension-board'
 import { createImportExportPlugin } from '@speed-editor/extension-import-export'
 import { createDocumentSuggestOverlayPlugin } from './createDocumentSuggestOverlay'
 import type { SpeedEditorPlugin } from '@speed-editor/shared'
@@ -11,6 +12,8 @@ export interface KnowledgeEditorPluginsOptions {
   mind?: boolean
   /** 是否启用流程图插件（占位，见 extension-flow README） */
   flow?: boolean
+  /** 是否启用画板插件，默认 true */
+  board?: boolean
   /** 额外插件 */
   extraPlugins?: SpeedEditorPlugin[]
 }
@@ -25,6 +28,7 @@ export function createKnowledgeEditorPlugins(
     createSearchReplacePlugin(),
     createDocumentSuggestOverlayPlugin(),
   ]
+  if (options.board !== false) plugins.push(createBoardPlugin())
   if (options.mind) plugins.push(createMindPlugin())
   if (options.flow) plugins.push(createFlowPlugin())
   if (options.extraPlugins?.length) plugins.push(...options.extraPlugins)

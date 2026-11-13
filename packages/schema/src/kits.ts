@@ -10,6 +10,7 @@ import { Attachment } from './nodes/attachment'
 import { Tag } from './nodes/tag'
 import { CodeBlock } from './nodes/codeBlock'
 import { Mind } from './nodes/mind'
+import { Board } from './nodes/board'
 import { Loading } from './nodes/loading'
 import { DocumentKnowledge } from './nodes/document'
 import { BackgroundColor } from './marks/backgroundColor'
@@ -42,7 +43,7 @@ const textStyleExtensions = [
 ]
 
 /** 带 NodeView 的自定义块/行内节点（无 UI 契约版） */
-const customNodes = [Callout, Attachment, Tag, CodeBlock, Mind, Loading]
+const customNodes = [Callout, Attachment, Tag, CodeBlock, Mind, Board, Loading]
 
 /**
  * 轻量文档（首页等）

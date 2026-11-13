@@ -36,6 +36,8 @@ export interface SubMenuGroup {
   action?: (editor: Editor, payload?: any) => void
   payload?: any;
   order?: number
+  shortcut?: string
+  description?: string
 }
 export interface MenuGroup {
   key: string
@@ -57,6 +59,8 @@ export interface InsertMenuItemConfig {
   action?: (editor: Editor, payload?: any) => void
   payload?: any
   order?: number
+  shortcut?: string
+  description?: string
 }
 
 export interface InsertMenuGroupConfig {
@@ -120,38 +124,30 @@ export const useCommand = (config?: InsertMenuConfig) => {
         }
       ],
     },
-    // {
-    //   key: 'board',
-    //   name: '画板类',
-    //   children: [
-    //     {
-    //       key: '2-1',
-    //       name: '思维导图',
-    //       size: 18,
-    //       imgModule: mindIcon,
-    //       action: editor => {
-    //         editor?.chain().focus().setMind().run()
-    //         updateFlowState && updateMindState('visible', true)
-    //         updateFlowState && updateMindState('data')
-    //       },
-    //     },
-    //     {
-    //       key: '2-2',
-    //       name: '流程图',
-    //       imgModule: flowIcon,
-    //       action: editor => {
-    //         editor
-    //           .chain()
-    //           .focus()
-    //           .setFlowMap()
-    //           // .setFlow({ width: '100%', defaultShowPicker: true, createUser: user.id })
-    //           .run()
-    //         updateFlowState && updateFlowState('visible', true)
-    //         updateFlowState && updateFlowState('data')
-    //       },
-    //     },
-    //   ],
-    // },
+    {
+      key: 'board',
+      name: '画板类',
+      children: [
+        {
+          key: 'board',
+          name: '画板',
+          shortcut: '/hb',
+          description: '可插入图形、连线和图片等',
+          size: 18,
+          imgModule: flowIcon,
+          action: (editor: any) => {
+            if (editor?.commands?.insertBoard) {
+              editor.chain().focus().insertBoard().run()
+            } else {
+              editor?.chain()?.focus()?.insertContent({
+                type: 'board',
+                attrs: { height: 480 },
+              })?.run()
+            }
+          },
+        },
+      ],
+    },
     {
       key: 'programmer',
       name: '程序员专区',
@@ -266,6 +262,8 @@ export const useCommand = (config?: InsertMenuConfig) => {
         action: it.action,
         payload: it.payload,
         order: it.order ?? (target.children.length + idx),
+        shortcut: it.shortcut,
+        description: it.description,
       }
       if (existIdx >= 0) {
         target.children[existIdx] = normalized

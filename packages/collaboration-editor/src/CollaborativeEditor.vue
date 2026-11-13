@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, watchEffect } from 'vue'
+import { computed, nextTick, onMounted, ref, watch, watchEffect } from 'vue'
 import type * as Y from 'yjs'
 import { SpeedEditor } from '@speed-editor/base-editor'
 import { isChangeOrigin } from '@tiptap/extension-collaboration'
 import type { Transaction } from '@tiptap/pm/state'
+import { getRandomColor } from '@speed-editor/shared'
 import { useCollaboration, type CollaborationProviderLike } from './useCollaboration'
 import type {
   CollaborationUser,
@@ -60,14 +61,67 @@ const editorBindProps = computed(() => {
   return rest
 })
 
-const editorKey = computed(() => {
-  return props.ydoc?.guid ?? 'standalone-editor'
+const speedEditorRef = ref<InstanceType<typeof SpeedEditor> | null>(null)
+const editor = computed(() => speedEditorRef.value?.editor)
+
+// 响应式监听用户变动：采用 Tiptap 官方命令 updateUser 更新协同光标和头像，避免 setOptions 重新配置扩展打残 UndoManager
+watch(
+  [() => editor.value, () => props.user],
+  ([currentEditor, currentUser]) => {
+    if (currentEditor && currentUser) {
+      currentEditor.commands.updateUser?.({
+        id: currentUser.id,
+        avatar: currentUser.avatar,
+        name: currentUser.nickname || currentUser.username,
+        color: currentUser.color ?? getRandomColor(),
+      })
+    }
+  },
+  { immediate: true },
+)
+
+function restoreCollaborationUndoManager(ed: any) {
+  if (!ed?.state) return
+  const undoPlugin = ed.state.plugins?.find((p: any) => p.key?.startsWith('y-undo'))
+  if (!undoPlugin) return
+  const undoManager = undoPlugin.getState(ed.state)?.undoManager
+  if (undoManager) {
+    if (!undoManager.trackedOrigins?.has(undoManager)) {
+      undoManager.trackedOrigins.add(undoManager)
+    }
+    if (undoManager.afterTransactionHandler && undoManager.doc) {
+      undoManager.doc.off('afterTransaction', undoManager.afterTransactionHandler)
+      undoManager.doc.on('afterTransaction', undoManager.afterTransactionHandler)
+    }
+  }
+}
+
+// 兜底保障：当编辑器及所有内部浮动插件组件（BubbleMenu、DragHandle等）全部 mounted 挂载完毕后，统一走一次 Restore
+onMounted(() => {
+  nextTick(() => {
+    restoreCollaborationUndoManager(editor.value)
+  })
+})
+
+watch(
+  () => editor.value,
+  (ed) => {
+    if (ed) {
+      nextTick(() => {
+        restoreCollaborationUndoManager(ed)
+      })
+    }
+  },
+)
+
+defineExpose({
+  editor,
 })
 </script>
 
 <template>
   <SpeedEditor
-    :key="editorKey"
+    ref="speedEditorRef"
     v-bind="editorBindProps"
     :extra-extensions="collaborationExtensions"
     :collaboration-mode="collaborationMode"

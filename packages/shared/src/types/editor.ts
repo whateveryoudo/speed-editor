@@ -75,6 +75,7 @@ export interface SpeedEditorShellProps {
   docType?: 'document' | 'template'
   editable?: boolean
   menubar?: boolean
+  autofocus?: 'start' | 'end' | 'all' | number | boolean | null
   hideComment?: boolean
   placeholder?: string
   toolbarKeys?: ToolBarConfig[]

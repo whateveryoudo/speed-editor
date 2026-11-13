@@ -28,6 +28,7 @@
   "dependencies": {
     "@speed-editor/base-editor": "workspace:^",
     "@speed-editor/collaboration-editor": "workspace:^",
+    "@speed-editor/extension-board": "workspace:^",
     "@speed-editor/extension-flow": "workspace:^",
     "@speed-editor/extension-import-export": "workspace:^",
     "@speed-editor/extension-kit": "workspace:^",

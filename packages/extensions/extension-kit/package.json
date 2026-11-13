@@ -28,6 +28,7 @@
     "@floating-ui/dom": "^1.6.0",
     "@floating-ui/vue": "^1.1.0",
     "@speed-editor/composables": "workspace:^",
+    "@speed-editor/extension-board": "workspace:^",
     "@speed-editor/schema": "workspace:^",
     "@speed-editor/shared": "workspace:^",
     "@tiptap/core": "3.13.0",
