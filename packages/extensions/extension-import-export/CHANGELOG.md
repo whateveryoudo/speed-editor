@@ -1,5 +1,15 @@
 # @speed-editor/extension-import-export
 
+## 2.0.2
+
+### Patch Changes
+
+- 发布到最新版本,增加了一些交互
+- Updated dependencies
+  - @speed-editor/document-io@2.0.3
+  - @speed-editor/kit-base@2.0.12
+  - @speed-editor/shared@2.0.7
+
 ## 2.0.1
 
 ### Patch Changes

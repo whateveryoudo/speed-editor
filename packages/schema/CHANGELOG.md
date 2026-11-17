@@ -1,5 +1,11 @@
 # @speed-editor/schema
 
+## 2.0.8
+
+### Patch Changes
+
+- 发布到最新版本,增加了一些交互
+
 ## 2.0.7
 
 ### Patch Changes

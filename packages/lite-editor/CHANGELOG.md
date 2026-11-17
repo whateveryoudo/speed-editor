@@ -1,5 +1,16 @@
 # @speed-editor/lite-editor
 
+## 2.0.8
+
+### Patch Changes
+
+- 发布到最新版本,增加了一些交互
+- Updated dependencies
+  - @speed-editor/base-editor@2.0.11
+  - @speed-editor/extension-kit@2.0.12
+  - @speed-editor/kit-base@2.0.12
+  - @speed-editor/shared@2.0.7
+
 ## 2.0.7
 
 ### Patch Changes

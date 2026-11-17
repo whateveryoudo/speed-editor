@@ -1,5 +1,15 @@
 # @speed-editor/base-editor
 
+## 2.0.11
+
+### Patch Changes
+
+- 发布到最新版本,增加了一些交互
+- Updated dependencies
+  - @speed-editor/composables@2.0.6
+  - @speed-editor/shared@2.0.7
+  - @speed-editor/ui@2.0.5
+
 ## 2.0.10
 
 ### Patch Changes

@@ -1,5 +1,21 @@
 # @speed-editor/knowledge-editor
 
+## 2.0.7
+
+### Patch Changes
+
+- 发布到最新版本,增加了一些交互
+- Updated dependencies
+  - @speed-editor/base-editor@2.0.11
+  - @speed-editor/collaboration-editor@2.0.4
+  - @speed-editor/extension-board@2.0.2
+  - @speed-editor/extension-flow@2.0.2
+  - @speed-editor/extension-import-export@2.0.2
+  - @speed-editor/extension-kit@2.0.12
+  - @speed-editor/extension-mind@2.0.2
+  - @speed-editor/kit-base@2.0.12
+  - @speed-editor/shared@2.0.7
+
 ## 2.0.6
 
 ### Patch Changes
